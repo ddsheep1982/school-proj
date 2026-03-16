@@ -1,0 +1,164 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum EnrollmentStatus {
+  ACTIVE
+  WITHDRAWN
+  GRADUATED
+}
+
+enum PaymentStatus {
+  PAID
+  PARTIAL
+  OVERDUE
+}
+
+enum RecruitmentChannelType {
+  TEACHER
+  AGENT
+}
+
+enum PaymentType {
+  CASH
+  BANK_TRANSFER
+  WECHAT
+  ALIPAY
+  OTHER
+}
+
+enum UserRole {
+  ADMIN
+  STAFF
+}
+
+model Class {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  capacity  Int
+  archived  Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  students  Student[]
+}
+
+model EnrollmentTeacher {
+  id        String    @id @default(cuid())
+  name      String
+  phone     String
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  enrolledStudents  Student[] @relation("EnrolledBy")
+  recruitedStudents Student[] @relation("RecruitedByTeacher")
+}
+
+model RecruitmentAgent {
+  id           String    @id @default(cuid())
+  name         String
+  agencyName   String?
+  phone        String
+  active       Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  recruitedStudents Student[] @relation("RecruitedByAgent")
+}
+
+model Student {
+  id                     String                  @id @default(cuid())
+  studentNo              String                  @unique
+  name                   String
+  phone                  String
+  guardianPhone          String
+  enrollmentDate         DateTime                @default(now())
+  enrollmentStatus       EnrollmentStatus        @default(ACTIVE)
+  paymentStatus          PaymentStatus           @default(PAID)
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+
+  classId                String?
+  class                  Class?                  @relation(fields: [classId], references: [id])
+
+  enrollmentTeacherId    String?
+  enrollmentTeacher      EnrollmentTeacher?      @relation("EnrolledBy", fields: [enrollmentTeacherId], references: [id])
+
+  recruitmentChannelType RecruitmentChannelType?
+  recruitmentTeacherId   String?
+  recruitmentTeacher     EnrollmentTeacher?      @relation("RecruitedByTeacher", fields: [recruitmentTeacherId], references: [id])
+  recruitmentAgentId     String?
+  recruitmentAgent       RecruitmentAgent?       @relation("RecruitedByAgent", fields: [recruitmentAgentId], references: [id])
+
+  paymentRecords    PaymentRecord[]
+  attendanceRecords AttendanceRecord[]
+
+  @@index([enrollmentStatus])
+  @@index([paymentStatus])
+  @@index([classId])
+  @@index([enrollmentTeacherId])
+}
+
+model PaymentRecord {
+  id           String      @id @default(cuid())
+  studentId    String
+  student      Student     @relation(fields: [studentId], references: [id])
+  amount       Decimal     @db.Decimal(10, 2)
+  paymentDate  DateTime
+  paymentType  PaymentType
+  notes        String?
+  isAdjustment Boolean     @default(false)
+  originalId   String?
+  original     PaymentRecord?  @relation("Adjustments", fields: [originalId], references: [id])
+  adjustments  PaymentRecord[] @relation("Adjustments")
+  createdById  String
+  createdBy    User        @relation(fields: [createdById], references: [id])
+  createdAt    DateTime    @default(now())
+}
+
+model AttendanceRecord {
+  id        String    @id @default(cuid())
+  studentId String
+  student   Student   @relation(fields: [studentId], references: [id])
+  date      DateTime  @db.Date
+  checkIn   DateTime?
+  checkOut  DateTime?
+  duration  Int?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@unique([studentId, date])
+}
+
+model User {
+  id             String          @id @default(cuid())
+  name           String
+  email          String          @unique
+  hashedPassword String
+  role           UserRole        @default(STAFF)
+  active         Boolean         @default(true)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  paymentRecords PaymentRecord[]
+  auditLogs      AuditLog[]
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  action    String
+  entity    String
+  entityId  String
+  changes   Json?
+  createdAt DateTime @default(now())
+
+  @@index([entity, entityId])
+  @@index([createdAt])
+}

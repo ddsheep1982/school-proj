@@ -1,0 +1,248 @@
+import { z } from "zod";
+
+// ---------------------------------------------------------------------------
+// Shared result type for all Server Actions
+// ---------------------------------------------------------------------------
+export type ActionResult<T> =
+  | { success: true; data: T }
+  | { success: false; error: string; fieldErrors?: Record<string, string[]> };
+
+// ---------------------------------------------------------------------------
+// Enums (mirrors Prisma enums — avoids importing generated client in types)
+// ---------------------------------------------------------------------------
+export const EnrollmentStatusEnum = z.enum(["ACTIVE", "WITHDRAWN", "GRADUATED"]);
+export type EnrollmentStatus = z.infer<typeof EnrollmentStatusEnum>;
+
+export const PaymentStatusEnum = z.enum(["PAID", "PARTIAL", "OVERDUE"]);
+export type PaymentStatus = z.infer<typeof PaymentStatusEnum>;
+
+export const RecruitmentChannelTypeEnum = z.enum(["TEACHER", "AGENT"]);
+export type RecruitmentChannelType = z.infer<typeof RecruitmentChannelTypeEnum>;
+
+export const PaymentTypeEnum = z.enum([
+  "CASH",
+  "BANK_TRANSFER",
+  "WECHAT",
+  "ALIPAY",
+  "OTHER",
+]);
+export type PaymentType = z.infer<typeof PaymentTypeEnum>;
+
+export const UserRoleEnum = z.enum(["ADMIN", "STAFF"]);
+export type UserRole = z.infer<typeof UserRoleEnum>;
+
+// ---------------------------------------------------------------------------
+// Student schemas
+// ---------------------------------------------------------------------------
+export const CreateStudentSchema = z
+  .object({
+    name: z.string().min(1, "姓名不能为空"),
+    phone: z.string().min(1, "联系电话不能为空"),
+    guardianPhone: z.string().min(1, "家长联系电话不能为空"),
+    enrollmentDate: z.string().datetime(),
+    classId: z.string().cuid().optional(),
+    enrollmentTeacherId: z.string().cuid().optional(),
+    recruitmentChannelType: RecruitmentChannelTypeEnum.optional(),
+    recruitmentTeacherId: z.string().cuid().optional(),
+    recruitmentAgentId: z.string().cuid().optional(),
+  })
+  .refine(
+    (d) => {
+      if (d.recruitmentChannelType === "TEACHER") return !!d.recruitmentTeacherId;
+      if (d.recruitmentChannelType === "AGENT") return !!d.recruitmentAgentId;
+      return true;
+    },
+    {
+      message: "必须根据招生渠道类型填写对应的招生老师或招生代理",
+      path: ["recruitmentChannelType"],
+    }
+  );
+
+export type CreateStudentInput = z.infer<typeof CreateStudentSchema>;
+
+export const UpdateStudentSchema = z
+  .object({
+    name: z.string().min(1, "姓名不能为空").optional(),
+    phone: z.string().min(1, "联系电话不能为空").optional(),
+    guardianPhone: z.string().min(1, "家长联系电话不能为空").optional(),
+    enrollmentDate: z.string().datetime().optional(),
+    enrollmentStatus: EnrollmentStatusEnum.optional(),
+    paymentStatus: PaymentStatusEnum.optional(),
+    classId: z.string().cuid().nullable().optional(),
+    enrollmentTeacherId: z.string().cuid().nullable().optional(),
+    recruitmentChannelType: RecruitmentChannelTypeEnum.nullable().optional(),
+    recruitmentTeacherId: z.string().cuid().nullable().optional(),
+    recruitmentAgentId: z.string().cuid().nullable().optional(),
+  })
+  .refine(
+    (d) => {
+      if (d.recruitmentChannelType === "TEACHER") return !!d.recruitmentTeacherId;
+      if (d.recruitmentChannelType === "AGENT") return !!d.recruitmentAgentId;
+      return true;
+    },
+    {
+      message: "必须根据招生渠道类型填写对应的招生老师或招生代理",
+      path: ["recruitmentChannelType"],
+    }
+  );
+
+export type UpdateStudentInput = z.infer<typeof UpdateStudentSchema>;
+
+export const StudentFiltersSchema = z.object({
+  search: z.string().optional(),
+  classId: z.string().optional(),
+  enrollmentTeacherId: z.string().optional(),
+  recruitmentAgentId: z.string().optional(),
+  recruitmentChannelType: RecruitmentChannelTypeEnum.optional(),
+  enrollmentStatus: EnrollmentStatusEnum.optional(),
+  paymentStatus: PaymentStatusEnum.optional(),
+  page: z.coerce.number().int().positive().default(1),
+  pageSize: z.coerce.number().int().positive().max(100).default(20),
+});
+
+export type StudentFilters = z.infer<typeof StudentFiltersSchema>;
+
+// ---------------------------------------------------------------------------
+// Payment schemas
+// ---------------------------------------------------------------------------
+export const CreatePaymentSchema = z.object({
+  studentId: z.string().cuid(),
+  amount: z.number().positive("金额必须大于0"),
+  paymentDate: z.string().datetime(),
+  paymentType: PaymentTypeEnum,
+  notes: z.string().optional(),
+});
+
+export type CreatePaymentInput = z.infer<typeof CreatePaymentSchema>;
+
+export const CreateAdjustmentSchema = z.object({
+  originalId: z.string().cuid(),
+  amount: z.number(),
+  paymentDate: z.string().datetime(),
+  paymentType: PaymentTypeEnum,
+  notes: z.string().optional(),
+});
+
+export type CreateAdjustmentInput = z.infer<typeof CreateAdjustmentSchema>;
+
+// ---------------------------------------------------------------------------
+// Attendance schemas
+// ---------------------------------------------------------------------------
+export const AttendanceTimeSchema = z.object({
+  studentId: z.string().cuid(),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "日期格式应为 YYYY-MM-DD"),
+  time: z.string().regex(/^\d{2}:\d{2}$/, "时间格式应为 HH:MM"),
+});
+
+export type AttendanceTimeInput = z.infer<typeof AttendanceTimeSchema>;
+
+// ---------------------------------------------------------------------------
+// Class schemas
+// ---------------------------------------------------------------------------
+export const CreateClassSchema = z.object({
+  name: z.string().min(1, "班级名称不能为空"),
+  capacity: z.number().int().positive("容量必须为正整数"),
+});
+
+export type CreateClassInput = z.infer<typeof CreateClassSchema>;
+
+export const UpdateClassSchema = z.object({
+  name: z.string().min(1).optional(),
+  capacity: z.number().int().positive().optional(),
+  archived: z.boolean().optional(),
+});
+
+export type UpdateClassInput = z.infer<typeof UpdateClassSchema>;
+
+// ---------------------------------------------------------------------------
+// Enrollment Teacher schemas
+// ---------------------------------------------------------------------------
+export const CreateTeacherSchema = z.object({
+  name: z.string().min(1, "姓名不能为空"),
+  phone: z.string().min(1, "联系电话不能为空"),
+});
+
+export type CreateTeacherInput = z.infer<typeof CreateTeacherSchema>;
+
+export const UpdateTeacherSchema = z.object({
+  name: z.string().min(1).optional(),
+  phone: z.string().min(1).optional(),
+  active: z.boolean().optional(),
+});
+
+export type UpdateTeacherInput = z.infer<typeof UpdateTeacherSchema>;
+
+// ---------------------------------------------------------------------------
+// Recruitment Agent schemas
+// ---------------------------------------------------------------------------
+export const CreateAgentSchema = z.object({
+  name: z.string().min(1, "姓名不能为空"),
+  agencyName: z.string().optional(),
+  phone: z.string().min(1, "联系电话不能为空"),
+});
+
+export type CreateAgentInput = z.infer<typeof CreateAgentSchema>;
+
+export const UpdateAgentSchema = z.object({
+  name: z.string().min(1).optional(),
+  agencyName: z.string().nullable().optional(),
+  phone: z.string().min(1).optional(),
+  active: z.boolean().optional(),
+});
+
+export type UpdateAgentInput = z.infer<typeof UpdateAgentSchema>;
+
+// ---------------------------------------------------------------------------
+// User schemas
+// ---------------------------------------------------------------------------
+export const CreateUserSchema = z.object({
+  name: z.string().min(1, "姓名不能为空"),
+  email: z.string().email("邮箱格式不正确"),
+  password: z.string().min(8, "密码至少8位"),
+  role: UserRoleEnum,
+});
+
+export type CreateUserInput = z.infer<typeof CreateUserSchema>;
+
+export const UpdateUserSchema = z.object({
+  name: z.string().min(1).optional(),
+  email: z.string().email().optional(),
+  password: z.string().min(8).optional(),
+  role: UserRoleEnum.optional(),
+  active: z.boolean().optional(),
+});
+
+export type UpdateUserInput = z.infer<typeof UpdateUserSchema>;
+
+// ---------------------------------------------------------------------------
+// Dashboard types
+// ---------------------------------------------------------------------------
+export interface DashboardFilters {
+  classId?: string;
+  enrollmentTeacherId?: string;
+  recruitmentChannelType?: RecruitmentChannelType;
+  recruitmentAgentId?: string;
+}
+
+export interface DashboardMetrics {
+  totalActive: number;
+  byEnrollmentStatus: { status: EnrollmentStatus; count: number }[];
+  byPaymentStatus: { status: PaymentStatus; count: number }[];
+  todayAttendanceCount: number;
+}
+
+export interface KanbanCard {
+  id: string;
+  studentNo: string;
+  name: string;
+  phone: string;
+  paymentStatus: PaymentStatus;
+  className?: string;
+  enrollmentTeacherName?: string;
+}
+
+export interface KanbanData {
+  ACTIVE: KanbanCard[];
+  WITHDRAWN: KanbanCard[];
+  GRADUATED: KanbanCard[];
+}
