@@ -5,6 +5,7 @@ import { getPaymentsByStudent } from "@/actions/payment.actions";
 import { getAttendanceByStudent } from "@/actions/attendance.actions";
 import { getStudentInvoices, getStudentOutstandingBalance } from "@/actions/invoice.actions";
 import { getRecruitmentCostsByStudent } from "@/actions/recruitment-cost.actions";
+import { getRefundsByStudent } from "@/actions/refund.actions";
 import { getTeachers } from "@/actions/teacher.actions";
 import { getAgents } from "@/actions/agent.actions";
 import { EnrollmentStatusBadge, PaymentStatusBadge } from "@/components/shared/StatusBadge";
@@ -26,13 +27,14 @@ export default async function StudentDetailPage({ params, searchParams }: Props)
   const student = await getStudentById(id);
   if (!student) notFound();
 
-  const [payments, attendance, invoices, outstandingBalance, recruitmentCosts, teachers, agents] =
+  const [payments, attendance, invoices, outstandingBalance, recruitmentCosts, refundRecords, teachers, agents] =
     await Promise.all([
       tab === "payments" || tab === "finance" ? getPaymentsByStudent(id) : Promise.resolve([]),
       tab === "attendance" ? getAttendanceByStudent(id) : Promise.resolve([]),
       tab === "invoices" ? getStudentInvoices(id) : Promise.resolve([]),
       tab === "invoices" ? getStudentOutstandingBalance(id) : Promise.resolve(0),
       tab === "finance" ? getRecruitmentCostsByStudent(id) : Promise.resolve([]),
+      tab === "finance" ? getRefundsByStudent(id) : Promise.resolve([]),
       tab === "finance" ? getTeachers() : Promise.resolve([]),
       tab === "finance" ? getAgents() : Promise.resolve([]),
     ]);
@@ -139,6 +141,10 @@ export default async function StudentDetailPage({ params, searchParams }: Props)
               </dd>
             </div>
             <div>
+              <dt className="text-xs text-gray-500">接待老师</dt>
+              <dd>{student.receptionTeacher?.name ?? "无"}</dd>
+            </div>
+            <div>
               <dt className="text-xs text-gray-500">招生渠道</dt>
               <dd>
                 {student.recruitmentChannelType === "TEACHER" && student.recruitmentTeacher
@@ -171,8 +177,11 @@ export default async function StudentDetailPage({ params, searchParams }: Props)
           studentId={id}
           payments={payments}
           recruitmentCosts={recruitmentCosts}
+          refundRecords={refundRecords}
           teachers={teachers.map((t) => ({ id: t.id, name: t.name }))}
           agents={agents.map((a) => ({ id: a.id, name: a.name, agencyName: a.agencyName ?? null }))}
+          withdrawalDate={student.withdrawalDate}
+          withdrawalReason={student.withdrawalReason}
         />
       )}
 

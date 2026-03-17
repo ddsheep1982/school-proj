@@ -40,6 +40,9 @@ export type StudentMinAggregateOutputType = {
   recruitmentChannelType: $Enums.RecruitmentChannelType | null
   recruitmentTeacherId: string | null
   recruitmentAgentId: string | null
+  receptionTeacherId: string | null
+  withdrawalDate: Date | null
+  withdrawalReason: string | null
 }
 
 export type StudentMaxAggregateOutputType = {
@@ -58,6 +61,9 @@ export type StudentMaxAggregateOutputType = {
   recruitmentChannelType: $Enums.RecruitmentChannelType | null
   recruitmentTeacherId: string | null
   recruitmentAgentId: string | null
+  receptionTeacherId: string | null
+  withdrawalDate: Date | null
+  withdrawalReason: string | null
 }
 
 export type StudentCountAggregateOutputType = {
@@ -76,6 +82,9 @@ export type StudentCountAggregateOutputType = {
   recruitmentChannelType: number
   recruitmentTeacherId: number
   recruitmentAgentId: number
+  receptionTeacherId: number
+  withdrawalDate: number
+  withdrawalReason: number
   _all: number
 }
 
@@ -96,6 +105,9 @@ export type StudentMinAggregateInputType = {
   recruitmentChannelType?: true
   recruitmentTeacherId?: true
   recruitmentAgentId?: true
+  receptionTeacherId?: true
+  withdrawalDate?: true
+  withdrawalReason?: true
 }
 
 export type StudentMaxAggregateInputType = {
@@ -114,6 +126,9 @@ export type StudentMaxAggregateInputType = {
   recruitmentChannelType?: true
   recruitmentTeacherId?: true
   recruitmentAgentId?: true
+  receptionTeacherId?: true
+  withdrawalDate?: true
+  withdrawalReason?: true
 }
 
 export type StudentCountAggregateInputType = {
@@ -132,6 +147,9 @@ export type StudentCountAggregateInputType = {
   recruitmentChannelType?: true
   recruitmentTeacherId?: true
   recruitmentAgentId?: true
+  receptionTeacherId?: true
+  withdrawalDate?: true
+  withdrawalReason?: true
   _all?: true
 }
 
@@ -223,6 +241,9 @@ export type StudentGroupByOutputType = {
   recruitmentChannelType: $Enums.RecruitmentChannelType | null
   recruitmentTeacherId: string | null
   recruitmentAgentId: string | null
+  receptionTeacherId: string | null
+  withdrawalDate: Date | null
+  withdrawalReason: string | null
   _count: StudentCountAggregateOutputType | null
   _min: StudentMinAggregateOutputType | null
   _max: StudentMaxAggregateOutputType | null
@@ -262,15 +283,20 @@ export type StudentWhereInput = {
   recruitmentChannelType?: Prisma.EnumRecruitmentChannelTypeNullableFilter<"Student"> | $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: Prisma.StringNullableFilter<"Student"> | string | null
   recruitmentAgentId?: Prisma.StringNullableFilter<"Student"> | string | null
+  receptionTeacherId?: Prisma.StringNullableFilter<"Student"> | string | null
+  withdrawalDate?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
+  withdrawalReason?: Prisma.StringNullableFilter<"Student"> | string | null
   class?: Prisma.XOR<Prisma.ClassNullableScalarRelationFilter, Prisma.ClassWhereInput> | null
   enrollmentTeacher?: Prisma.XOR<Prisma.EnrollmentTeacherNullableScalarRelationFilter, Prisma.EnrollmentTeacherWhereInput> | null
   recruitmentTeacher?: Prisma.XOR<Prisma.EnrollmentTeacherNullableScalarRelationFilter, Prisma.EnrollmentTeacherWhereInput> | null
   recruitmentAgent?: Prisma.XOR<Prisma.RecruitmentAgentNullableScalarRelationFilter, Prisma.RecruitmentAgentWhereInput> | null
+  receptionTeacher?: Prisma.XOR<Prisma.EnrollmentTeacherNullableScalarRelationFilter, Prisma.EnrollmentTeacherWhereInput> | null
   paymentRecords?: Prisma.PaymentRecordListRelationFilter
   attendanceRecords?: Prisma.AttendanceRecordListRelationFilter
   feeAssignments?: Prisma.FeeAssignmentListRelationFilter
   invoices?: Prisma.InvoiceListRelationFilter
   recruitmentCosts?: Prisma.RecruitmentCostListRelationFilter
+  refundRecords?: Prisma.RefundRecordListRelationFilter
 }
 
 export type StudentOrderByWithRelationInput = {
@@ -289,15 +315,20 @@ export type StudentOrderByWithRelationInput = {
   recruitmentChannelType?: Prisma.SortOrderInput | Prisma.SortOrder
   recruitmentTeacherId?: Prisma.SortOrderInput | Prisma.SortOrder
   recruitmentAgentId?: Prisma.SortOrderInput | Prisma.SortOrder
+  receptionTeacherId?: Prisma.SortOrderInput | Prisma.SortOrder
+  withdrawalDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  withdrawalReason?: Prisma.SortOrderInput | Prisma.SortOrder
   class?: Prisma.ClassOrderByWithRelationInput
   enrollmentTeacher?: Prisma.EnrollmentTeacherOrderByWithRelationInput
   recruitmentTeacher?: Prisma.EnrollmentTeacherOrderByWithRelationInput
   recruitmentAgent?: Prisma.RecruitmentAgentOrderByWithRelationInput
+  receptionTeacher?: Prisma.EnrollmentTeacherOrderByWithRelationInput
   paymentRecords?: Prisma.PaymentRecordOrderByRelationAggregateInput
   attendanceRecords?: Prisma.AttendanceRecordOrderByRelationAggregateInput
   feeAssignments?: Prisma.FeeAssignmentOrderByRelationAggregateInput
   invoices?: Prisma.InvoiceOrderByRelationAggregateInput
   recruitmentCosts?: Prisma.RecruitmentCostOrderByRelationAggregateInput
+  refundRecords?: Prisma.RefundRecordOrderByRelationAggregateInput
 }
 
 export type StudentWhereUniqueInput = Prisma.AtLeast<{
@@ -319,15 +350,20 @@ export type StudentWhereUniqueInput = Prisma.AtLeast<{
   recruitmentChannelType?: Prisma.EnumRecruitmentChannelTypeNullableFilter<"Student"> | $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: Prisma.StringNullableFilter<"Student"> | string | null
   recruitmentAgentId?: Prisma.StringNullableFilter<"Student"> | string | null
+  receptionTeacherId?: Prisma.StringNullableFilter<"Student"> | string | null
+  withdrawalDate?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
+  withdrawalReason?: Prisma.StringNullableFilter<"Student"> | string | null
   class?: Prisma.XOR<Prisma.ClassNullableScalarRelationFilter, Prisma.ClassWhereInput> | null
   enrollmentTeacher?: Prisma.XOR<Prisma.EnrollmentTeacherNullableScalarRelationFilter, Prisma.EnrollmentTeacherWhereInput> | null
   recruitmentTeacher?: Prisma.XOR<Prisma.EnrollmentTeacherNullableScalarRelationFilter, Prisma.EnrollmentTeacherWhereInput> | null
   recruitmentAgent?: Prisma.XOR<Prisma.RecruitmentAgentNullableScalarRelationFilter, Prisma.RecruitmentAgentWhereInput> | null
+  receptionTeacher?: Prisma.XOR<Prisma.EnrollmentTeacherNullableScalarRelationFilter, Prisma.EnrollmentTeacherWhereInput> | null
   paymentRecords?: Prisma.PaymentRecordListRelationFilter
   attendanceRecords?: Prisma.AttendanceRecordListRelationFilter
   feeAssignments?: Prisma.FeeAssignmentListRelationFilter
   invoices?: Prisma.InvoiceListRelationFilter
   recruitmentCosts?: Prisma.RecruitmentCostListRelationFilter
+  refundRecords?: Prisma.RefundRecordListRelationFilter
 }, "id" | "studentNo">
 
 export type StudentOrderByWithAggregationInput = {
@@ -346,6 +382,9 @@ export type StudentOrderByWithAggregationInput = {
   recruitmentChannelType?: Prisma.SortOrderInput | Prisma.SortOrder
   recruitmentTeacherId?: Prisma.SortOrderInput | Prisma.SortOrder
   recruitmentAgentId?: Prisma.SortOrderInput | Prisma.SortOrder
+  receptionTeacherId?: Prisma.SortOrderInput | Prisma.SortOrder
+  withdrawalDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  withdrawalReason?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.StudentCountOrderByAggregateInput
   _max?: Prisma.StudentMaxOrderByAggregateInput
   _min?: Prisma.StudentMinOrderByAggregateInput
@@ -370,6 +409,9 @@ export type StudentScalarWhereWithAggregatesInput = {
   recruitmentChannelType?: Prisma.EnumRecruitmentChannelTypeNullableWithAggregatesFilter<"Student"> | $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
   recruitmentAgentId?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  receptionTeacherId?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  withdrawalDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Student"> | Date | string | null
+  withdrawalReason?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
 }
 
 export type StudentCreateInput = {
@@ -384,15 +426,19 @@ export type StudentCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   class?: Prisma.ClassCreateNestedOneWithoutStudentsInput
   enrollmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutEnrolledStudentsInput
   recruitmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutRecruitedStudentsInput
   recruitmentAgent?: Prisma.RecruitmentAgentCreateNestedOneWithoutRecruitedStudentsInput
+  receptionTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutReceptionStudentsInput
   paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutStudentInput
   attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
   feeAssignments?: Prisma.FeeAssignmentCreateNestedManyWithoutStudentInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutStudentInput
   recruitmentCosts?: Prisma.RecruitmentCostCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateInput = {
@@ -411,11 +457,15 @@ export type StudentUncheckedCreateInput = {
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: string | null
   recruitmentAgentId?: string | null
+  receptionTeacherId?: string | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutStudentInput
   attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
   feeAssignments?: Prisma.FeeAssignmentUncheckedCreateNestedManyWithoutStudentInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutStudentInput
   recruitmentCosts?: Prisma.RecruitmentCostUncheckedCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUpdateInput = {
@@ -430,15 +480,19 @@ export type StudentUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   class?: Prisma.ClassUpdateOneWithoutStudentsNestedInput
   enrollmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutEnrolledStudentsNestedInput
   recruitmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutRecruitedStudentsNestedInput
   recruitmentAgent?: Prisma.RecruitmentAgentUpdateOneWithoutRecruitedStudentsNestedInput
+  receptionTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutReceptionStudentsNestedInput
   paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutStudentNestedInput
   attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
   feeAssignments?: Prisma.FeeAssignmentUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutStudentNestedInput
   recruitmentCosts?: Prisma.RecruitmentCostUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateInput = {
@@ -457,11 +511,15 @@ export type StudentUncheckedUpdateInput = {
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recruitmentAgentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receptionTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutStudentNestedInput
   attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
   feeAssignments?: Prisma.FeeAssignmentUncheckedUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutStudentNestedInput
   recruitmentCosts?: Prisma.RecruitmentCostUncheckedUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateManyInput = {
@@ -480,6 +538,9 @@ export type StudentCreateManyInput = {
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: string | null
   recruitmentAgentId?: string | null
+  receptionTeacherId?: string | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
 }
 
 export type StudentUpdateManyMutationInput = {
@@ -494,6 +555,8 @@ export type StudentUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type StudentUncheckedUpdateManyInput = {
@@ -512,6 +575,9 @@ export type StudentUncheckedUpdateManyInput = {
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recruitmentAgentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receptionTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type StudentListRelationFilter = {
@@ -540,6 +606,9 @@ export type StudentCountOrderByAggregateInput = {
   recruitmentChannelType?: Prisma.SortOrder
   recruitmentTeacherId?: Prisma.SortOrder
   recruitmentAgentId?: Prisma.SortOrder
+  receptionTeacherId?: Prisma.SortOrder
+  withdrawalDate?: Prisma.SortOrder
+  withdrawalReason?: Prisma.SortOrder
 }
 
 export type StudentMaxOrderByAggregateInput = {
@@ -558,6 +627,9 @@ export type StudentMaxOrderByAggregateInput = {
   recruitmentChannelType?: Prisma.SortOrder
   recruitmentTeacherId?: Prisma.SortOrder
   recruitmentAgentId?: Prisma.SortOrder
+  receptionTeacherId?: Prisma.SortOrder
+  withdrawalDate?: Prisma.SortOrder
+  withdrawalReason?: Prisma.SortOrder
 }
 
 export type StudentMinOrderByAggregateInput = {
@@ -576,6 +648,9 @@ export type StudentMinOrderByAggregateInput = {
   recruitmentChannelType?: Prisma.SortOrder
   recruitmentTeacherId?: Prisma.SortOrder
   recruitmentAgentId?: Prisma.SortOrder
+  receptionTeacherId?: Prisma.SortOrder
+  withdrawalDate?: Prisma.SortOrder
+  withdrawalReason?: Prisma.SortOrder
 }
 
 export type StudentScalarRelationFilter = {
@@ -644,6 +719,13 @@ export type StudentCreateNestedManyWithoutRecruitmentTeacherInput = {
   connect?: Prisma.StudentWhereUniqueInput | Prisma.StudentWhereUniqueInput[]
 }
 
+export type StudentCreateNestedManyWithoutReceptionTeacherInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutReceptionTeacherInput, Prisma.StudentUncheckedCreateWithoutReceptionTeacherInput> | Prisma.StudentCreateWithoutReceptionTeacherInput[] | Prisma.StudentUncheckedCreateWithoutReceptionTeacherInput[]
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutReceptionTeacherInput | Prisma.StudentCreateOrConnectWithoutReceptionTeacherInput[]
+  createMany?: Prisma.StudentCreateManyReceptionTeacherInputEnvelope
+  connect?: Prisma.StudentWhereUniqueInput | Prisma.StudentWhereUniqueInput[]
+}
+
 export type StudentUncheckedCreateNestedManyWithoutEnrollmentTeacherInput = {
   create?: Prisma.XOR<Prisma.StudentCreateWithoutEnrollmentTeacherInput, Prisma.StudentUncheckedCreateWithoutEnrollmentTeacherInput> | Prisma.StudentCreateWithoutEnrollmentTeacherInput[] | Prisma.StudentUncheckedCreateWithoutEnrollmentTeacherInput[]
   connectOrCreate?: Prisma.StudentCreateOrConnectWithoutEnrollmentTeacherInput | Prisma.StudentCreateOrConnectWithoutEnrollmentTeacherInput[]
@@ -655,6 +737,13 @@ export type StudentUncheckedCreateNestedManyWithoutRecruitmentTeacherInput = {
   create?: Prisma.XOR<Prisma.StudentCreateWithoutRecruitmentTeacherInput, Prisma.StudentUncheckedCreateWithoutRecruitmentTeacherInput> | Prisma.StudentCreateWithoutRecruitmentTeacherInput[] | Prisma.StudentUncheckedCreateWithoutRecruitmentTeacherInput[]
   connectOrCreate?: Prisma.StudentCreateOrConnectWithoutRecruitmentTeacherInput | Prisma.StudentCreateOrConnectWithoutRecruitmentTeacherInput[]
   createMany?: Prisma.StudentCreateManyRecruitmentTeacherInputEnvelope
+  connect?: Prisma.StudentWhereUniqueInput | Prisma.StudentWhereUniqueInput[]
+}
+
+export type StudentUncheckedCreateNestedManyWithoutReceptionTeacherInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutReceptionTeacherInput, Prisma.StudentUncheckedCreateWithoutReceptionTeacherInput> | Prisma.StudentCreateWithoutReceptionTeacherInput[] | Prisma.StudentUncheckedCreateWithoutReceptionTeacherInput[]
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutReceptionTeacherInput | Prisma.StudentCreateOrConnectWithoutReceptionTeacherInput[]
+  createMany?: Prisma.StudentCreateManyReceptionTeacherInputEnvelope
   connect?: Prisma.StudentWhereUniqueInput | Prisma.StudentWhereUniqueInput[]
 }
 
@@ -686,6 +775,20 @@ export type StudentUpdateManyWithoutRecruitmentTeacherNestedInput = {
   deleteMany?: Prisma.StudentScalarWhereInput | Prisma.StudentScalarWhereInput[]
 }
 
+export type StudentUpdateManyWithoutReceptionTeacherNestedInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutReceptionTeacherInput, Prisma.StudentUncheckedCreateWithoutReceptionTeacherInput> | Prisma.StudentCreateWithoutReceptionTeacherInput[] | Prisma.StudentUncheckedCreateWithoutReceptionTeacherInput[]
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutReceptionTeacherInput | Prisma.StudentCreateOrConnectWithoutReceptionTeacherInput[]
+  upsert?: Prisma.StudentUpsertWithWhereUniqueWithoutReceptionTeacherInput | Prisma.StudentUpsertWithWhereUniqueWithoutReceptionTeacherInput[]
+  createMany?: Prisma.StudentCreateManyReceptionTeacherInputEnvelope
+  set?: Prisma.StudentWhereUniqueInput | Prisma.StudentWhereUniqueInput[]
+  disconnect?: Prisma.StudentWhereUniqueInput | Prisma.StudentWhereUniqueInput[]
+  delete?: Prisma.StudentWhereUniqueInput | Prisma.StudentWhereUniqueInput[]
+  connect?: Prisma.StudentWhereUniqueInput | Prisma.StudentWhereUniqueInput[]
+  update?: Prisma.StudentUpdateWithWhereUniqueWithoutReceptionTeacherInput | Prisma.StudentUpdateWithWhereUniqueWithoutReceptionTeacherInput[]
+  updateMany?: Prisma.StudentUpdateManyWithWhereWithoutReceptionTeacherInput | Prisma.StudentUpdateManyWithWhereWithoutReceptionTeacherInput[]
+  deleteMany?: Prisma.StudentScalarWhereInput | Prisma.StudentScalarWhereInput[]
+}
+
 export type StudentUncheckedUpdateManyWithoutEnrollmentTeacherNestedInput = {
   create?: Prisma.XOR<Prisma.StudentCreateWithoutEnrollmentTeacherInput, Prisma.StudentUncheckedCreateWithoutEnrollmentTeacherInput> | Prisma.StudentCreateWithoutEnrollmentTeacherInput[] | Prisma.StudentUncheckedCreateWithoutEnrollmentTeacherInput[]
   connectOrCreate?: Prisma.StudentCreateOrConnectWithoutEnrollmentTeacherInput | Prisma.StudentCreateOrConnectWithoutEnrollmentTeacherInput[]
@@ -711,6 +814,20 @@ export type StudentUncheckedUpdateManyWithoutRecruitmentTeacherNestedInput = {
   connect?: Prisma.StudentWhereUniqueInput | Prisma.StudentWhereUniqueInput[]
   update?: Prisma.StudentUpdateWithWhereUniqueWithoutRecruitmentTeacherInput | Prisma.StudentUpdateWithWhereUniqueWithoutRecruitmentTeacherInput[]
   updateMany?: Prisma.StudentUpdateManyWithWhereWithoutRecruitmentTeacherInput | Prisma.StudentUpdateManyWithWhereWithoutRecruitmentTeacherInput[]
+  deleteMany?: Prisma.StudentScalarWhereInput | Prisma.StudentScalarWhereInput[]
+}
+
+export type StudentUncheckedUpdateManyWithoutReceptionTeacherNestedInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutReceptionTeacherInput, Prisma.StudentUncheckedCreateWithoutReceptionTeacherInput> | Prisma.StudentCreateWithoutReceptionTeacherInput[] | Prisma.StudentUncheckedCreateWithoutReceptionTeacherInput[]
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutReceptionTeacherInput | Prisma.StudentCreateOrConnectWithoutReceptionTeacherInput[]
+  upsert?: Prisma.StudentUpsertWithWhereUniqueWithoutReceptionTeacherInput | Prisma.StudentUpsertWithWhereUniqueWithoutReceptionTeacherInput[]
+  createMany?: Prisma.StudentCreateManyReceptionTeacherInputEnvelope
+  set?: Prisma.StudentWhereUniqueInput | Prisma.StudentWhereUniqueInput[]
+  disconnect?: Prisma.StudentWhereUniqueInput | Prisma.StudentWhereUniqueInput[]
+  delete?: Prisma.StudentWhereUniqueInput | Prisma.StudentWhereUniqueInput[]
+  connect?: Prisma.StudentWhereUniqueInput | Prisma.StudentWhereUniqueInput[]
+  update?: Prisma.StudentUpdateWithWhereUniqueWithoutReceptionTeacherInput | Prisma.StudentUpdateWithWhereUniqueWithoutReceptionTeacherInput[]
+  updateMany?: Prisma.StudentUpdateManyWithWhereWithoutReceptionTeacherInput | Prisma.StudentUpdateManyWithWhereWithoutReceptionTeacherInput[]
   deleteMany?: Prisma.StudentScalarWhereInput | Prisma.StudentScalarWhereInput[]
 }
 
@@ -766,6 +883,10 @@ export type EnumPaymentStatusFieldUpdateOperationsInput = {
 
 export type NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput = {
   set?: $Enums.RecruitmentChannelType | null
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type StudentCreateNestedOneWithoutPaymentRecordsInput = {
@@ -840,6 +961,20 @@ export type StudentUpdateOneRequiredWithoutRecruitmentCostsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StudentUpdateToOneWithWhereWithoutRecruitmentCostsInput, Prisma.StudentUpdateWithoutRecruitmentCostsInput>, Prisma.StudentUncheckedUpdateWithoutRecruitmentCostsInput>
 }
 
+export type StudentCreateNestedOneWithoutRefundRecordsInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutRefundRecordsInput, Prisma.StudentUncheckedCreateWithoutRefundRecordsInput>
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutRefundRecordsInput
+  connect?: Prisma.StudentWhereUniqueInput
+}
+
+export type StudentUpdateOneRequiredWithoutRefundRecordsNestedInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutRefundRecordsInput, Prisma.StudentUncheckedCreateWithoutRefundRecordsInput>
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutRefundRecordsInput
+  upsert?: Prisma.StudentUpsertWithoutRefundRecordsInput
+  connect?: Prisma.StudentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StudentUpdateToOneWithWhereWithoutRefundRecordsInput, Prisma.StudentUpdateWithoutRefundRecordsInput>, Prisma.StudentUncheckedUpdateWithoutRefundRecordsInput>
+}
+
 export type StudentCreateWithoutClassInput = {
   id?: string
   studentNo: string
@@ -852,14 +987,18 @@ export type StudentCreateWithoutClassInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   enrollmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutEnrolledStudentsInput
   recruitmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutRecruitedStudentsInput
   recruitmentAgent?: Prisma.RecruitmentAgentCreateNestedOneWithoutRecruitedStudentsInput
+  receptionTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutReceptionStudentsInput
   paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutStudentInput
   attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
   feeAssignments?: Prisma.FeeAssignmentCreateNestedManyWithoutStudentInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutStudentInput
   recruitmentCosts?: Prisma.RecruitmentCostCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutClassInput = {
@@ -877,11 +1016,15 @@ export type StudentUncheckedCreateWithoutClassInput = {
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: string | null
   recruitmentAgentId?: string | null
+  receptionTeacherId?: string | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutStudentInput
   attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
   feeAssignments?: Prisma.FeeAssignmentUncheckedCreateNestedManyWithoutStudentInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutStudentInput
   recruitmentCosts?: Prisma.RecruitmentCostUncheckedCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutClassInput = {
@@ -929,6 +1072,9 @@ export type StudentScalarWhereInput = {
   recruitmentChannelType?: Prisma.EnumRecruitmentChannelTypeNullableFilter<"Student"> | $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: Prisma.StringNullableFilter<"Student"> | string | null
   recruitmentAgentId?: Prisma.StringNullableFilter<"Student"> | string | null
+  receptionTeacherId?: Prisma.StringNullableFilter<"Student"> | string | null
+  withdrawalDate?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
+  withdrawalReason?: Prisma.StringNullableFilter<"Student"> | string | null
 }
 
 export type StudentCreateWithoutEnrollmentTeacherInput = {
@@ -943,14 +1089,18 @@ export type StudentCreateWithoutEnrollmentTeacherInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   class?: Prisma.ClassCreateNestedOneWithoutStudentsInput
   recruitmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutRecruitedStudentsInput
   recruitmentAgent?: Prisma.RecruitmentAgentCreateNestedOneWithoutRecruitedStudentsInput
+  receptionTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutReceptionStudentsInput
   paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutStudentInput
   attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
   feeAssignments?: Prisma.FeeAssignmentCreateNestedManyWithoutStudentInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutStudentInput
   recruitmentCosts?: Prisma.RecruitmentCostCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutEnrollmentTeacherInput = {
@@ -968,11 +1118,15 @@ export type StudentUncheckedCreateWithoutEnrollmentTeacherInput = {
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: string | null
   recruitmentAgentId?: string | null
+  receptionTeacherId?: string | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutStudentInput
   attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
   feeAssignments?: Prisma.FeeAssignmentUncheckedCreateNestedManyWithoutStudentInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutStudentInput
   recruitmentCosts?: Prisma.RecruitmentCostUncheckedCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutEnrollmentTeacherInput = {
@@ -997,14 +1151,18 @@ export type StudentCreateWithoutRecruitmentTeacherInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   class?: Prisma.ClassCreateNestedOneWithoutStudentsInput
   enrollmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutEnrolledStudentsInput
   recruitmentAgent?: Prisma.RecruitmentAgentCreateNestedOneWithoutRecruitedStudentsInput
+  receptionTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutReceptionStudentsInput
   paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutStudentInput
   attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
   feeAssignments?: Prisma.FeeAssignmentCreateNestedManyWithoutStudentInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutStudentInput
   recruitmentCosts?: Prisma.RecruitmentCostCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutRecruitmentTeacherInput = {
@@ -1022,11 +1180,15 @@ export type StudentUncheckedCreateWithoutRecruitmentTeacherInput = {
   enrollmentTeacherId?: string | null
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
   recruitmentAgentId?: string | null
+  receptionTeacherId?: string | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutStudentInput
   attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
   feeAssignments?: Prisma.FeeAssignmentUncheckedCreateNestedManyWithoutStudentInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutStudentInput
   recruitmentCosts?: Prisma.RecruitmentCostUncheckedCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutRecruitmentTeacherInput = {
@@ -1036,6 +1198,68 @@ export type StudentCreateOrConnectWithoutRecruitmentTeacherInput = {
 
 export type StudentCreateManyRecruitmentTeacherInputEnvelope = {
   data: Prisma.StudentCreateManyRecruitmentTeacherInput | Prisma.StudentCreateManyRecruitmentTeacherInput[]
+  skipDuplicates?: boolean
+}
+
+export type StudentCreateWithoutReceptionTeacherInput = {
+  id?: string
+  studentNo: string
+  name: string
+  phone: string
+  guardianPhone: string
+  enrollmentDate?: Date | string
+  enrollmentStatus?: $Enums.EnrollmentStatus
+  paymentStatus?: $Enums.PaymentStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  recruitmentChannelType?: $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
+  class?: Prisma.ClassCreateNestedOneWithoutStudentsInput
+  enrollmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutEnrolledStudentsInput
+  recruitmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutRecruitedStudentsInput
+  recruitmentAgent?: Prisma.RecruitmentAgentCreateNestedOneWithoutRecruitedStudentsInput
+  paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  feeAssignments?: Prisma.FeeAssignmentCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutStudentInput
+  recruitmentCosts?: Prisma.RecruitmentCostCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordCreateNestedManyWithoutStudentInput
+}
+
+export type StudentUncheckedCreateWithoutReceptionTeacherInput = {
+  id?: string
+  studentNo: string
+  name: string
+  phone: string
+  guardianPhone: string
+  enrollmentDate?: Date | string
+  enrollmentStatus?: $Enums.EnrollmentStatus
+  paymentStatus?: $Enums.PaymentStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  classId?: string | null
+  enrollmentTeacherId?: string | null
+  recruitmentChannelType?: $Enums.RecruitmentChannelType | null
+  recruitmentTeacherId?: string | null
+  recruitmentAgentId?: string | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
+  paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  feeAssignments?: Prisma.FeeAssignmentUncheckedCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutStudentInput
+  recruitmentCosts?: Prisma.RecruitmentCostUncheckedCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordUncheckedCreateNestedManyWithoutStudentInput
+}
+
+export type StudentCreateOrConnectWithoutReceptionTeacherInput = {
+  where: Prisma.StudentWhereUniqueInput
+  create: Prisma.XOR<Prisma.StudentCreateWithoutReceptionTeacherInput, Prisma.StudentUncheckedCreateWithoutReceptionTeacherInput>
+}
+
+export type StudentCreateManyReceptionTeacherInputEnvelope = {
+  data: Prisma.StudentCreateManyReceptionTeacherInput | Prisma.StudentCreateManyReceptionTeacherInput[]
   skipDuplicates?: boolean
 }
 
@@ -1071,6 +1295,22 @@ export type StudentUpdateManyWithWhereWithoutRecruitmentTeacherInput = {
   data: Prisma.XOR<Prisma.StudentUpdateManyMutationInput, Prisma.StudentUncheckedUpdateManyWithoutRecruitmentTeacherInput>
 }
 
+export type StudentUpsertWithWhereUniqueWithoutReceptionTeacherInput = {
+  where: Prisma.StudentWhereUniqueInput
+  update: Prisma.XOR<Prisma.StudentUpdateWithoutReceptionTeacherInput, Prisma.StudentUncheckedUpdateWithoutReceptionTeacherInput>
+  create: Prisma.XOR<Prisma.StudentCreateWithoutReceptionTeacherInput, Prisma.StudentUncheckedCreateWithoutReceptionTeacherInput>
+}
+
+export type StudentUpdateWithWhereUniqueWithoutReceptionTeacherInput = {
+  where: Prisma.StudentWhereUniqueInput
+  data: Prisma.XOR<Prisma.StudentUpdateWithoutReceptionTeacherInput, Prisma.StudentUncheckedUpdateWithoutReceptionTeacherInput>
+}
+
+export type StudentUpdateManyWithWhereWithoutReceptionTeacherInput = {
+  where: Prisma.StudentScalarWhereInput
+  data: Prisma.XOR<Prisma.StudentUpdateManyMutationInput, Prisma.StudentUncheckedUpdateManyWithoutReceptionTeacherInput>
+}
+
 export type StudentCreateWithoutRecruitmentAgentInput = {
   id?: string
   studentNo: string
@@ -1083,14 +1323,18 @@ export type StudentCreateWithoutRecruitmentAgentInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   class?: Prisma.ClassCreateNestedOneWithoutStudentsInput
   enrollmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutEnrolledStudentsInput
   recruitmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutRecruitedStudentsInput
+  receptionTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutReceptionStudentsInput
   paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutStudentInput
   attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
   feeAssignments?: Prisma.FeeAssignmentCreateNestedManyWithoutStudentInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutStudentInput
   recruitmentCosts?: Prisma.RecruitmentCostCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutRecruitmentAgentInput = {
@@ -1108,11 +1352,15 @@ export type StudentUncheckedCreateWithoutRecruitmentAgentInput = {
   enrollmentTeacherId?: string | null
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: string | null
+  receptionTeacherId?: string | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutStudentInput
   attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
   feeAssignments?: Prisma.FeeAssignmentUncheckedCreateNestedManyWithoutStudentInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutStudentInput
   recruitmentCosts?: Prisma.RecruitmentCostUncheckedCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutRecruitmentAgentInput = {
@@ -1153,14 +1401,18 @@ export type StudentCreateWithoutPaymentRecordsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   class?: Prisma.ClassCreateNestedOneWithoutStudentsInput
   enrollmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutEnrolledStudentsInput
   recruitmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutRecruitedStudentsInput
   recruitmentAgent?: Prisma.RecruitmentAgentCreateNestedOneWithoutRecruitedStudentsInput
+  receptionTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutReceptionStudentsInput
   attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
   feeAssignments?: Prisma.FeeAssignmentCreateNestedManyWithoutStudentInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutStudentInput
   recruitmentCosts?: Prisma.RecruitmentCostCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutPaymentRecordsInput = {
@@ -1179,10 +1431,14 @@ export type StudentUncheckedCreateWithoutPaymentRecordsInput = {
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: string | null
   recruitmentAgentId?: string | null
+  receptionTeacherId?: string | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
   feeAssignments?: Prisma.FeeAssignmentUncheckedCreateNestedManyWithoutStudentInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutStudentInput
   recruitmentCosts?: Prisma.RecruitmentCostUncheckedCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutPaymentRecordsInput = {
@@ -1213,14 +1469,18 @@ export type StudentUpdateWithoutPaymentRecordsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   class?: Prisma.ClassUpdateOneWithoutStudentsNestedInput
   enrollmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutEnrolledStudentsNestedInput
   recruitmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutRecruitedStudentsNestedInput
   recruitmentAgent?: Prisma.RecruitmentAgentUpdateOneWithoutRecruitedStudentsNestedInput
+  receptionTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutReceptionStudentsNestedInput
   attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
   feeAssignments?: Prisma.FeeAssignmentUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutStudentNestedInput
   recruitmentCosts?: Prisma.RecruitmentCostUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutPaymentRecordsInput = {
@@ -1239,10 +1499,14 @@ export type StudentUncheckedUpdateWithoutPaymentRecordsInput = {
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recruitmentAgentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receptionTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
   feeAssignments?: Prisma.FeeAssignmentUncheckedUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutStudentNestedInput
   recruitmentCosts?: Prisma.RecruitmentCostUncheckedUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutAttendanceRecordsInput = {
@@ -1257,14 +1521,18 @@ export type StudentCreateWithoutAttendanceRecordsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   class?: Prisma.ClassCreateNestedOneWithoutStudentsInput
   enrollmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutEnrolledStudentsInput
   recruitmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutRecruitedStudentsInput
   recruitmentAgent?: Prisma.RecruitmentAgentCreateNestedOneWithoutRecruitedStudentsInput
+  receptionTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutReceptionStudentsInput
   paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutStudentInput
   feeAssignments?: Prisma.FeeAssignmentCreateNestedManyWithoutStudentInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutStudentInput
   recruitmentCosts?: Prisma.RecruitmentCostCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutAttendanceRecordsInput = {
@@ -1283,10 +1551,14 @@ export type StudentUncheckedCreateWithoutAttendanceRecordsInput = {
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: string | null
   recruitmentAgentId?: string | null
+  receptionTeacherId?: string | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutStudentInput
   feeAssignments?: Prisma.FeeAssignmentUncheckedCreateNestedManyWithoutStudentInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutStudentInput
   recruitmentCosts?: Prisma.RecruitmentCostUncheckedCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutAttendanceRecordsInput = {
@@ -1317,14 +1589,18 @@ export type StudentUpdateWithoutAttendanceRecordsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   class?: Prisma.ClassUpdateOneWithoutStudentsNestedInput
   enrollmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutEnrolledStudentsNestedInput
   recruitmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutRecruitedStudentsNestedInput
   recruitmentAgent?: Prisma.RecruitmentAgentUpdateOneWithoutRecruitedStudentsNestedInput
+  receptionTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutReceptionStudentsNestedInput
   paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutStudentNestedInput
   feeAssignments?: Prisma.FeeAssignmentUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutStudentNestedInput
   recruitmentCosts?: Prisma.RecruitmentCostUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutAttendanceRecordsInput = {
@@ -1343,10 +1619,14 @@ export type StudentUncheckedUpdateWithoutAttendanceRecordsInput = {
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recruitmentAgentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receptionTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutStudentNestedInput
   feeAssignments?: Prisma.FeeAssignmentUncheckedUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutStudentNestedInput
   recruitmentCosts?: Prisma.RecruitmentCostUncheckedUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutFeeAssignmentsInput = {
@@ -1361,14 +1641,18 @@ export type StudentCreateWithoutFeeAssignmentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   class?: Prisma.ClassCreateNestedOneWithoutStudentsInput
   enrollmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutEnrolledStudentsInput
   recruitmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutRecruitedStudentsInput
   recruitmentAgent?: Prisma.RecruitmentAgentCreateNestedOneWithoutRecruitedStudentsInput
+  receptionTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutReceptionStudentsInput
   paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutStudentInput
   attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutStudentInput
   recruitmentCosts?: Prisma.RecruitmentCostCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutFeeAssignmentsInput = {
@@ -1387,10 +1671,14 @@ export type StudentUncheckedCreateWithoutFeeAssignmentsInput = {
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: string | null
   recruitmentAgentId?: string | null
+  receptionTeacherId?: string | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutStudentInput
   attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutStudentInput
   recruitmentCosts?: Prisma.RecruitmentCostUncheckedCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutFeeAssignmentsInput = {
@@ -1421,14 +1709,18 @@ export type StudentUpdateWithoutFeeAssignmentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   class?: Prisma.ClassUpdateOneWithoutStudentsNestedInput
   enrollmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutEnrolledStudentsNestedInput
   recruitmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutRecruitedStudentsNestedInput
   recruitmentAgent?: Prisma.RecruitmentAgentUpdateOneWithoutRecruitedStudentsNestedInput
+  receptionTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutReceptionStudentsNestedInput
   paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutStudentNestedInput
   attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutStudentNestedInput
   recruitmentCosts?: Prisma.RecruitmentCostUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutFeeAssignmentsInput = {
@@ -1447,10 +1739,14 @@ export type StudentUncheckedUpdateWithoutFeeAssignmentsInput = {
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recruitmentAgentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receptionTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutStudentNestedInput
   attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutStudentNestedInput
   recruitmentCosts?: Prisma.RecruitmentCostUncheckedUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutInvoicesInput = {
@@ -1465,14 +1761,18 @@ export type StudentCreateWithoutInvoicesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   class?: Prisma.ClassCreateNestedOneWithoutStudentsInput
   enrollmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutEnrolledStudentsInput
   recruitmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutRecruitedStudentsInput
   recruitmentAgent?: Prisma.RecruitmentAgentCreateNestedOneWithoutRecruitedStudentsInput
+  receptionTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutReceptionStudentsInput
   paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutStudentInput
   attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
   feeAssignments?: Prisma.FeeAssignmentCreateNestedManyWithoutStudentInput
   recruitmentCosts?: Prisma.RecruitmentCostCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutInvoicesInput = {
@@ -1491,10 +1791,14 @@ export type StudentUncheckedCreateWithoutInvoicesInput = {
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: string | null
   recruitmentAgentId?: string | null
+  receptionTeacherId?: string | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutStudentInput
   attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
   feeAssignments?: Prisma.FeeAssignmentUncheckedCreateNestedManyWithoutStudentInput
   recruitmentCosts?: Prisma.RecruitmentCostUncheckedCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutInvoicesInput = {
@@ -1525,14 +1829,18 @@ export type StudentUpdateWithoutInvoicesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   class?: Prisma.ClassUpdateOneWithoutStudentsNestedInput
   enrollmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutEnrolledStudentsNestedInput
   recruitmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutRecruitedStudentsNestedInput
   recruitmentAgent?: Prisma.RecruitmentAgentUpdateOneWithoutRecruitedStudentsNestedInput
+  receptionTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutReceptionStudentsNestedInput
   paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutStudentNestedInput
   attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
   feeAssignments?: Prisma.FeeAssignmentUpdateManyWithoutStudentNestedInput
   recruitmentCosts?: Prisma.RecruitmentCostUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutInvoicesInput = {
@@ -1551,10 +1859,14 @@ export type StudentUncheckedUpdateWithoutInvoicesInput = {
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recruitmentAgentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receptionTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutStudentNestedInput
   attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
   feeAssignments?: Prisma.FeeAssignmentUncheckedUpdateManyWithoutStudentNestedInput
   recruitmentCosts?: Prisma.RecruitmentCostUncheckedUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutRecruitmentCostsInput = {
@@ -1569,14 +1881,18 @@ export type StudentCreateWithoutRecruitmentCostsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   class?: Prisma.ClassCreateNestedOneWithoutStudentsInput
   enrollmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutEnrolledStudentsInput
   recruitmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutRecruitedStudentsInput
   recruitmentAgent?: Prisma.RecruitmentAgentCreateNestedOneWithoutRecruitedStudentsInput
+  receptionTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutReceptionStudentsInput
   paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutStudentInput
   attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
   feeAssignments?: Prisma.FeeAssignmentCreateNestedManyWithoutStudentInput
   invoices?: Prisma.InvoiceCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutRecruitmentCostsInput = {
@@ -1595,10 +1911,14 @@ export type StudentUncheckedCreateWithoutRecruitmentCostsInput = {
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: string | null
   recruitmentAgentId?: string | null
+  receptionTeacherId?: string | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
   paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutStudentInput
   attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
   feeAssignments?: Prisma.FeeAssignmentUncheckedCreateNestedManyWithoutStudentInput
   invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutStudentInput
+  refundRecords?: Prisma.RefundRecordUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutRecruitmentCostsInput = {
@@ -1629,14 +1949,18 @@ export type StudentUpdateWithoutRecruitmentCostsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   class?: Prisma.ClassUpdateOneWithoutStudentsNestedInput
   enrollmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutEnrolledStudentsNestedInput
   recruitmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutRecruitedStudentsNestedInput
   recruitmentAgent?: Prisma.RecruitmentAgentUpdateOneWithoutRecruitedStudentsNestedInput
+  receptionTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutReceptionStudentsNestedInput
   paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutStudentNestedInput
   attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
   feeAssignments?: Prisma.FeeAssignmentUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutRecruitmentCostsInput = {
@@ -1655,10 +1979,134 @@ export type StudentUncheckedUpdateWithoutRecruitmentCostsInput = {
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recruitmentAgentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receptionTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutStudentNestedInput
   attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
   feeAssignments?: Prisma.FeeAssignmentUncheckedUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUncheckedUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentCreateWithoutRefundRecordsInput = {
+  id?: string
+  studentNo: string
+  name: string
+  phone: string
+  guardianPhone: string
+  enrollmentDate?: Date | string
+  enrollmentStatus?: $Enums.EnrollmentStatus
+  paymentStatus?: $Enums.PaymentStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  recruitmentChannelType?: $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
+  class?: Prisma.ClassCreateNestedOneWithoutStudentsInput
+  enrollmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutEnrolledStudentsInput
+  recruitmentTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutRecruitedStudentsInput
+  recruitmentAgent?: Prisma.RecruitmentAgentCreateNestedOneWithoutRecruitedStudentsInput
+  receptionTeacher?: Prisma.EnrollmentTeacherCreateNestedOneWithoutReceptionStudentsInput
+  paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordCreateNestedManyWithoutStudentInput
+  feeAssignments?: Prisma.FeeAssignmentCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutStudentInput
+  recruitmentCosts?: Prisma.RecruitmentCostCreateNestedManyWithoutStudentInput
+}
+
+export type StudentUncheckedCreateWithoutRefundRecordsInput = {
+  id?: string
+  studentNo: string
+  name: string
+  phone: string
+  guardianPhone: string
+  enrollmentDate?: Date | string
+  enrollmentStatus?: $Enums.EnrollmentStatus
+  paymentStatus?: $Enums.PaymentStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  classId?: string | null
+  enrollmentTeacherId?: string | null
+  recruitmentChannelType?: $Enums.RecruitmentChannelType | null
+  recruitmentTeacherId?: string | null
+  recruitmentAgentId?: string | null
+  receptionTeacherId?: string | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
+  paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutStudentInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedCreateNestedManyWithoutStudentInput
+  feeAssignments?: Prisma.FeeAssignmentUncheckedCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutStudentInput
+  recruitmentCosts?: Prisma.RecruitmentCostUncheckedCreateNestedManyWithoutStudentInput
+}
+
+export type StudentCreateOrConnectWithoutRefundRecordsInput = {
+  where: Prisma.StudentWhereUniqueInput
+  create: Prisma.XOR<Prisma.StudentCreateWithoutRefundRecordsInput, Prisma.StudentUncheckedCreateWithoutRefundRecordsInput>
+}
+
+export type StudentUpsertWithoutRefundRecordsInput = {
+  update: Prisma.XOR<Prisma.StudentUpdateWithoutRefundRecordsInput, Prisma.StudentUncheckedUpdateWithoutRefundRecordsInput>
+  create: Prisma.XOR<Prisma.StudentCreateWithoutRefundRecordsInput, Prisma.StudentUncheckedCreateWithoutRefundRecordsInput>
+  where?: Prisma.StudentWhereInput
+}
+
+export type StudentUpdateToOneWithWhereWithoutRefundRecordsInput = {
+  where?: Prisma.StudentWhereInput
+  data: Prisma.XOR<Prisma.StudentUpdateWithoutRefundRecordsInput, Prisma.StudentUncheckedUpdateWithoutRefundRecordsInput>
+}
+
+export type StudentUpdateWithoutRefundRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  studentNo?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  guardianPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  enrollmentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  enrollmentStatus?: Prisma.EnumEnrollmentStatusFieldUpdateOperationsInput | $Enums.EnrollmentStatus
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  class?: Prisma.ClassUpdateOneWithoutStudentsNestedInput
+  enrollmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutEnrolledStudentsNestedInput
+  recruitmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutRecruitedStudentsNestedInput
+  recruitmentAgent?: Prisma.RecruitmentAgentUpdateOneWithoutRecruitedStudentsNestedInput
+  receptionTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutReceptionStudentsNestedInput
+  paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  feeAssignments?: Prisma.FeeAssignmentUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutStudentNestedInput
+  recruitmentCosts?: Prisma.RecruitmentCostUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentUncheckedUpdateWithoutRefundRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  studentNo?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  guardianPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  enrollmentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  enrollmentStatus?: Prisma.EnumEnrollmentStatusFieldUpdateOperationsInput | $Enums.EnrollmentStatus
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  classId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  enrollmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
+  recruitmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recruitmentAgentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receptionTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  feeAssignments?: Prisma.FeeAssignmentUncheckedUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutStudentNestedInput
+  recruitmentCosts?: Prisma.RecruitmentCostUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateManyClassInput = {
@@ -1676,6 +2124,9 @@ export type StudentCreateManyClassInput = {
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: string | null
   recruitmentAgentId?: string | null
+  receptionTeacherId?: string | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
 }
 
 export type StudentUpdateWithoutClassInput = {
@@ -1690,14 +2141,18 @@ export type StudentUpdateWithoutClassInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   enrollmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutEnrolledStudentsNestedInput
   recruitmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutRecruitedStudentsNestedInput
   recruitmentAgent?: Prisma.RecruitmentAgentUpdateOneWithoutRecruitedStudentsNestedInput
+  receptionTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutReceptionStudentsNestedInput
   paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutStudentNestedInput
   attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
   feeAssignments?: Prisma.FeeAssignmentUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutStudentNestedInput
   recruitmentCosts?: Prisma.RecruitmentCostUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutClassInput = {
@@ -1715,11 +2170,15 @@ export type StudentUncheckedUpdateWithoutClassInput = {
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recruitmentAgentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receptionTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutStudentNestedInput
   attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
   feeAssignments?: Prisma.FeeAssignmentUncheckedUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutStudentNestedInput
   recruitmentCosts?: Prisma.RecruitmentCostUncheckedUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateManyWithoutClassInput = {
@@ -1737,6 +2196,9 @@ export type StudentUncheckedUpdateManyWithoutClassInput = {
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recruitmentAgentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receptionTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type StudentCreateManyEnrollmentTeacherInput = {
@@ -1754,6 +2216,9 @@ export type StudentCreateManyEnrollmentTeacherInput = {
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: string | null
   recruitmentAgentId?: string | null
+  receptionTeacherId?: string | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
 }
 
 export type StudentCreateManyRecruitmentTeacherInput = {
@@ -1771,6 +2236,29 @@ export type StudentCreateManyRecruitmentTeacherInput = {
   enrollmentTeacherId?: string | null
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
   recruitmentAgentId?: string | null
+  receptionTeacherId?: string | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
+}
+
+export type StudentCreateManyReceptionTeacherInput = {
+  id?: string
+  studentNo: string
+  name: string
+  phone: string
+  guardianPhone: string
+  enrollmentDate?: Date | string
+  enrollmentStatus?: $Enums.EnrollmentStatus
+  paymentStatus?: $Enums.PaymentStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  classId?: string | null
+  enrollmentTeacherId?: string | null
+  recruitmentChannelType?: $Enums.RecruitmentChannelType | null
+  recruitmentTeacherId?: string | null
+  recruitmentAgentId?: string | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
 }
 
 export type StudentUpdateWithoutEnrollmentTeacherInput = {
@@ -1785,14 +2273,18 @@ export type StudentUpdateWithoutEnrollmentTeacherInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   class?: Prisma.ClassUpdateOneWithoutStudentsNestedInput
   recruitmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutRecruitedStudentsNestedInput
   recruitmentAgent?: Prisma.RecruitmentAgentUpdateOneWithoutRecruitedStudentsNestedInput
+  receptionTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutReceptionStudentsNestedInput
   paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutStudentNestedInput
   attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
   feeAssignments?: Prisma.FeeAssignmentUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutStudentNestedInput
   recruitmentCosts?: Prisma.RecruitmentCostUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutEnrollmentTeacherInput = {
@@ -1810,11 +2302,15 @@ export type StudentUncheckedUpdateWithoutEnrollmentTeacherInput = {
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recruitmentAgentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receptionTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutStudentNestedInput
   attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
   feeAssignments?: Prisma.FeeAssignmentUncheckedUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutStudentNestedInput
   recruitmentCosts?: Prisma.RecruitmentCostUncheckedUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateManyWithoutEnrollmentTeacherInput = {
@@ -1832,6 +2328,9 @@ export type StudentUncheckedUpdateManyWithoutEnrollmentTeacherInput = {
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recruitmentAgentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receptionTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type StudentUpdateWithoutRecruitmentTeacherInput = {
@@ -1846,14 +2345,18 @@ export type StudentUpdateWithoutRecruitmentTeacherInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   class?: Prisma.ClassUpdateOneWithoutStudentsNestedInput
   enrollmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutEnrolledStudentsNestedInput
   recruitmentAgent?: Prisma.RecruitmentAgentUpdateOneWithoutRecruitedStudentsNestedInput
+  receptionTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutReceptionStudentsNestedInput
   paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutStudentNestedInput
   attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
   feeAssignments?: Prisma.FeeAssignmentUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutStudentNestedInput
   recruitmentCosts?: Prisma.RecruitmentCostUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutRecruitmentTeacherInput = {
@@ -1871,11 +2374,15 @@ export type StudentUncheckedUpdateWithoutRecruitmentTeacherInput = {
   enrollmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
   recruitmentAgentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receptionTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutStudentNestedInput
   attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
   feeAssignments?: Prisma.FeeAssignmentUncheckedUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutStudentNestedInput
   recruitmentCosts?: Prisma.RecruitmentCostUncheckedUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateManyWithoutRecruitmentTeacherInput = {
@@ -1893,6 +2400,81 @@ export type StudentUncheckedUpdateManyWithoutRecruitmentTeacherInput = {
   enrollmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
   recruitmentAgentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receptionTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type StudentUpdateWithoutReceptionTeacherInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  studentNo?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  guardianPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  enrollmentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  enrollmentStatus?: Prisma.EnumEnrollmentStatusFieldUpdateOperationsInput | $Enums.EnrollmentStatus
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  class?: Prisma.ClassUpdateOneWithoutStudentsNestedInput
+  enrollmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutEnrolledStudentsNestedInput
+  recruitmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutRecruitedStudentsNestedInput
+  recruitmentAgent?: Prisma.RecruitmentAgentUpdateOneWithoutRecruitedStudentsNestedInput
+  paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
+  feeAssignments?: Prisma.FeeAssignmentUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutStudentNestedInput
+  recruitmentCosts?: Prisma.RecruitmentCostUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentUncheckedUpdateWithoutReceptionTeacherInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  studentNo?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  guardianPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  enrollmentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  enrollmentStatus?: Prisma.EnumEnrollmentStatusFieldUpdateOperationsInput | $Enums.EnrollmentStatus
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  classId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  enrollmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
+  recruitmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recruitmentAgentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutStudentNestedInput
+  attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
+  feeAssignments?: Prisma.FeeAssignmentUncheckedUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutStudentNestedInput
+  recruitmentCosts?: Prisma.RecruitmentCostUncheckedUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUncheckedUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentUncheckedUpdateManyWithoutReceptionTeacherInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  studentNo?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  guardianPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  enrollmentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  enrollmentStatus?: Prisma.EnumEnrollmentStatusFieldUpdateOperationsInput | $Enums.EnrollmentStatus
+  paymentStatus?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  classId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  enrollmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
+  recruitmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recruitmentAgentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type StudentCreateManyRecruitmentAgentInput = {
@@ -1910,6 +2492,9 @@ export type StudentCreateManyRecruitmentAgentInput = {
   enrollmentTeacherId?: string | null
   recruitmentChannelType?: $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: string | null
+  receptionTeacherId?: string | null
+  withdrawalDate?: Date | string | null
+  withdrawalReason?: string | null
 }
 
 export type StudentUpdateWithoutRecruitmentAgentInput = {
@@ -1924,14 +2509,18 @@ export type StudentUpdateWithoutRecruitmentAgentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   class?: Prisma.ClassUpdateOneWithoutStudentsNestedInput
   enrollmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutEnrolledStudentsNestedInput
   recruitmentTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutRecruitedStudentsNestedInput
+  receptionTeacher?: Prisma.EnrollmentTeacherUpdateOneWithoutReceptionStudentsNestedInput
   paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutStudentNestedInput
   attendanceRecords?: Prisma.AttendanceRecordUpdateManyWithoutStudentNestedInput
   feeAssignments?: Prisma.FeeAssignmentUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.InvoiceUpdateManyWithoutStudentNestedInput
   recruitmentCosts?: Prisma.RecruitmentCostUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutRecruitmentAgentInput = {
@@ -1949,11 +2538,15 @@ export type StudentUncheckedUpdateWithoutRecruitmentAgentInput = {
   enrollmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receptionTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutStudentNestedInput
   attendanceRecords?: Prisma.AttendanceRecordUncheckedUpdateManyWithoutStudentNestedInput
   feeAssignments?: Prisma.FeeAssignmentUncheckedUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutStudentNestedInput
   recruitmentCosts?: Prisma.RecruitmentCostUncheckedUpdateManyWithoutStudentNestedInput
+  refundRecords?: Prisma.RefundRecordUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateManyWithoutRecruitmentAgentInput = {
@@ -1971,6 +2564,9 @@ export type StudentUncheckedUpdateManyWithoutRecruitmentAgentInput = {
   enrollmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recruitmentChannelType?: Prisma.NullableEnumRecruitmentChannelTypeFieldUpdateOperationsInput | $Enums.RecruitmentChannelType | null
   recruitmentTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receptionTeacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  withdrawalDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawalReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1984,6 +2580,7 @@ export type StudentCountOutputType = {
   feeAssignments: number
   invoices: number
   recruitmentCosts: number
+  refundRecords: number
 }
 
 export type StudentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1992,6 +2589,7 @@ export type StudentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   feeAssignments?: boolean | StudentCountOutputTypeCountFeeAssignmentsArgs
   invoices?: boolean | StudentCountOutputTypeCountInvoicesArgs
   recruitmentCosts?: boolean | StudentCountOutputTypeCountRecruitmentCostsArgs
+  refundRecords?: boolean | StudentCountOutputTypeCountRefundRecordsArgs
 }
 
 /**
@@ -2039,6 +2637,13 @@ export type StudentCountOutputTypeCountRecruitmentCostsArgs<ExtArgs extends runt
   where?: Prisma.RecruitmentCostWhereInput
 }
 
+/**
+ * StudentCountOutputType without action
+ */
+export type StudentCountOutputTypeCountRefundRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RefundRecordWhereInput
+}
+
 
 export type StudentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2056,15 +2661,20 @@ export type StudentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   recruitmentChannelType?: boolean
   recruitmentTeacherId?: boolean
   recruitmentAgentId?: boolean
+  receptionTeacherId?: boolean
+  withdrawalDate?: boolean
+  withdrawalReason?: boolean
   class?: boolean | Prisma.Student$classArgs<ExtArgs>
   enrollmentTeacher?: boolean | Prisma.Student$enrollmentTeacherArgs<ExtArgs>
   recruitmentTeacher?: boolean | Prisma.Student$recruitmentTeacherArgs<ExtArgs>
   recruitmentAgent?: boolean | Prisma.Student$recruitmentAgentArgs<ExtArgs>
+  receptionTeacher?: boolean | Prisma.Student$receptionTeacherArgs<ExtArgs>
   paymentRecords?: boolean | Prisma.Student$paymentRecordsArgs<ExtArgs>
   attendanceRecords?: boolean | Prisma.Student$attendanceRecordsArgs<ExtArgs>
   feeAssignments?: boolean | Prisma.Student$feeAssignmentsArgs<ExtArgs>
   invoices?: boolean | Prisma.Student$invoicesArgs<ExtArgs>
   recruitmentCosts?: boolean | Prisma.Student$recruitmentCostsArgs<ExtArgs>
+  refundRecords?: boolean | Prisma.Student$refundRecordsArgs<ExtArgs>
   _count?: boolean | Prisma.StudentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["student"]>
 
@@ -2084,10 +2694,14 @@ export type StudentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   recruitmentChannelType?: boolean
   recruitmentTeacherId?: boolean
   recruitmentAgentId?: boolean
+  receptionTeacherId?: boolean
+  withdrawalDate?: boolean
+  withdrawalReason?: boolean
   class?: boolean | Prisma.Student$classArgs<ExtArgs>
   enrollmentTeacher?: boolean | Prisma.Student$enrollmentTeacherArgs<ExtArgs>
   recruitmentTeacher?: boolean | Prisma.Student$recruitmentTeacherArgs<ExtArgs>
   recruitmentAgent?: boolean | Prisma.Student$recruitmentAgentArgs<ExtArgs>
+  receptionTeacher?: boolean | Prisma.Student$receptionTeacherArgs<ExtArgs>
 }, ExtArgs["result"]["student"]>
 
 export type StudentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -2106,10 +2720,14 @@ export type StudentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   recruitmentChannelType?: boolean
   recruitmentTeacherId?: boolean
   recruitmentAgentId?: boolean
+  receptionTeacherId?: boolean
+  withdrawalDate?: boolean
+  withdrawalReason?: boolean
   class?: boolean | Prisma.Student$classArgs<ExtArgs>
   enrollmentTeacher?: boolean | Prisma.Student$enrollmentTeacherArgs<ExtArgs>
   recruitmentTeacher?: boolean | Prisma.Student$recruitmentTeacherArgs<ExtArgs>
   recruitmentAgent?: boolean | Prisma.Student$recruitmentAgentArgs<ExtArgs>
+  receptionTeacher?: boolean | Prisma.Student$receptionTeacherArgs<ExtArgs>
 }, ExtArgs["result"]["student"]>
 
 export type StudentSelectScalar = {
@@ -2128,19 +2746,24 @@ export type StudentSelectScalar = {
   recruitmentChannelType?: boolean
   recruitmentTeacherId?: boolean
   recruitmentAgentId?: boolean
+  receptionTeacherId?: boolean
+  withdrawalDate?: boolean
+  withdrawalReason?: boolean
 }
 
-export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentNo" | "name" | "phone" | "guardianPhone" | "enrollmentDate" | "enrollmentStatus" | "paymentStatus" | "createdAt" | "updatedAt" | "classId" | "enrollmentTeacherId" | "recruitmentChannelType" | "recruitmentTeacherId" | "recruitmentAgentId", ExtArgs["result"]["student"]>
+export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentNo" | "name" | "phone" | "guardianPhone" | "enrollmentDate" | "enrollmentStatus" | "paymentStatus" | "createdAt" | "updatedAt" | "classId" | "enrollmentTeacherId" | "recruitmentChannelType" | "recruitmentTeacherId" | "recruitmentAgentId" | "receptionTeacherId" | "withdrawalDate" | "withdrawalReason", ExtArgs["result"]["student"]>
 export type StudentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   class?: boolean | Prisma.Student$classArgs<ExtArgs>
   enrollmentTeacher?: boolean | Prisma.Student$enrollmentTeacherArgs<ExtArgs>
   recruitmentTeacher?: boolean | Prisma.Student$recruitmentTeacherArgs<ExtArgs>
   recruitmentAgent?: boolean | Prisma.Student$recruitmentAgentArgs<ExtArgs>
+  receptionTeacher?: boolean | Prisma.Student$receptionTeacherArgs<ExtArgs>
   paymentRecords?: boolean | Prisma.Student$paymentRecordsArgs<ExtArgs>
   attendanceRecords?: boolean | Prisma.Student$attendanceRecordsArgs<ExtArgs>
   feeAssignments?: boolean | Prisma.Student$feeAssignmentsArgs<ExtArgs>
   invoices?: boolean | Prisma.Student$invoicesArgs<ExtArgs>
   recruitmentCosts?: boolean | Prisma.Student$recruitmentCostsArgs<ExtArgs>
+  refundRecords?: boolean | Prisma.Student$refundRecordsArgs<ExtArgs>
   _count?: boolean | Prisma.StudentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type StudentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2148,12 +2771,14 @@ export type StudentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   enrollmentTeacher?: boolean | Prisma.Student$enrollmentTeacherArgs<ExtArgs>
   recruitmentTeacher?: boolean | Prisma.Student$recruitmentTeacherArgs<ExtArgs>
   recruitmentAgent?: boolean | Prisma.Student$recruitmentAgentArgs<ExtArgs>
+  receptionTeacher?: boolean | Prisma.Student$receptionTeacherArgs<ExtArgs>
 }
 export type StudentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   class?: boolean | Prisma.Student$classArgs<ExtArgs>
   enrollmentTeacher?: boolean | Prisma.Student$enrollmentTeacherArgs<ExtArgs>
   recruitmentTeacher?: boolean | Prisma.Student$recruitmentTeacherArgs<ExtArgs>
   recruitmentAgent?: boolean | Prisma.Student$recruitmentAgentArgs<ExtArgs>
+  receptionTeacher?: boolean | Prisma.Student$receptionTeacherArgs<ExtArgs>
 }
 
 export type $StudentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2163,11 +2788,13 @@ export type $StudentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     enrollmentTeacher: Prisma.$EnrollmentTeacherPayload<ExtArgs> | null
     recruitmentTeacher: Prisma.$EnrollmentTeacherPayload<ExtArgs> | null
     recruitmentAgent: Prisma.$RecruitmentAgentPayload<ExtArgs> | null
+    receptionTeacher: Prisma.$EnrollmentTeacherPayload<ExtArgs> | null
     paymentRecords: Prisma.$PaymentRecordPayload<ExtArgs>[]
     attendanceRecords: Prisma.$AttendanceRecordPayload<ExtArgs>[]
     feeAssignments: Prisma.$FeeAssignmentPayload<ExtArgs>[]
     invoices: Prisma.$InvoicePayload<ExtArgs>[]
     recruitmentCosts: Prisma.$RecruitmentCostPayload<ExtArgs>[]
+    refundRecords: Prisma.$RefundRecordPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2185,6 +2812,9 @@ export type $StudentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     recruitmentChannelType: $Enums.RecruitmentChannelType | null
     recruitmentTeacherId: string | null
     recruitmentAgentId: string | null
+    receptionTeacherId: string | null
+    withdrawalDate: Date | null
+    withdrawalReason: string | null
   }, ExtArgs["result"]["student"]>
   composites: {}
 }
@@ -2583,11 +3213,13 @@ export interface Prisma__StudentClient<T, Null = never, ExtArgs extends runtime.
   enrollmentTeacher<T extends Prisma.Student$enrollmentTeacherArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$enrollmentTeacherArgs<ExtArgs>>): Prisma.Prisma__EnrollmentTeacherClient<runtime.Types.Result.GetResult<Prisma.$EnrollmentTeacherPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   recruitmentTeacher<T extends Prisma.Student$recruitmentTeacherArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$recruitmentTeacherArgs<ExtArgs>>): Prisma.Prisma__EnrollmentTeacherClient<runtime.Types.Result.GetResult<Prisma.$EnrollmentTeacherPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   recruitmentAgent<T extends Prisma.Student$recruitmentAgentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$recruitmentAgentArgs<ExtArgs>>): Prisma.Prisma__RecruitmentAgentClient<runtime.Types.Result.GetResult<Prisma.$RecruitmentAgentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  receptionTeacher<T extends Prisma.Student$receptionTeacherArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$receptionTeacherArgs<ExtArgs>>): Prisma.Prisma__EnrollmentTeacherClient<runtime.Types.Result.GetResult<Prisma.$EnrollmentTeacherPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   paymentRecords<T extends Prisma.Student$paymentRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$paymentRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   attendanceRecords<T extends Prisma.Student$attendanceRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$attendanceRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendanceRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   feeAssignments<T extends Prisma.Student$feeAssignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$feeAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeeAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   invoices<T extends Prisma.Student$invoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   recruitmentCosts<T extends Prisma.Student$recruitmentCostsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$recruitmentCostsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecruitmentCostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  refundRecords<T extends Prisma.Student$refundRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$refundRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefundRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2632,6 +3264,9 @@ export interface StudentFieldRefs {
   readonly recruitmentChannelType: Prisma.FieldRef<"Student", 'RecruitmentChannelType'>
   readonly recruitmentTeacherId: Prisma.FieldRef<"Student", 'String'>
   readonly recruitmentAgentId: Prisma.FieldRef<"Student", 'String'>
+  readonly receptionTeacherId: Prisma.FieldRef<"Student", 'String'>
+  readonly withdrawalDate: Prisma.FieldRef<"Student", 'DateTime'>
+  readonly withdrawalReason: Prisma.FieldRef<"Student", 'String'>
 }
     
 
@@ -3109,6 +3744,25 @@ export type Student$recruitmentAgentArgs<ExtArgs extends runtime.Types.Extension
 }
 
 /**
+ * Student.receptionTeacher
+ */
+export type Student$receptionTeacherArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EnrollmentTeacher
+   */
+  select?: Prisma.EnrollmentTeacherSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EnrollmentTeacher
+   */
+  omit?: Prisma.EnrollmentTeacherOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EnrollmentTeacherInclude<ExtArgs> | null
+  where?: Prisma.EnrollmentTeacherWhereInput
+}
+
+/**
  * Student.paymentRecords
  */
 export type Student$paymentRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3226,6 +3880,30 @@ export type Student$recruitmentCostsArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.RecruitmentCostScalarFieldEnum | Prisma.RecruitmentCostScalarFieldEnum[]
+}
+
+/**
+ * Student.refundRecords
+ */
+export type Student$refundRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RefundRecord
+   */
+  select?: Prisma.RefundRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RefundRecord
+   */
+  omit?: Prisma.RefundRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RefundRecordInclude<ExtArgs> | null
+  where?: Prisma.RefundRecordWhereInput
+  orderBy?: Prisma.RefundRecordOrderByWithRelationInput | Prisma.RefundRecordOrderByWithRelationInput[]
+  cursor?: Prisma.RefundRecordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RefundRecordScalarFieldEnum | Prisma.RefundRecordScalarFieldEnum[]
 }
 
 /**

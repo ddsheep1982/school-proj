@@ -12,7 +12,9 @@ interface Props {
 export default async function StudentsPage({ searchParams }: Props) {
   const sp = await searchParams;
 
-  const filters: Partial<StudentFilters> = {
+  const includeWithdrawn = sp.includeWithdrawn === "1";
+
+  const filters: Partial<StudentFilters> & { includeWithdrawn?: boolean } = {
     search: sp.search,
     classId: sp.classId,
     enrollmentTeacherId: sp.enrollmentTeacherId,
@@ -20,6 +22,7 @@ export default async function StudentsPage({ searchParams }: Props) {
     paymentStatus: sp.paymentStatus as StudentFilters["paymentStatus"],
     page: sp.page ? parseInt(sp.page) : 1,
     pageSize: 20,
+    includeWithdrawn,
   };
 
   const [{ students, total }, classes, teachers] = await Promise.all([
@@ -92,6 +95,15 @@ export default async function StudentsPage({ searchParams }: Props) {
           <option value="PARTIAL">部分缴费</option>
           <option value="OVERDUE">欠费</option>
         </select>
+        <label className="flex items-center gap-1.5 text-sm text-gray-600 cursor-pointer">
+          <input
+            type="checkbox"
+            name="includeWithdrawn"
+            value="1"
+            defaultChecked={includeWithdrawn}
+          />
+          显示已退学
+        </label>
         <button
           type="submit"
           className="px-4 py-1.5 bg-gray-800 text-white text-sm rounded-md hover:bg-gray-700"

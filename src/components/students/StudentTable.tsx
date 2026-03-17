@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { EnrollmentStatusBadge, PaymentStatusBadge } from "@/components/shared/StatusBadge";
+import StudentActions from "@/components/students/StudentActions";
 import type { StudentListItem } from "@/actions/student.actions";
 
 interface Props {
@@ -38,9 +39,14 @@ export default function StudentTable({ students, total, page, pageSize }: Props)
               </tr>
             )}
             {students.map((s) => (
-              <tr key={s.id} className="hover:bg-gray-50">
+              <tr key={s.id} className={`hover:bg-gray-50 ${s.withdrawalDate ? "opacity-60" : ""}`}>
                 <td className="px-4 py-3 font-mono text-xs text-gray-500">{s.studentNo}</td>
-                <td className="px-4 py-3 font-medium">{s.name}</td>
+                <td className="px-4 py-3 font-medium">
+                  {s.name}
+                  {s.withdrawalDate && (
+                    <span className="ml-2 text-xs bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded">已退学</span>
+                  )}
+                </td>
                 <td className="px-4 py-3 text-gray-600">{s.phone}</td>
                 <td className="px-4 py-3 text-gray-600">{s.class?.name ?? "—"}</td>
                 <td className="px-4 py-3 text-gray-600">{s.enrollmentTeacher?.name ?? "—"}</td>
@@ -54,12 +60,19 @@ export default function StudentTable({ students, total, page, pageSize }: Props)
                   {new Date(s.enrollmentDate).toLocaleDateString("zh-CN")}
                 </td>
                 <td className="px-4 py-3">
-                  <Link
-                    href={`/students/${s.id}`}
-                    className="text-blue-600 hover:underline text-xs"
-                  >
-                    查看
-                  </Link>
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href={`/students/${s.id}`}
+                      className="text-blue-600 hover:underline text-xs"
+                    >
+                      查看
+                    </Link>
+                    <StudentActions
+                      studentId={s.id}
+                      hasRecords={false}
+                      isWithdrawn={!!s.withdrawalDate}
+                    />
+                  </div>
                 </td>
               </tr>
             ))}

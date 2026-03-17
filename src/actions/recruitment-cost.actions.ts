@@ -33,9 +33,9 @@ export async function createRecruitmentCost(
     const student = await prisma.student.findUnique({ where: { id: data.studentId } });
     if (!student) return { success: false, error: "学生不存在" };
 
-    if (data.recipientType === "TEACHER" && data.teacherId) {
+    if ((data.recipientType === "TEACHER" || data.recipientType === "RECEPTION_TEACHER") && data.teacherId) {
       const teacher = await prisma.enrollmentTeacher.findUnique({ where: { id: data.teacherId } });
-      if (!teacher) return { success: false, error: "招生老师不存在" };
+      if (!teacher) return { success: false, error: "老师不存在" };
     }
     if (data.recipientType === "AGENT" && data.agentId) {
       const agent = await prisma.recruitmentAgent.findUnique({ where: { id: data.agentId } });

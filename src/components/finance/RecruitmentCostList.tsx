@@ -41,13 +41,13 @@ export default function RecruitmentCostList({ costs }: Props) {
           <tr key={c.id} className="hover:bg-gray-50">
             <td className="px-3 py-2 text-gray-500">{new Date(c.paymentDate).toLocaleDateString("zh-CN")}</td>
             <td className="px-3 py-2">
-              {c.recipientType === "TEACHER"
-                ? c.teacher?.name ?? "—"
-                : c.agent
+              {c.recipientType === "AGENT"
+                ? c.agent
                   ? `${c.agent.name}${c.agent.agencyName ? ` (${c.agent.agencyName})` : ""}`
-                  : "—"}
+                  : "—"
+                : c.teacher?.name ?? "—"}
               <span className="ml-1 text-xs text-gray-400">
-                ({c.recipientType === "TEACHER" ? "老师" : "代理"})
+                ({c.recipientType === "TEACHER" ? "招生老师" : c.recipientType === "RECEPTION_TEACHER" ? "接待老师" : "代理"})
               </span>
             </td>
             <td className="px-3 py-2 text-right font-mono text-red-500">

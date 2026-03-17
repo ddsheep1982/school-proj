@@ -113,19 +113,24 @@ export async function getStudentFinancialSummaries(
       recruitmentCosts: {
         select: { amount: true },
       },
+      refundRecords: {
+        select: { amount: true },
+      },
     },
   });
 
   const summaries: StudentFinancialSummary[] = students.map((s) => {
     const totalTuition = s.paymentRecords.reduce((sum, p) => sum + toNumber(p.amount), 0);
     const totalRecruitmentCost = s.recruitmentCosts.reduce((sum, c) => sum + toNumber(c.amount), 0);
+    const totalRefunded = s.refundRecords.reduce((sum, r) => sum + toNumber(r.amount), 0);
     return {
       studentId: s.id,
       studentNo: s.studentNo,
       name: s.name,
       totalTuition,
       totalRecruitmentCost,
-      netContribution: totalTuition - totalRecruitmentCost,
+      totalRefunded,
+      netContribution: totalTuition - totalRecruitmentCost - totalRefunded,
     };
   });
 

@@ -395,7 +395,8 @@ export const ModelName = {
   FeeAssignment: 'FeeAssignment',
   Invoice: 'Invoice',
   AuditLog: 'AuditLog',
-  RecruitmentCost: 'RecruitmentCost'
+  RecruitmentCost: 'RecruitmentCost',
+  RefundRecord: 'RefundRecord'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -411,7 +412,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "class" | "enrollmentTeacher" | "recruitmentAgent" | "student" | "paymentRecord" | "attendanceRecord" | "user" | "feeStructure" | "feeAssignment" | "invoice" | "auditLog" | "recruitmentCost"
+    modelProps: "class" | "enrollmentTeacher" | "recruitmentAgent" | "student" | "paymentRecord" | "attendanceRecord" | "user" | "feeStructure" | "feeAssignment" | "invoice" | "auditLog" | "recruitmentCost" | "refundRecord"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1303,6 +1304,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    RefundRecord: {
+      payload: Prisma.$RefundRecordPayload<ExtArgs>
+      fields: Prisma.RefundRecordFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RefundRecordFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundRecordPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RefundRecordFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundRecordPayload>
+        }
+        findFirst: {
+          args: Prisma.RefundRecordFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundRecordPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RefundRecordFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundRecordPayload>
+        }
+        findMany: {
+          args: Prisma.RefundRecordFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundRecordPayload>[]
+        }
+        create: {
+          args: Prisma.RefundRecordCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundRecordPayload>
+        }
+        createMany: {
+          args: Prisma.RefundRecordCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RefundRecordCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundRecordPayload>[]
+        }
+        delete: {
+          args: Prisma.RefundRecordDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundRecordPayload>
+        }
+        update: {
+          args: Prisma.RefundRecordUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundRecordPayload>
+        }
+        deleteMany: {
+          args: Prisma.RefundRecordDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RefundRecordUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RefundRecordUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundRecordPayload>[]
+        }
+        upsert: {
+          args: Prisma.RefundRecordUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundRecordPayload>
+        }
+        aggregate: {
+          args: Prisma.RefundRecordAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRefundRecord>
+        }
+        groupBy: {
+          args: Prisma.RefundRecordGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RefundRecordGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RefundRecordCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RefundRecordCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1394,7 +1469,10 @@ export const StudentScalarFieldEnum = {
   enrollmentTeacherId: 'enrollmentTeacherId',
   recruitmentChannelType: 'recruitmentChannelType',
   recruitmentTeacherId: 'recruitmentTeacherId',
-  recruitmentAgentId: 'recruitmentAgentId'
+  recruitmentAgentId: 'recruitmentAgentId',
+  receptionTeacherId: 'receptionTeacherId',
+  withdrawalDate: 'withdrawalDate',
+  withdrawalReason: 'withdrawalReason'
 } as const
 
 export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
@@ -1514,6 +1592,20 @@ export const RecruitmentCostScalarFieldEnum = {
 } as const
 
 export type RecruitmentCostScalarFieldEnum = (typeof RecruitmentCostScalarFieldEnum)[keyof typeof RecruitmentCostScalarFieldEnum]
+
+
+export const RefundRecordScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  invoiceId: 'invoiceId',
+  amount: 'amount',
+  reason: 'reason',
+  refundDate: 'refundDate',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type RefundRecordScalarFieldEnum = (typeof RefundRecordScalarFieldEnum)[keyof typeof RefundRecordScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1858,6 +1950,7 @@ export type GlobalOmitConfig = {
   invoice?: Prisma.InvoiceOmit
   auditLog?: Prisma.AuditLogOmit
   recruitmentCost?: Prisma.RecruitmentCostOmit
+  refundRecord?: Prisma.RefundRecordOmit
 }
 
 /* Types for Logging */

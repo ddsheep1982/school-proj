@@ -1,7 +1,10 @@
 import type { PaymentRecordWithUser } from "@/actions/payment.actions";
 import type { RecruitmentCostWithRecipient } from "@/actions/recruitment-cost.actions";
+import type { RefundRecordWithInvoice } from "@/actions/refund.actions";
 import RecruitmentCostList from "./RecruitmentCostList";
 import RecruitmentCostForm from "./RecruitmentCostForm";
+import RefundRecordForm from "./RefundRecordForm";
+import RefundRecordList from "./RefundRecordList";
 
 interface Teacher { id: string; name: string }
 interface Agent { id: string; name: string; agencyName: string | null }
@@ -10,8 +13,11 @@ interface Props {
   studentId: string;
   payments: PaymentRecordWithUser[];
   recruitmentCosts: RecruitmentCostWithRecipient[];
+  refundRecords: RefundRecordWithInvoice[];
   teachers: Teacher[];
   agents: Agent[];
+  withdrawalDate?: Date | null;
+  withdrawalReason?: string | null;
 }
 
 function fmt(n: number) {
@@ -22,19 +28,35 @@ export default function StudentFinancialTab({
   studentId,
   payments,
   recruitmentCosts,
+  refundRecords,
   teachers,
   agents,
+  withdrawalDate,
+  withdrawalReason,
 }: Props) {
   const totalTuition = payments
     .filter((p) => !p.isAdjustment)
     .reduce((sum, p) => sum + Number(p.amount), 0);
   const totalCosts = recruitmentCosts.reduce((sum, c) => sum + Number(c.amount), 0);
-  const netContribution = totalTuition - totalCosts;
+  const totalRefunded = refundRecords.reduce((sum, r) => sum + Number(r.amount), 0);
+  const netContribution = totalTuition - totalCosts - totalRefunded;
 
   return (
     <div className="space-y-6">
+      {/* Withdrawal notice */}
+      {withdrawalDate && (
+        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+          <p className="text-sm font-medium text-orange-800">
+            退学日期：{new Date(withdrawalDate).toLocaleDateString("zh-CN")}
+          </p>
+          {withdrawalReason && (
+            <p className="text-sm text-orange-700 mt-1">退学原因：{withdrawalReason}</p>
+          )}
+        </div>
+      )}
+
       {/* Summary bar */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-4 gap-4">
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <p className="text-xs text-gray-500 mb-1">学费已缴</p>
           <p className="text-xl font-bold text-green-600">{fmt(totalTuition)}</p>
@@ -42,6 +64,10 @@ export default function StudentFinancialTab({
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <p className="text-xs text-gray-500 mb-1">招生费用</p>
           <p className="text-xl font-bold text-red-500">{fmt(totalCosts)}</p>
+        </div>
+        <div className="bg-white rounded-lg border border-gray-200 p-4">
+          <p className="text-xs text-gray-500 mb-1">已退费</p>
+          <p className="text-xl font-bold text-orange-600">{fmt(totalRefunded)}</p>
         </div>
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <p className="text-xs text-gray-500 mb-1">净贡献</p>
@@ -94,6 +120,19 @@ export default function StudentFinancialTab({
           </div>
           <div className="overflow-x-auto">
             <RecruitmentCostList costs={recruitmentCosts} />
+          </div>
+        </div>
+
+        {/* Refund records */}
+        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden lg:col-span-2">
+          <div className="p-4 border-b border-gray-100">
+            <h3 className="font-semibold">退费记录</h3>
+          </div>
+          <div className="p-4 border-b border-gray-100">
+            <RefundRecordForm studentId={studentId} />
+          </div>
+          <div className="overflow-x-auto">
+            <RefundRecordList records={refundRecords} />
           </div>
         </div>
       </div>

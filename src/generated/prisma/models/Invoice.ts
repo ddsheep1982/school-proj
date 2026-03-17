@@ -251,6 +251,7 @@ export type InvoiceWhereInput = {
   feeAssignment?: Prisma.XOR<Prisma.FeeAssignmentScalarRelationFilter, Prisma.FeeAssignmentWhereInput>
   student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
   payments?: Prisma.PaymentRecordListRelationFilter
+  refundRecords?: Prisma.RefundRecordListRelationFilter
 }
 
 export type InvoiceOrderByWithRelationInput = {
@@ -266,6 +267,7 @@ export type InvoiceOrderByWithRelationInput = {
   feeAssignment?: Prisma.FeeAssignmentOrderByWithRelationInput
   student?: Prisma.StudentOrderByWithRelationInput
   payments?: Prisma.PaymentRecordOrderByRelationAggregateInput
+  refundRecords?: Prisma.RefundRecordOrderByRelationAggregateInput
 }
 
 export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
@@ -285,6 +287,7 @@ export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
   feeAssignment?: Prisma.XOR<Prisma.FeeAssignmentScalarRelationFilter, Prisma.FeeAssignmentWhereInput>
   student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
   payments?: Prisma.PaymentRecordListRelationFilter
+  refundRecords?: Prisma.RefundRecordListRelationFilter
 }, "id" | "feeAssignmentId_studentId">
 
 export type InvoiceOrderByWithAggregationInput = {
@@ -330,6 +333,7 @@ export type InvoiceCreateInput = {
   feeAssignment: Prisma.FeeAssignmentCreateNestedOneWithoutInvoicesInput
   student: Prisma.StudentCreateNestedOneWithoutInvoicesInput
   payments?: Prisma.PaymentRecordCreateNestedManyWithoutInvoiceInput
+  refundRecords?: Prisma.RefundRecordCreateNestedManyWithoutInvoiceInput
 }
 
 export type InvoiceUncheckedCreateInput = {
@@ -343,6 +347,7 @@ export type InvoiceUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   payments?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutInvoiceInput
+  refundRecords?: Prisma.RefundRecordUncheckedCreateNestedManyWithoutInvoiceInput
 }
 
 export type InvoiceUpdateInput = {
@@ -356,6 +361,7 @@ export type InvoiceUpdateInput = {
   feeAssignment?: Prisma.FeeAssignmentUpdateOneRequiredWithoutInvoicesNestedInput
   student?: Prisma.StudentUpdateOneRequiredWithoutInvoicesNestedInput
   payments?: Prisma.PaymentRecordUpdateManyWithoutInvoiceNestedInput
+  refundRecords?: Prisma.RefundRecordUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceUncheckedUpdateInput = {
@@ -369,6 +375,7 @@ export type InvoiceUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.PaymentRecordUncheckedUpdateManyWithoutInvoiceNestedInput
+  refundRecords?: Prisma.RefundRecordUncheckedUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceCreateManyInput = {
@@ -569,6 +576,22 @@ export type InvoiceUncheckedUpdateManyWithoutFeeAssignmentNestedInput = {
   deleteMany?: Prisma.InvoiceScalarWhereInput | Prisma.InvoiceScalarWhereInput[]
 }
 
+export type InvoiceCreateNestedOneWithoutRefundRecordsInput = {
+  create?: Prisma.XOR<Prisma.InvoiceCreateWithoutRefundRecordsInput, Prisma.InvoiceUncheckedCreateWithoutRefundRecordsInput>
+  connectOrCreate?: Prisma.InvoiceCreateOrConnectWithoutRefundRecordsInput
+  connect?: Prisma.InvoiceWhereUniqueInput
+}
+
+export type InvoiceUpdateOneWithoutRefundRecordsNestedInput = {
+  create?: Prisma.XOR<Prisma.InvoiceCreateWithoutRefundRecordsInput, Prisma.InvoiceUncheckedCreateWithoutRefundRecordsInput>
+  connectOrCreate?: Prisma.InvoiceCreateOrConnectWithoutRefundRecordsInput
+  upsert?: Prisma.InvoiceUpsertWithoutRefundRecordsInput
+  disconnect?: Prisma.InvoiceWhereInput | boolean
+  delete?: Prisma.InvoiceWhereInput | boolean
+  connect?: Prisma.InvoiceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InvoiceUpdateToOneWithWhereWithoutRefundRecordsInput, Prisma.InvoiceUpdateWithoutRefundRecordsInput>, Prisma.InvoiceUncheckedUpdateWithoutRefundRecordsInput>
+}
+
 export type InvoiceCreateWithoutStudentInput = {
   id?: string
   amountDue: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -579,6 +602,7 @@ export type InvoiceCreateWithoutStudentInput = {
   updatedAt?: Date | string
   feeAssignment: Prisma.FeeAssignmentCreateNestedOneWithoutInvoicesInput
   payments?: Prisma.PaymentRecordCreateNestedManyWithoutInvoiceInput
+  refundRecords?: Prisma.RefundRecordCreateNestedManyWithoutInvoiceInput
 }
 
 export type InvoiceUncheckedCreateWithoutStudentInput = {
@@ -591,6 +615,7 @@ export type InvoiceUncheckedCreateWithoutStudentInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   payments?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutInvoiceInput
+  refundRecords?: Prisma.RefundRecordUncheckedCreateNestedManyWithoutInvoiceInput
 }
 
 export type InvoiceCreateOrConnectWithoutStudentInput = {
@@ -644,6 +669,7 @@ export type InvoiceCreateWithoutPaymentsInput = {
   updatedAt?: Date | string
   feeAssignment: Prisma.FeeAssignmentCreateNestedOneWithoutInvoicesInput
   student: Prisma.StudentCreateNestedOneWithoutInvoicesInput
+  refundRecords?: Prisma.RefundRecordCreateNestedManyWithoutInvoiceInput
 }
 
 export type InvoiceUncheckedCreateWithoutPaymentsInput = {
@@ -656,6 +682,7 @@ export type InvoiceUncheckedCreateWithoutPaymentsInput = {
   waivedReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  refundRecords?: Prisma.RefundRecordUncheckedCreateNestedManyWithoutInvoiceInput
 }
 
 export type InvoiceCreateOrConnectWithoutPaymentsInput = {
@@ -684,6 +711,7 @@ export type InvoiceUpdateWithoutPaymentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   feeAssignment?: Prisma.FeeAssignmentUpdateOneRequiredWithoutInvoicesNestedInput
   student?: Prisma.StudentUpdateOneRequiredWithoutInvoicesNestedInput
+  refundRecords?: Prisma.RefundRecordUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceUncheckedUpdateWithoutPaymentsInput = {
@@ -696,6 +724,7 @@ export type InvoiceUncheckedUpdateWithoutPaymentsInput = {
   waivedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refundRecords?: Prisma.RefundRecordUncheckedUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceCreateWithoutFeeAssignmentInput = {
@@ -708,6 +737,7 @@ export type InvoiceCreateWithoutFeeAssignmentInput = {
   updatedAt?: Date | string
   student: Prisma.StudentCreateNestedOneWithoutInvoicesInput
   payments?: Prisma.PaymentRecordCreateNestedManyWithoutInvoiceInput
+  refundRecords?: Prisma.RefundRecordCreateNestedManyWithoutInvoiceInput
 }
 
 export type InvoiceUncheckedCreateWithoutFeeAssignmentInput = {
@@ -720,6 +750,7 @@ export type InvoiceUncheckedCreateWithoutFeeAssignmentInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   payments?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutInvoiceInput
+  refundRecords?: Prisma.RefundRecordUncheckedCreateNestedManyWithoutInvoiceInput
 }
 
 export type InvoiceCreateOrConnectWithoutFeeAssignmentInput = {
@@ -748,6 +779,74 @@ export type InvoiceUpdateManyWithWhereWithoutFeeAssignmentInput = {
   data: Prisma.XOR<Prisma.InvoiceUpdateManyMutationInput, Prisma.InvoiceUncheckedUpdateManyWithoutFeeAssignmentInput>
 }
 
+export type InvoiceCreateWithoutRefundRecordsInput = {
+  id?: string
+  amountDue: runtime.Decimal | runtime.DecimalJsLike | number | string
+  dueDate: Date | string
+  waivedAt?: Date | string | null
+  waivedReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  feeAssignment: Prisma.FeeAssignmentCreateNestedOneWithoutInvoicesInput
+  student: Prisma.StudentCreateNestedOneWithoutInvoicesInput
+  payments?: Prisma.PaymentRecordCreateNestedManyWithoutInvoiceInput
+}
+
+export type InvoiceUncheckedCreateWithoutRefundRecordsInput = {
+  id?: string
+  feeAssignmentId: string
+  studentId: string
+  amountDue: runtime.Decimal | runtime.DecimalJsLike | number | string
+  dueDate: Date | string
+  waivedAt?: Date | string | null
+  waivedReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  payments?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutInvoiceInput
+}
+
+export type InvoiceCreateOrConnectWithoutRefundRecordsInput = {
+  where: Prisma.InvoiceWhereUniqueInput
+  create: Prisma.XOR<Prisma.InvoiceCreateWithoutRefundRecordsInput, Prisma.InvoiceUncheckedCreateWithoutRefundRecordsInput>
+}
+
+export type InvoiceUpsertWithoutRefundRecordsInput = {
+  update: Prisma.XOR<Prisma.InvoiceUpdateWithoutRefundRecordsInput, Prisma.InvoiceUncheckedUpdateWithoutRefundRecordsInput>
+  create: Prisma.XOR<Prisma.InvoiceCreateWithoutRefundRecordsInput, Prisma.InvoiceUncheckedCreateWithoutRefundRecordsInput>
+  where?: Prisma.InvoiceWhereInput
+}
+
+export type InvoiceUpdateToOneWithWhereWithoutRefundRecordsInput = {
+  where?: Prisma.InvoiceWhereInput
+  data: Prisma.XOR<Prisma.InvoiceUpdateWithoutRefundRecordsInput, Prisma.InvoiceUncheckedUpdateWithoutRefundRecordsInput>
+}
+
+export type InvoiceUpdateWithoutRefundRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amountDue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  waivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  waivedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  feeAssignment?: Prisma.FeeAssignmentUpdateOneRequiredWithoutInvoicesNestedInput
+  student?: Prisma.StudentUpdateOneRequiredWithoutInvoicesNestedInput
+  payments?: Prisma.PaymentRecordUpdateManyWithoutInvoiceNestedInput
+}
+
+export type InvoiceUncheckedUpdateWithoutRefundRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  feeAssignmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  studentId?: Prisma.StringFieldUpdateOperationsInput | string
+  amountDue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  waivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  waivedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payments?: Prisma.PaymentRecordUncheckedUpdateManyWithoutInvoiceNestedInput
+}
+
 export type InvoiceCreateManyStudentInput = {
   id?: string
   feeAssignmentId: string
@@ -769,6 +868,7 @@ export type InvoiceUpdateWithoutStudentInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   feeAssignment?: Prisma.FeeAssignmentUpdateOneRequiredWithoutInvoicesNestedInput
   payments?: Prisma.PaymentRecordUpdateManyWithoutInvoiceNestedInput
+  refundRecords?: Prisma.RefundRecordUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceUncheckedUpdateWithoutStudentInput = {
@@ -781,6 +881,7 @@ export type InvoiceUncheckedUpdateWithoutStudentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.PaymentRecordUncheckedUpdateManyWithoutInvoiceNestedInput
+  refundRecords?: Prisma.RefundRecordUncheckedUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceUncheckedUpdateManyWithoutStudentInput = {
@@ -815,6 +916,7 @@ export type InvoiceUpdateWithoutFeeAssignmentInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   student?: Prisma.StudentUpdateOneRequiredWithoutInvoicesNestedInput
   payments?: Prisma.PaymentRecordUpdateManyWithoutInvoiceNestedInput
+  refundRecords?: Prisma.RefundRecordUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceUncheckedUpdateWithoutFeeAssignmentInput = {
@@ -827,6 +929,7 @@ export type InvoiceUncheckedUpdateWithoutFeeAssignmentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.PaymentRecordUncheckedUpdateManyWithoutInvoiceNestedInput
+  refundRecords?: Prisma.RefundRecordUncheckedUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceUncheckedUpdateManyWithoutFeeAssignmentInput = {
@@ -847,10 +950,12 @@ export type InvoiceUncheckedUpdateManyWithoutFeeAssignmentInput = {
 
 export type InvoiceCountOutputType = {
   payments: number
+  refundRecords: number
 }
 
 export type InvoiceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   payments?: boolean | InvoiceCountOutputTypeCountPaymentsArgs
+  refundRecords?: boolean | InvoiceCountOutputTypeCountRefundRecordsArgs
 }
 
 /**
@@ -870,6 +975,13 @@ export type InvoiceCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Type
   where?: Prisma.PaymentRecordWhereInput
 }
 
+/**
+ * InvoiceCountOutputType without action
+ */
+export type InvoiceCountOutputTypeCountRefundRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RefundRecordWhereInput
+}
+
 
 export type InvoiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -884,6 +996,7 @@ export type InvoiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   feeAssignment?: boolean | Prisma.FeeAssignmentDefaultArgs<ExtArgs>
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
   payments?: boolean | Prisma.Invoice$paymentsArgs<ExtArgs>
+  refundRecords?: boolean | Prisma.Invoice$refundRecordsArgs<ExtArgs>
   _count?: boolean | Prisma.InvoiceCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["invoice"]>
 
@@ -932,6 +1045,7 @@ export type InvoiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   feeAssignment?: boolean | Prisma.FeeAssignmentDefaultArgs<ExtArgs>
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
   payments?: boolean | Prisma.Invoice$paymentsArgs<ExtArgs>
+  refundRecords?: boolean | Prisma.Invoice$refundRecordsArgs<ExtArgs>
   _count?: boolean | Prisma.InvoiceCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type InvoiceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -949,6 +1063,7 @@ export type $InvoicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     feeAssignment: Prisma.$FeeAssignmentPayload<ExtArgs>
     student: Prisma.$StudentPayload<ExtArgs>
     payments: Prisma.$PaymentRecordPayload<ExtArgs>[]
+    refundRecords: Prisma.$RefundRecordPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1357,6 +1472,7 @@ export interface Prisma__InvoiceClient<T, Null = never, ExtArgs extends runtime.
   feeAssignment<T extends Prisma.FeeAssignmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FeeAssignmentDefaultArgs<ExtArgs>>): Prisma.Prisma__FeeAssignmentClient<runtime.Types.Result.GetResult<Prisma.$FeeAssignmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   student<T extends Prisma.StudentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentDefaultArgs<ExtArgs>>): Prisma.Prisma__StudentClient<runtime.Types.Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   payments<T extends Prisma.Invoice$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Invoice$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  refundRecords<T extends Prisma.Invoice$refundRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Invoice$refundRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefundRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1817,6 +1933,30 @@ export type Invoice$paymentsArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.PaymentRecordScalarFieldEnum | Prisma.PaymentRecordScalarFieldEnum[]
+}
+
+/**
+ * Invoice.refundRecords
+ */
+export type Invoice$refundRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RefundRecord
+   */
+  select?: Prisma.RefundRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RefundRecord
+   */
+  omit?: Prisma.RefundRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RefundRecordInclude<ExtArgs> | null
+  where?: Prisma.RefundRecordWhereInput
+  orderBy?: Prisma.RefundRecordOrderByWithRelationInput | Prisma.RefundRecordOrderByWithRelationInput[]
+  cursor?: Prisma.RefundRecordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RefundRecordScalarFieldEnum | Prisma.RefundRecordScalarFieldEnum[]
 }
 
 /**

@@ -27,6 +27,7 @@ export default function StudentForm({ classes, teachers, agents, student }: Prop
     paymentStatus: student?.paymentStatus ?? "PAID",
     classId: student?.classId ?? "",
     enrollmentTeacherId: student?.enrollmentTeacherId ?? "",
+    receptionTeacherId: student?.receptionTeacherId ?? "",
     recruitmentChannelType: student?.recruitmentChannelType ?? "",
     recruitmentTeacherId: student?.recruitmentTeacherId ?? "",
     recruitmentAgentId: student?.recruitmentAgentId ?? "",
@@ -54,6 +55,7 @@ export default function StudentForm({ classes, teachers, agents, student }: Prop
       enrollmentDate,
       classId: form.classId || undefined,
       enrollmentTeacherId: form.enrollmentTeacherId || undefined,
+      receptionTeacherId: form.receptionTeacherId || undefined,
       recruitmentChannelType: channelType,
       recruitmentTeacherId: channelType === "TEACHER" ? form.recruitmentTeacherId || undefined : undefined,
       recruitmentAgentId: channelType === "AGENT" ? form.recruitmentAgentId || undefined : undefined,
@@ -187,6 +189,21 @@ export default function StudentForm({ classes, teachers, agents, student }: Prop
             <select
               value={form.enrollmentTeacherId}
               onChange={(e) => set("enrollmentTeacherId", e.target.value)}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">— 未指定 —</option>
+              {teachers.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">接待老师</label>
+            <select
+              value={form.receptionTeacherId}
+              onChange={(e) => set("receptionTeacherId", e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">— 未指定 —</option>

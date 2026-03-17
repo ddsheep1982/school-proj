@@ -42,6 +42,7 @@ export const CreateStudentSchema = z
     enrollmentDate: z.string().datetime(),
     classId: z.string().cuid().optional(),
     enrollmentTeacherId: z.string().cuid().optional(),
+    receptionTeacherId: z.string().cuid().optional(),
     recruitmentChannelType: RecruitmentChannelTypeEnum.optional(),
     recruitmentTeacherId: z.string().cuid().optional(),
     recruitmentAgentId: z.string().cuid().optional(),
@@ -70,6 +71,7 @@ export const UpdateStudentSchema = z
     paymentStatus: PaymentStatusEnum.optional(),
     classId: z.string().cuid().nullable().optional(),
     enrollmentTeacherId: z.string().cuid().nullable().optional(),
+    receptionTeacherId: z.string().cuid().nullable().optional(),
     recruitmentChannelType: RecruitmentChannelTypeEnum.nullable().optional(),
     recruitmentTeacherId: z.string().cuid().nullable().optional(),
     recruitmentAgentId: z.string().cuid().nullable().optional(),
@@ -308,7 +310,7 @@ export type ListInvoicesInput = z.infer<typeof ListInvoicesSchema>;
 // ---------------------------------------------------------------------------
 // Financial / Recruitment Cost schemas
 // ---------------------------------------------------------------------------
-export const RecruitmentCostRecipientTypeEnum = z.enum(["TEACHER", "AGENT"]);
+export const RecruitmentCostRecipientTypeEnum = z.enum(["TEACHER", "AGENT", "RECEPTION_TEACHER"]);
 export type RecruitmentCostRecipientType = z.infer<typeof RecruitmentCostRecipientTypeEnum>;
 
 export const CreateRecruitmentCostSchema = z.object({
@@ -321,13 +323,28 @@ export const CreateRecruitmentCostSchema = z.object({
   notes: z.string().optional(),
 }).refine(
   (d) => {
-    if (d.recipientType === "TEACHER") return !!d.teacherId;
+    if (d.recipientType === "TEACHER" || d.recipientType === "RECEPTION_TEACHER") return !!d.teacherId;
     if (d.recipientType === "AGENT") return !!d.agentId;
     return true;
   },
   { message: "必须根据收款方类型填写对应的老师或代理", path: ["recipientType"] }
 );
 export type CreateRecruitmentCostInput = z.infer<typeof CreateRecruitmentCostSchema>;
+
+export const WithdrawStudentSchema = z.object({
+  withdrawalDate: z.string().datetime(),
+  withdrawalReason: z.string().min(1, "请填写退学原因"),
+});
+export type WithdrawStudentInput = z.infer<typeof WithdrawStudentSchema>;
+
+export const CreateRefundRecordSchema = z.object({
+  studentId: z.string().cuid(),
+  invoiceId: z.string().cuid().optional(),
+  amount: z.number().positive("金额必须大于0"),
+  reason: z.string().min(1, "请填写退费原因"),
+  refundDate: z.string().datetime(),
+});
+export type CreateRefundRecordInput = z.infer<typeof CreateRefundRecordSchema>;
 
 export const FinancialSummaryFiltersSchema = z.object({
   startDate: z.string().datetime().optional(),
@@ -357,5 +374,6 @@ export interface StudentFinancialSummary {
   name: string;
   totalTuition: number;
   totalRecruitmentCost: number;
+  totalRefunded: number;
   netContribution: number;
 }

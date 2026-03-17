@@ -65,7 +65,8 @@ export type FeeRecurrence = (typeof FeeRecurrence)[keyof typeof FeeRecurrence]
 
 export const RecruitmentCostRecipientType = {
   TEACHER: 'TEACHER',
-  AGENT: 'AGENT'
+  AGENT: 'AGENT',
+  RECEPTION_TEACHER: 'RECEPTION_TEACHER'
 } as const
 
 export type RecruitmentCostRecipientType = (typeof RecruitmentCostRecipientType)[keyof typeof RecruitmentCostRecipientType]

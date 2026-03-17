@@ -1,17 +1,19 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { requireAuth } from "@/lib/auth";
+import { requireAuth, requireRole } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
 import { generateStudentNo } from "@/lib/student-no";
 import {
   CreateStudentSchema,
   UpdateStudentSchema,
   StudentFiltersSchema,
+  WithdrawStudentSchema,
   type ActionResult,
   type CreateStudentInput,
   type UpdateStudentInput,
   type StudentFilters,
+  type WithdrawStudentInput,
 } from "@/types/index";
 import type { Student } from "@/generated/prisma/client";
 
@@ -23,6 +25,7 @@ export type StudentListItem = {
   enrollmentStatus: string;
   paymentStatus: string;
   enrollmentDate: Date;
+  withdrawalDate: Date | null;
   class: { id: string; name: string } | null;
   enrollmentTeacher: { id: string; name: string } | null;
 };
@@ -30,6 +33,7 @@ export type StudentListItem = {
 export type StudentDetail = Student & {
   class: { id: string; name: string } | null;
   enrollmentTeacher: { id: string; name: string } | null;
+  receptionTeacher: { id: string; name: string } | null;
   recruitmentTeacher: { id: string; name: string } | null;
   recruitmentAgent: { id: string; name: string; agencyName: string | null } | null;
 };
@@ -60,6 +64,7 @@ export async function createStudent(
         enrollmentDate: data.enrollmentDate ? new Date(data.enrollmentDate) : new Date(),
         classId: data.classId ?? null,
         enrollmentTeacherId: data.enrollmentTeacherId ?? null,
+        receptionTeacherId: data.receptionTeacherId ?? null,
         recruitmentChannelType: data.recruitmentChannelType ?? null,
         recruitmentTeacherId:
           data.recruitmentChannelType === "TEACHER" ? (data.recruitmentTeacherId ?? null) : null,
@@ -120,6 +125,7 @@ export async function updateStudent(
         ...(data.paymentStatus !== undefined && { paymentStatus: data.paymentStatus }),
         ...("classId" in data && { classId: data.classId ?? null }),
         ...("enrollmentTeacherId" in data && { enrollmentTeacherId: data.enrollmentTeacherId ?? null }),
+        ...("receptionTeacherId" in data && { receptionTeacherId: data.receptionTeacherId ?? null }),
         ...(channelType !== undefined && { recruitmentChannelType: channelType }),
         ...(recruitmentTeacherId !== undefined && { recruitmentTeacherId }),
         ...(recruitmentAgentId !== undefined && { recruitmentAgentId }),
@@ -138,12 +144,17 @@ export async function updateStudent(
 }
 
 export async function getStudents(
-  rawFilters: Partial<StudentFilters>
+  rawFilters: Partial<StudentFilters> & { includeWithdrawn?: boolean }
 ): Promise<{ students: StudentListItem[]; total: number }> {
   await requireAuth();
   const filters = StudentFiltersSchema.parse(rawFilters);
+  const includeWithdrawn = rawFilters.includeWithdrawn === true;
 
   const where = {
+    // Default: exclude withdrawn students unless explicitly requested or filtered by status
+    ...(!filters.enrollmentStatus && !includeWithdrawn && {
+      withdrawalDate: null,
+    }),
     ...(filters.search && {
       OR: [
         { name: { contains: filters.search, mode: "insensitive" as const } },
@@ -175,6 +186,7 @@ export async function getStudents(
         enrollmentStatus: true,
         paymentStatus: true,
         enrollmentDate: true,
+        withdrawalDate: true,
         class: { select: { id: true, name: true } },
         enrollmentTeacher: { select: { id: true, name: true } },
       },
@@ -192,8 +204,75 @@ export async function getStudentById(id: string): Promise<StudentDetail | null> 
     include: {
       class: { select: { id: true, name: true } },
       enrollmentTeacher: { select: { id: true, name: true } },
+      receptionTeacher: { select: { id: true, name: true } },
       recruitmentTeacher: { select: { id: true, name: true } },
       recruitmentAgent: { select: { id: true, name: true, agencyName: true } },
     },
   });
+}
+
+export async function withdrawStudent(
+  id: string,
+  input: WithdrawStudentInput
+): Promise<ActionResult<Student>> {
+  try {
+    const user = await requireRole("ADMIN");
+    const parsed = WithdrawStudentSchema.safeParse(input);
+    if (!parsed.success) {
+      return { success: false, error: "输入数据无效", fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
+    }
+
+    const before = await prisma.student.findUnique({ where: { id } });
+    if (!before) return { success: false, error: "学生不存在" };
+    if (before.withdrawalDate) return { success: false, error: "该学生已退学" };
+
+    const student = await prisma.student.update({
+      where: { id },
+      data: {
+        withdrawalDate: new Date(parsed.data.withdrawalDate),
+        withdrawalReason: parsed.data.withdrawalReason,
+        enrollmentStatus: "WITHDRAWN",
+      },
+    });
+
+    await writeAuditLog(user.id, "UPDATE", "Student", id, { before, after: student });
+    return { success: true, data: student };
+  } catch (err) {
+    return { success: false, error: String(err) };
+  }
+}
+
+export async function deleteStudent(id: string): Promise<ActionResult<void>> {
+  try {
+    const user = await requireRole("ADMIN");
+    const student = await prisma.student.findUnique({
+      where: { id },
+      include: {
+        _count: {
+          select: {
+            paymentRecords: true,
+            invoices: true,
+            attendanceRecords: true,
+            recruitmentCosts: true,
+            refundRecords: true,
+          },
+        },
+      },
+    });
+    if (!student) return { success: false, error: "学生不存在" };
+
+    const counts = student._count;
+    const hasRecords = counts.paymentRecords > 0 || counts.invoices > 0 ||
+      counts.attendanceRecords > 0 || counts.recruitmentCosts > 0 || counts.refundRecords > 0;
+
+    if (hasRecords) {
+      return { success: false, error: "该学生存在关联记录，无法删除。如需退学请使用退学功能。" };
+    }
+
+    await prisma.student.delete({ where: { id } });
+    await writeAuditLog(user.id, "DELETE", "Student", id, { before: student });
+    return { success: true, data: undefined };
+  } catch (err) {
+    return { success: false, error: String(err) };
+  }
 }

@@ -101,3 +101,8 @@ export type AuditLog = Prisma.AuditLogModel
  * 
  */
 export type RecruitmentCost = Prisma.RecruitmentCostModel
+/**
+ * Model RefundRecord
+ * 
+ */
+export type RefundRecord = Prisma.RefundRecordModel

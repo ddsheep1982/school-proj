@@ -15,7 +15,7 @@ interface Props {
 
 export default function RecruitmentCostForm({ studentId, teachers, agents }: Props) {
   const router = useRouter();
-  const [recipientType, setRecipientType] = useState<"TEACHER" | "AGENT">("TEACHER");
+  const [recipientType, setRecipientType] = useState<"TEACHER" | "AGENT" | "RECEPTION_TEACHER">("TEACHER");
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
@@ -30,7 +30,7 @@ export default function RecruitmentCostForm({ studentId, teachers, agents }: Pro
         amount: parseFloat(fd.get("amount") as string),
         paymentDate: new Date(fd.get("paymentDate") as string).toISOString(),
         recipientType,
-        teacherId: recipientType === "TEACHER" ? (fd.get("teacherId") as string) || undefined : undefined,
+        teacherId: (recipientType === "TEACHER" || recipientType === "RECEPTION_TEACHER") ? (fd.get("teacherId") as string) || undefined : undefined,
         agentId: recipientType === "AGENT" ? (fd.get("agentId") as string) || undefined : undefined,
         notes: (fd.get("notes") as string) || undefined,
       });
@@ -56,14 +56,20 @@ export default function RecruitmentCostForm({ studentId, teachers, agents }: Pro
             招生老师
           </label>
           <label className="flex items-center gap-1 cursor-pointer">
+            <input type="radio" value="RECEPTION_TEACHER" checked={recipientType === "RECEPTION_TEACHER"} onChange={() => setRecipientType("RECEPTION_TEACHER")} />
+            接待老师
+          </label>
+          <label className="flex items-center gap-1 cursor-pointer">
             <input type="radio" value="AGENT" checked={recipientType === "AGENT"} onChange={() => setRecipientType("AGENT")} />
             招生代理
           </label>
         </div>
       </div>
-      {recipientType === "TEACHER" ? (
+      {(recipientType === "TEACHER" || recipientType === "RECEPTION_TEACHER") ? (
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">招生老师</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            {recipientType === "RECEPTION_TEACHER" ? "接待老师" : "招生老师"}
+          </label>
           <select name="teacherId" required className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
             <option value="">请选择...</option>
             {teachers.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}

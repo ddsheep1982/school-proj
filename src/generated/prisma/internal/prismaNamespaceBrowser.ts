@@ -62,7 +62,8 @@ export const ModelName = {
   FeeAssignment: 'FeeAssignment',
   Invoice: 'Invoice',
   AuditLog: 'AuditLog',
-  RecruitmentCost: 'RecruitmentCost'
+  RecruitmentCost: 'RecruitmentCost',
+  RefundRecord: 'RefundRecord'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -133,7 +134,10 @@ export const StudentScalarFieldEnum = {
   enrollmentTeacherId: 'enrollmentTeacherId',
   recruitmentChannelType: 'recruitmentChannelType',
   recruitmentTeacherId: 'recruitmentTeacherId',
-  recruitmentAgentId: 'recruitmentAgentId'
+  recruitmentAgentId: 'recruitmentAgentId',
+  receptionTeacherId: 'receptionTeacherId',
+  withdrawalDate: 'withdrawalDate',
+  withdrawalReason: 'withdrawalReason'
 } as const
 
 export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
@@ -253,6 +257,20 @@ export const RecruitmentCostScalarFieldEnum = {
 } as const
 
 export type RecruitmentCostScalarFieldEnum = (typeof RecruitmentCostScalarFieldEnum)[keyof typeof RecruitmentCostScalarFieldEnum]
+
+
+export const RefundRecordScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  invoiceId: 'invoiceId',
+  amount: 'amount',
+  reason: 'reason',
+  refundDate: 'refundDate',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type RefundRecordScalarFieldEnum = (typeof RefundRecordScalarFieldEnum)[keyof typeof RefundRecordScalarFieldEnum]
 
 
 export const SortOrder = {
