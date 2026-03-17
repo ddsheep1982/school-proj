@@ -119,7 +119,7 @@ export default function StudentFinancialTab({
             <RecruitmentCostForm studentId={studentId} teachers={teachers} agents={agents} />
           </div>
           <div className="overflow-x-auto">
-            <RecruitmentCostList costs={recruitmentCosts} />
+            <RecruitmentCostList costs={recruitmentCosts.map((c) => ({ ...c, amount: Number(c.amount) }))} />
           </div>
         </div>
 
@@ -132,7 +132,7 @@ export default function StudentFinancialTab({
             <RefundRecordForm studentId={studentId} />
           </div>
           <div className="overflow-x-auto">
-            <RefundRecordList records={refundRecords} />
+            <RefundRecordList records={refundRecords.map((r) => ({ ...r, amount: Number(r.amount) }))} />
           </div>
         </div>
       </div>

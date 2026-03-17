@@ -75,7 +75,6 @@ export default function StudentForm({ classes, teachers, agents, student }: Prop
       setError(result.error);
     } else {
       router.push(`/students/${result.data.id}`);
-      router.refresh();
     }
   }
 

@@ -8,6 +8,7 @@ import {
   CreateTeacherSchema,
   CreateAgentSchema,
   CreateUserSchema,
+  WithdrawStudentSchema,
 } from "@/types/index";
 
 describe("CreateStudentSchema", () => {
@@ -230,6 +231,83 @@ describe("CreateUserSchema", () => {
         email: "admin@school.com",
         password: "password123",
         role: "SUPERUSER",
+      }).success
+    ).toBe(false);
+  });
+});
+
+describe("WithdrawStudentSchema", () => {
+  const baseDate = new Date("2026-03-17T00:00:00.000Z").toISOString();
+
+  it("accepts withdrawal without refund fields (backward compatible)", () => {
+    expect(
+      WithdrawStudentSchema.safeParse({
+        withdrawalDate: baseDate,
+        withdrawalReason: "家庭原因",
+      }).success
+    ).toBe(true);
+  });
+
+  it("accepts withdrawal with complete refund fields", () => {
+    expect(
+      WithdrawStudentSchema.safeParse({
+        withdrawalDate: baseDate,
+        withdrawalReason: "转学",
+        refundAmount: 1500,
+        refundDate: baseDate,
+        refundReason: "退还剩余学费",
+      }).success
+    ).toBe(true);
+  });
+
+  it("rejects when refundAmount provided but refundDate missing", () => {
+    const result = WithdrawStudentSchema.safeParse({
+      withdrawalDate: baseDate,
+      withdrawalReason: "转学",
+      refundAmount: 500,
+      refundReason: "退费",
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      const paths = result.error.issues.map((i) => i.path[0]);
+      expect(paths).toContain("refundDate");
+    }
+  });
+
+  it("rejects when refundAmount provided but refundReason missing", () => {
+    const result = WithdrawStudentSchema.safeParse({
+      withdrawalDate: baseDate,
+      withdrawalReason: "转学",
+      refundAmount: 500,
+      refundDate: baseDate,
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      const paths = result.error.issues.map((i) => i.path[0]);
+      expect(paths).toContain("refundReason");
+    }
+  });
+
+  it("rejects refundAmount = 0", () => {
+    expect(
+      WithdrawStudentSchema.safeParse({
+        withdrawalDate: baseDate,
+        withdrawalReason: "转学",
+        refundAmount: 0,
+        refundDate: baseDate,
+        refundReason: "退费",
+      }).success
+    ).toBe(false);
+  });
+
+  it("rejects negative refundAmount", () => {
+    expect(
+      WithdrawStudentSchema.safeParse({
+        withdrawalDate: baseDate,
+        withdrawalReason: "转学",
+        refundAmount: -100,
+        refundDate: baseDate,
+        refundReason: "退费",
       }).success
     ).toBe(false);
   });

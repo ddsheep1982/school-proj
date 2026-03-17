@@ -83,10 +83,14 @@ export default async function FinancePage({ searchParams }: Props) {
       </form>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="bg-white rounded-lg border border-gray-200 p-5">
           <p className="text-sm text-gray-500 mb-1">学费收入</p>
           <p className="text-2xl font-bold text-green-600">{fmt(summary.totalIncome)}</p>
+        </div>
+        <div className="bg-white rounded-lg border border-gray-200 p-5">
+          <p className="text-sm text-gray-500 mb-1">退费支出</p>
+          <p className="text-2xl font-bold text-orange-500">{fmt(summary.totalRefunded)}</p>
         </div>
         <div className="bg-white rounded-lg border border-gray-200 p-5">
           <p className="text-sm text-gray-500 mb-1">招生费用支出</p>
@@ -110,6 +114,7 @@ export default async function FinancePage({ searchParams }: Props) {
             <tr>
               <th className="px-4 py-3 text-left">月份</th>
               <th className="px-4 py-3 text-right">学费收入</th>
+              <th className="px-4 py-3 text-right">退费</th>
               <th className="px-4 py-3 text-right">招生费用</th>
               <th className="px-4 py-3 text-right">净收入</th>
             </tr>
@@ -121,11 +126,14 @@ export default async function FinancePage({ searchParams }: Props) {
                 <td className="px-4 py-2 text-right text-green-700 font-mono">
                   {m.tuitionIncome > 0 ? fmt(m.tuitionIncome) : <span className="text-gray-300">—</span>}
                 </td>
+                <td className="px-4 py-2 text-right text-orange-500 font-mono">
+                  {m.refundAmount > 0 ? fmt(m.refundAmount) : <span className="text-gray-300">—</span>}
+                </td>
                 <td className="px-4 py-2 text-right text-red-500 font-mono">
                   {m.recruitmentCost > 0 ? fmt(m.recruitmentCost) : <span className="text-gray-300">—</span>}
                 </td>
                 <td className={`px-4 py-2 text-right font-mono font-medium ${m.netIncome >= 0 ? "text-blue-600" : "text-red-600"}`}>
-                  {m.tuitionIncome > 0 || m.recruitmentCost > 0 ? fmt(m.netIncome) : <span className="text-gray-300">—</span>}
+                  {m.tuitionIncome > 0 || m.recruitmentCost > 0 || m.refundAmount > 0 ? fmt(m.netIncome) : <span className="text-gray-300">—</span>}
                 </td>
               </tr>
             ))}
@@ -147,6 +155,7 @@ export default async function FinancePage({ searchParams }: Props) {
                 <th className="px-4 py-3 text-left">学号</th>
                 <th className="px-4 py-3 text-left">姓名</th>
                 <th className="px-4 py-3 text-right">学费已缴</th>
+                <th className="px-4 py-3 text-right">已退费</th>
                 <th className="px-4 py-3 text-right">招生费用</th>
                 <th className="px-4 py-3 text-right">净贡献</th>
               </tr>
@@ -157,6 +166,9 @@ export default async function FinancePage({ searchParams }: Props) {
                   <td className="px-4 py-2 font-mono text-xs text-gray-500">{s.studentNo}</td>
                   <td className="px-4 py-2">{s.name}</td>
                   <td className="px-4 py-2 text-right text-green-700 font-mono">{fmt(s.totalTuition)}</td>
+                  <td className="px-4 py-2 text-right text-orange-500 font-mono">
+                    {s.totalRefunded > 0 ? fmt(s.totalRefunded) : <span className="text-gray-300">—</span>}
+                  </td>
                   <td className="px-4 py-2 text-right text-red-500 font-mono">{fmt(s.totalRecruitmentCost)}</td>
                   <td className={`px-4 py-2 text-right font-mono font-medium ${s.netContribution >= 0 ? "text-blue-600" : "text-red-600"}`}>
                     {fmt(s.netContribution)}

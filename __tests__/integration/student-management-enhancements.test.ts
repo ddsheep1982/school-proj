@@ -36,6 +36,7 @@ let testUserId: string;
 let testStudentId: string;
 let testClassId: string;
 let testStudentWithRecordsId: string;
+let testStudentForRefundWithdrawId: string;
 
 beforeAll(async () => {
   const hashedPw = await hash("password123", 10);
@@ -75,6 +76,16 @@ beforeAll(async () => {
   });
   testStudentWithRecordsId = studentWithRecords.id;
 
+  const studentForRefundWithdraw = await prisma.student.create({
+    data: {
+      studentNo: `S2026T${Date.now() + 2}`,
+      name: "Test Student Refund Withdraw",
+      phone: "13800000060",
+      guardianPhone: "13800000061",
+    },
+  });
+  testStudentForRefundWithdrawId = studentForRefundWithdraw.id;
+
   // Add a payment record to testStudentWithRecordsId to block hard deletion
   await prisma.paymentRecord.create({
     data: {
@@ -88,10 +99,18 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  // Clean up in dependency order
+  // Clean up in dependency order — delete child records before students
+  const testStudents = await prisma.student.findMany({
+    where: { phone: { startsWith: "138000000" } },
+    select: { id: true },
+  });
+  const testStudentIds = testStudents.map((s) => s.id);
+
   await prisma.paymentRecord.deleteMany({ where: { createdById: testUserId } });
-  await prisma.refundRecord.deleteMany({ where: { createdById: testUserId } });
-  await prisma.student.deleteMany({ where: { phone: { startsWith: "138000000" } } });
+  await prisma.refundRecord.deleteMany({ where: { studentId: { in: testStudentIds } } });
+  await prisma.invoice.deleteMany({ where: { studentId: { in: testStudentIds } } });
+  await prisma.feeAssignment.deleteMany({ where: { studentId: { in: testStudentIds } } });
+  await prisma.student.deleteMany({ where: { id: { in: testStudentIds } } });
   await prisma.class.delete({ where: { id: testClassId } }).catch(() => {});
   await prisma.user.delete({ where: { id: testUserId } }).catch(() => {});
   await prisma.$disconnect();
@@ -266,5 +285,139 @@ describe("createRefundRecord", () => {
     expect(result.success).toBe(true);
     const check = await prisma.refundRecord.findUnique({ where: { id: record.id } });
     expect(check).toBeNull();
+  });
+});
+
+// ─── withdrawStudent with refund ──────────────────────────────────────────────
+
+describe("withdrawStudent with refund", () => {
+  it("withdraws without refund fields — does not create RefundRecord", async () => {
+    // Use a fresh student created in beforeAll
+    const freshStudent = await prisma.student.create({
+      data: {
+        studentNo: `S2026NR${Date.now()}`,
+        name: "No Refund Student",
+        phone: "13800000070",
+        guardianPhone: "13800000071",
+      },
+    });
+
+    const before = await prisma.refundRecord.count({ where: { studentId: freshStudent.id } });
+    const result = await withdrawStudent(freshStudent.id, {
+      withdrawalDate: new Date("2026-03-17T00:00:00.000Z").toISOString(),
+      withdrawalReason: "无退款退学",
+    });
+    expect(result.success).toBe(true);
+    const after = await prisma.refundRecord.count({ where: { studentId: freshStudent.id } });
+    expect(after).toBe(before); // no RefundRecord created
+
+    await prisma.student.delete({ where: { id: freshStudent.id } });
+  });
+
+  it("withdraws with complete refund fields — atomically creates RefundRecord", async () => {
+    const result = await withdrawStudent(testStudentForRefundWithdrawId, {
+      withdrawalDate: new Date("2026-03-17T00:00:00.000Z").toISOString(),
+      withdrawalReason: "转学退费",
+      refundAmount: 1500,
+      refundDate: new Date("2026-03-17T00:00:00.000Z").toISOString(),
+      refundReason: "退还剩余学费",
+    });
+    expect(result.success).toBe(true);
+
+    const refundRecords = await prisma.refundRecord.findMany({
+      where: { studentId: testStudentForRefundWithdrawId },
+    });
+    expect(refundRecords).toHaveLength(1);
+    expect(Number(refundRecords[0].amount)).toBe(1500);
+    expect(refundRecords[0].reason).toBe("退还剩余学费");
+  });
+
+  it("rejects withdrawal with refundAmount but missing refundDate and refundReason", async () => {
+    const freshStudent = await prisma.student.create({
+      data: {
+        studentNo: `S2026PR${Date.now()}`,
+        name: "Partial Refund Student",
+        phone: "13800000080",
+        guardianPhone: "13800000081",
+      },
+    });
+
+    const result = await withdrawStudent(freshStudent.id, {
+      withdrawalDate: new Date().toISOString(),
+      withdrawalReason: "退学",
+      refundAmount: 500,
+      // refundDate and refundReason intentionally omitted
+    });
+    expect(result.success).toBe(false);
+
+    await prisma.student.delete({ where: { id: freshStudent.id } });
+  });
+
+  it("rejects withdrawal with refundAmount = 0", async () => {
+    const freshStudent = await prisma.student.create({
+      data: {
+        studentNo: `S2026ZR${Date.now()}`,
+        name: "Zero Refund Student",
+        phone: "13800000082",
+        guardianPhone: "13800000083",
+      },
+    });
+
+    const result = await withdrawStudent(freshStudent.id, {
+      withdrawalDate: new Date().toISOString(),
+      withdrawalReason: "退学",
+      refundAmount: 0,
+      refundDate: new Date().toISOString(),
+      refundReason: "退款",
+    });
+    expect(result.success).toBe(false);
+
+    await prisma.student.delete({ where: { id: freshStudent.id } });
+  });
+
+  it("rejects withdrawal when refundInvoiceId belongs to a different student", async () => {
+    const freshStudent = await prisma.student.create({
+      data: {
+        studentNo: `S2026WI${Date.now()}`,
+        name: "Wrong Invoice Student",
+        phone: "13800000084",
+        guardianPhone: "13800000085",
+      },
+    });
+    const otherStudent = await prisma.student.create({
+      data: {
+        studentNo: `S2026OI${Date.now()}`,
+        name: "Other Invoice Owner",
+        phone: "13800000086",
+        guardianPhone: "13800000087",
+      },
+    });
+
+    const feeStructure = await prisma.feeStructure.create({
+      data: { name: `Fee-WI-${Date.now()}`, amount: 1000, recurrence: "ONE_TIME", academicYear: "2026" },
+    });
+    const assignment = await prisma.feeAssignment.create({
+      data: { feeStructureId: feeStructure.id, studentId: otherStudent.id, dueDate: new Date() },
+    });
+    const invoice = await prisma.invoice.create({
+      data: { feeAssignmentId: assignment.id, studentId: otherStudent.id, amountDue: 1000, dueDate: new Date() },
+    });
+
+    const result = await withdrawStudent(freshStudent.id, {
+      withdrawalDate: new Date().toISOString(),
+      withdrawalReason: "退学",
+      refundAmount: 500,
+      refundDate: new Date().toISOString(),
+      refundReason: "退款",
+      refundInvoiceId: invoice.id,
+    });
+    expect(result.success).toBe(false);
+
+    // clean up
+    await prisma.invoice.delete({ where: { id: invoice.id } });
+    await prisma.feeAssignment.delete({ where: { id: assignment.id } });
+    await prisma.feeStructure.delete({ where: { id: feeStructure.id } });
+    await prisma.student.delete({ where: { id: freshStudent.id } });
+    await prisma.student.delete({ where: { id: otherStudent.id } });
   });
 });

@@ -334,6 +334,19 @@ export type CreateRecruitmentCostInput = z.infer<typeof CreateRecruitmentCostSch
 export const WithdrawStudentSchema = z.object({
   withdrawalDate: z.string().datetime(),
   withdrawalReason: z.string().min(1, "请填写退学原因"),
+  refundAmount: z.number().positive("退款金额必须大于0").optional(),
+  refundDate: z.string().datetime().optional(),
+  refundReason: z.string().min(1, "请填写退款原因").optional(),
+  refundInvoiceId: z.string().cuid().optional(),
+}).superRefine((data, ctx) => {
+  if (data.refundAmount !== undefined) {
+    if (!data.refundDate) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: "填写退款金额时必须提供退款日期", path: ["refundDate"] });
+    }
+    if (!data.refundReason) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: "填写退款金额时必须提供退款原因", path: ["refundReason"] });
+    }
+  }
 });
 export type WithdrawStudentInput = z.infer<typeof WithdrawStudentSchema>;
 
@@ -357,6 +370,7 @@ export type FinancialSummaryFilters = z.infer<typeof FinancialSummaryFiltersSche
 export interface FinancialSummary {
   totalIncome: number;
   totalCosts: number;
+  totalRefunded: number;
   netIncome: number;
 }
 
@@ -365,6 +379,7 @@ export interface MonthlyFinancialEntry {
   label: string;
   tuitionIncome: number;
   recruitmentCost: number;
+  refundAmount: number;
   netIncome: number;
 }
 

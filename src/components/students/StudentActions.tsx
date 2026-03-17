@@ -15,22 +15,49 @@ export default function StudentActions({ studentId, hasRecords, isWithdrawn }: P
   const [showWithdrawForm, setShowWithdrawForm] = useState(false);
   const [withdrawalDate, setWithdrawalDate] = useState(new Date().toISOString().slice(0, 10));
   const [withdrawalReason, setWithdrawalReason] = useState("");
+  const [showRefund, setShowRefund] = useState(false);
+  const [refundAmount, setRefundAmount] = useState("");
+  const [refundDate, setRefundDate] = useState(new Date().toISOString().slice(0, 10));
+  const [refundReason, setRefundReason] = useState("");
+  const [refundInvoiceId, setRefundInvoiceId] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
+  function resetForm() {
+    setShowWithdrawForm(false);
+    setWithdrawalReason("");
+    setShowRefund(false);
+    setRefundAmount("");
+    setRefundReason("");
+    setRefundInvoiceId("");
+    setError(null);
+  }
+
   async function handleWithdraw() {
     if (!withdrawalReason.trim()) { setError("请填写退学原因"); return; }
+    if (showRefund) {
+      if (!refundAmount || Number(refundAmount) <= 0) { setError("退款金额必须大于0"); return; }
+      if (!refundDate) { setError("请填写退款日期"); return; }
+      if (!refundReason.trim()) { setError("请填写退款原因"); return; }
+    }
     setError(null);
     setPending(true);
     try {
-      const result = await withdrawStudent(studentId, {
+      const input: Parameters<typeof withdrawStudent>[1] = {
         withdrawalDate: new Date(withdrawalDate + "T00:00:00").toISOString(),
         withdrawalReason,
-      });
+        ...(showRefund && {
+          refundAmount: Number(refundAmount),
+          refundDate: new Date(refundDate + "T00:00:00").toISOString(),
+          refundReason,
+          ...(refundInvoiceId.trim() && { refundInvoiceId: refundInvoiceId.trim() }),
+        }),
+      };
+      const result = await withdrawStudent(studentId, input);
       if (!result.success) {
         setError(result.error);
       } else {
-        setShowWithdrawForm(false);
+        resetForm();
         router.refresh();
       }
     } finally {
@@ -47,7 +74,6 @@ export default function StudentActions({ studentId, hasRecords, isWithdrawn }: P
         alert(result.error);
       } else {
         router.push("/students");
-        router.refresh();
       }
     } finally {
       setPending(false);
@@ -100,9 +126,66 @@ export default function StudentActions({ studentId, hasRecords, isWithdrawn }: P
                 className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm"
               />
             </div>
+            <div className="border-t pt-3">
+              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={showRefund}
+                  onChange={(e) => setShowRefund(e.target.checked)}
+                  className="rounded"
+                />
+                同时记录退款
+              </label>
+              {showRefund && (
+                <div className="mt-3 space-y-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">退款金额（元）</label>
+                    <input
+                      type="number"
+                      min="0.01"
+                      step="0.01"
+                      value={refundAmount}
+                      onChange={(e) => setRefundAmount(e.target.value)}
+                      placeholder="请输入退款金额"
+                      className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">退款日期</label>
+                    <input
+                      type="date"
+                      value={refundDate}
+                      onChange={(e) => setRefundDate(e.target.value)}
+                      className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">退款原因</label>
+                    <input
+                      type="text"
+                      value={refundReason}
+                      onChange={(e) => setRefundReason(e.target.value)}
+                      placeholder="请填写退款原因"
+                      className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">关联账单 ID（可选）</label>
+                    <input
+                      type="text"
+                      value={refundInvoiceId}
+                      onChange={(e) => setRefundInvoiceId(e.target.value)}
+                      placeholder="留空则不关联账单"
+                      className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+
             <div className="flex gap-2 justify-end">
               <button
-                onClick={() => { setShowWithdrawForm(false); setError(null); }}
+                onClick={resetForm}
                 className="px-4 py-2 border border-gray-300 text-sm rounded-md"
               >
                 取消

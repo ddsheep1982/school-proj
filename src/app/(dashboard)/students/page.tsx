@@ -15,11 +15,11 @@ export default async function StudentsPage({ searchParams }: Props) {
   const includeWithdrawn = sp.includeWithdrawn === "1";
 
   const filters: Partial<StudentFilters> & { includeWithdrawn?: boolean } = {
-    search: sp.search,
-    classId: sp.classId,
-    enrollmentTeacherId: sp.enrollmentTeacherId,
-    enrollmentStatus: sp.enrollmentStatus as StudentFilters["enrollmentStatus"],
-    paymentStatus: sp.paymentStatus as StudentFilters["paymentStatus"],
+    search: sp.search || undefined,
+    classId: sp.classId || undefined,
+    enrollmentTeacherId: sp.enrollmentTeacherId || undefined,
+    enrollmentStatus: (sp.enrollmentStatus || undefined) as StudentFilters["enrollmentStatus"],
+    paymentStatus: (sp.paymentStatus || undefined) as StudentFilters["paymentStatus"],
     page: sp.page ? parseInt(sp.page) : 1,
     pageSize: 20,
     includeWithdrawn,

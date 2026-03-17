@@ -57,7 +57,7 @@ export async function createPayment(
 
     await writeAuditLog(user.id, "CREATE", "PaymentRecord", record.id, { after: record });
 
-    return { success: true, data: record };
+    return { success: true, data: { ...record, amount: Number(record.amount) } as unknown as PaymentRecord };
   } catch (err) {
     return { success: false, error: String(err) };
   }
@@ -100,7 +100,7 @@ export async function createAdjustment(
       after: { ...record, type: "adjustment", originalId: data.originalId },
     });
 
-    return { success: true, data: record };
+    return { success: true, data: { ...record, amount: Number(record.amount) } as unknown as PaymentRecord };
   } catch (err) {
     return { success: false, error: String(err) };
   }

@@ -35,7 +35,7 @@ export async function getFinancialSummary(
       }
     : undefined;
 
-  const [incomeAgg, costAgg] = await Promise.all([
+  const [incomeAgg, costAgg, refundAgg] = await Promise.all([
     prisma.paymentRecord.aggregate({
       _sum: { amount: true },
       where: {
@@ -51,18 +51,26 @@ export async function getFinancialSummary(
         ...(studentIdFilter ? { studentId: studentIdFilter } : {}),
       },
     }),
+    prisma.refundRecord.aggregate({
+      _sum: { amount: true },
+      where: {
+        ...(dateRange ? { refundDate: dateRange } : {}),
+        ...(studentIdFilter ? { studentId: studentIdFilter } : {}),
+      },
+    }),
   ]);
 
   const totalIncome = toNumber(incomeAgg._sum.amount ?? 0);
   const totalCosts = toNumber(costAgg._sum.amount ?? 0);
-  return { totalIncome, totalCosts, netIncome: totalIncome - totalCosts };
+  const totalRefunded = toNumber(refundAgg._sum.amount ?? 0);
+  return { totalIncome, totalCosts, totalRefunded, netIncome: totalIncome - totalCosts - totalRefunded };
 }
 
 export async function getMonthlyFinancialBreakdown(year: number): Promise<MonthlyFinancialEntry[]> {
   const start = new Date(`${year}-01-01T00:00:00.000Z`);
   const end = new Date(`${year + 1}-01-01T00:00:00.000Z`);
 
-  const [payments, costs] = await Promise.all([
+  const [payments, costs, refunds] = await Promise.all([
     prisma.paymentRecord.findMany({
       where: { paymentDate: { gte: start, lt: end }, isAdjustment: false },
       select: { paymentDate: true, amount: true },
@@ -70,6 +78,10 @@ export async function getMonthlyFinancialBreakdown(year: number): Promise<Monthl
     prisma.recruitmentCost.findMany({
       where: { paymentDate: { gte: start, lt: end } },
       select: { paymentDate: true, amount: true },
+    }),
+    prisma.refundRecord.findMany({
+      where: { refundDate: { gte: start, lt: end } },
+      select: { refundDate: true, amount: true },
     }),
   ]);
 
@@ -79,6 +91,7 @@ export async function getMonthlyFinancialBreakdown(year: number): Promise<Monthl
     label: MONTH_LABELS[i],
     tuitionIncome: 0,
     recruitmentCost: 0,
+    refundAmount: 0,
     netIncome: 0,
   }));
 
@@ -90,8 +103,12 @@ export async function getMonthlyFinancialBreakdown(year: number): Promise<Monthl
     const m = new Date(c.paymentDate).getUTCMonth();
     entries[m].recruitmentCost += toNumber(c.amount);
   }
+  for (const r of refunds) {
+    const m = new Date(r.refundDate).getUTCMonth();
+    entries[m].refundAmount += toNumber(r.amount);
+  }
   for (const e of entries) {
-    e.netIncome = e.tuitionIncome - e.recruitmentCost;
+    e.netIncome = e.tuitionIncome - e.recruitmentCost - e.refundAmount;
   }
 
   return entries;

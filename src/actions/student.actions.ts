@@ -226,13 +226,39 @@ export async function withdrawStudent(
     if (!before) return { success: false, error: "学生不存在" };
     if (before.withdrawalDate) return { success: false, error: "该学生已退学" };
 
-    const student = await prisma.student.update({
-      where: { id },
-      data: {
-        withdrawalDate: new Date(parsed.data.withdrawalDate),
-        withdrawalReason: parsed.data.withdrawalReason,
-        enrollmentStatus: "WITHDRAWN",
-      },
+    const { refundAmount, refundDate, refundReason, refundInvoiceId } = parsed.data;
+
+    if (refundInvoiceId) {
+      const invoice = await prisma.invoice.findUnique({ where: { id: refundInvoiceId } });
+      if (!invoice || invoice.studentId !== id) {
+        return { success: false, error: "发票不属于该学生" };
+      }
+    }
+
+    const student = await prisma.$transaction(async (tx) => {
+      const updated = await tx.student.update({
+        where: { id },
+        data: {
+          withdrawalDate: new Date(parsed.data.withdrawalDate),
+          withdrawalReason: parsed.data.withdrawalReason,
+          enrollmentStatus: "WITHDRAWN",
+        },
+      });
+
+      if (refundAmount !== undefined) {
+        await tx.refundRecord.create({
+          data: {
+            studentId: id,
+            amount: refundAmount,
+            refundDate: new Date(refundDate!),
+            reason: refundReason!,
+            invoiceId: refundInvoiceId ?? null,
+            createdById: user.id,
+          },
+        });
+      }
+
+      return updated;
     });
 
     await writeAuditLog(user.id, "UPDATE", "Student", id, { before, after: student });
