@@ -77,7 +77,27 @@ export type AttendanceRecord = Prisma.AttendanceRecordModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model FeeStructure
+ * 
+ */
+export type FeeStructure = Prisma.FeeStructureModel
+/**
+ * Model FeeAssignment
+ * 
+ */
+export type FeeAssignment = Prisma.FeeAssignmentModel
+/**
+ * Model Invoice
+ * 
+ */
+export type Invoice = Prisma.InvoiceModel
+/**
  * Model AuditLog
  * 
  */
 export type AuditLog = Prisma.AuditLogModel
+/**
+ * Model RecruitmentCost
+ * 
+ */
+export type RecruitmentCost = Prisma.RecruitmentCostModel

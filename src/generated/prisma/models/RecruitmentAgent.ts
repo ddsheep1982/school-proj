@@ -199,6 +199,7 @@ export type RecruitmentAgentWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"RecruitmentAgent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"RecruitmentAgent"> | Date | string
   recruitedStudents?: Prisma.StudentListRelationFilter
+  recruitmentCosts?: Prisma.RecruitmentCostListRelationFilter
 }
 
 export type RecruitmentAgentOrderByWithRelationInput = {
@@ -210,6 +211,7 @@ export type RecruitmentAgentOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   recruitedStudents?: Prisma.StudentOrderByRelationAggregateInput
+  recruitmentCosts?: Prisma.RecruitmentCostOrderByRelationAggregateInput
 }
 
 export type RecruitmentAgentWhereUniqueInput = Prisma.AtLeast<{
@@ -224,6 +226,7 @@ export type RecruitmentAgentWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"RecruitmentAgent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"RecruitmentAgent"> | Date | string
   recruitedStudents?: Prisma.StudentListRelationFilter
+  recruitmentCosts?: Prisma.RecruitmentCostListRelationFilter
 }, "id">
 
 export type RecruitmentAgentOrderByWithAggregationInput = {
@@ -261,6 +264,7 @@ export type RecruitmentAgentCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recruitedStudents?: Prisma.StudentCreateNestedManyWithoutRecruitmentAgentInput
+  recruitmentCosts?: Prisma.RecruitmentCostCreateNestedManyWithoutAgentInput
 }
 
 export type RecruitmentAgentUncheckedCreateInput = {
@@ -272,6 +276,7 @@ export type RecruitmentAgentUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recruitedStudents?: Prisma.StudentUncheckedCreateNestedManyWithoutRecruitmentAgentInput
+  recruitmentCosts?: Prisma.RecruitmentCostUncheckedCreateNestedManyWithoutAgentInput
 }
 
 export type RecruitmentAgentUpdateInput = {
@@ -283,6 +288,7 @@ export type RecruitmentAgentUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recruitedStudents?: Prisma.StudentUpdateManyWithoutRecruitmentAgentNestedInput
+  recruitmentCosts?: Prisma.RecruitmentCostUpdateManyWithoutAgentNestedInput
 }
 
 export type RecruitmentAgentUncheckedUpdateInput = {
@@ -294,6 +300,7 @@ export type RecruitmentAgentUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recruitedStudents?: Prisma.StudentUncheckedUpdateManyWithoutRecruitmentAgentNestedInput
+  recruitmentCosts?: Prisma.RecruitmentCostUncheckedUpdateManyWithoutAgentNestedInput
 }
 
 export type RecruitmentAgentCreateManyInput = {
@@ -381,6 +388,22 @@ export type RecruitmentAgentUpdateOneWithoutRecruitedStudentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.RecruitmentAgentUpdateToOneWithWhereWithoutRecruitedStudentsInput, Prisma.RecruitmentAgentUpdateWithoutRecruitedStudentsInput>, Prisma.RecruitmentAgentUncheckedUpdateWithoutRecruitedStudentsInput>
 }
 
+export type RecruitmentAgentCreateNestedOneWithoutRecruitmentCostsInput = {
+  create?: Prisma.XOR<Prisma.RecruitmentAgentCreateWithoutRecruitmentCostsInput, Prisma.RecruitmentAgentUncheckedCreateWithoutRecruitmentCostsInput>
+  connectOrCreate?: Prisma.RecruitmentAgentCreateOrConnectWithoutRecruitmentCostsInput
+  connect?: Prisma.RecruitmentAgentWhereUniqueInput
+}
+
+export type RecruitmentAgentUpdateOneWithoutRecruitmentCostsNestedInput = {
+  create?: Prisma.XOR<Prisma.RecruitmentAgentCreateWithoutRecruitmentCostsInput, Prisma.RecruitmentAgentUncheckedCreateWithoutRecruitmentCostsInput>
+  connectOrCreate?: Prisma.RecruitmentAgentCreateOrConnectWithoutRecruitmentCostsInput
+  upsert?: Prisma.RecruitmentAgentUpsertWithoutRecruitmentCostsInput
+  disconnect?: Prisma.RecruitmentAgentWhereInput | boolean
+  delete?: Prisma.RecruitmentAgentWhereInput | boolean
+  connect?: Prisma.RecruitmentAgentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RecruitmentAgentUpdateToOneWithWhereWithoutRecruitmentCostsInput, Prisma.RecruitmentAgentUpdateWithoutRecruitmentCostsInput>, Prisma.RecruitmentAgentUncheckedUpdateWithoutRecruitmentCostsInput>
+}
+
 export type RecruitmentAgentCreateWithoutRecruitedStudentsInput = {
   id?: string
   name: string
@@ -389,6 +412,7 @@ export type RecruitmentAgentCreateWithoutRecruitedStudentsInput = {
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  recruitmentCosts?: Prisma.RecruitmentCostCreateNestedManyWithoutAgentInput
 }
 
 export type RecruitmentAgentUncheckedCreateWithoutRecruitedStudentsInput = {
@@ -399,6 +423,7 @@ export type RecruitmentAgentUncheckedCreateWithoutRecruitedStudentsInput = {
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  recruitmentCosts?: Prisma.RecruitmentCostUncheckedCreateNestedManyWithoutAgentInput
 }
 
 export type RecruitmentAgentCreateOrConnectWithoutRecruitedStudentsInput = {
@@ -425,6 +450,7 @@ export type RecruitmentAgentUpdateWithoutRecruitedStudentsInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recruitmentCosts?: Prisma.RecruitmentCostUpdateManyWithoutAgentNestedInput
 }
 
 export type RecruitmentAgentUncheckedUpdateWithoutRecruitedStudentsInput = {
@@ -435,6 +461,67 @@ export type RecruitmentAgentUncheckedUpdateWithoutRecruitedStudentsInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recruitmentCosts?: Prisma.RecruitmentCostUncheckedUpdateManyWithoutAgentNestedInput
+}
+
+export type RecruitmentAgentCreateWithoutRecruitmentCostsInput = {
+  id?: string
+  name: string
+  agencyName?: string | null
+  phone: string
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  recruitedStudents?: Prisma.StudentCreateNestedManyWithoutRecruitmentAgentInput
+}
+
+export type RecruitmentAgentUncheckedCreateWithoutRecruitmentCostsInput = {
+  id?: string
+  name: string
+  agencyName?: string | null
+  phone: string
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  recruitedStudents?: Prisma.StudentUncheckedCreateNestedManyWithoutRecruitmentAgentInput
+}
+
+export type RecruitmentAgentCreateOrConnectWithoutRecruitmentCostsInput = {
+  where: Prisma.RecruitmentAgentWhereUniqueInput
+  create: Prisma.XOR<Prisma.RecruitmentAgentCreateWithoutRecruitmentCostsInput, Prisma.RecruitmentAgentUncheckedCreateWithoutRecruitmentCostsInput>
+}
+
+export type RecruitmentAgentUpsertWithoutRecruitmentCostsInput = {
+  update: Prisma.XOR<Prisma.RecruitmentAgentUpdateWithoutRecruitmentCostsInput, Prisma.RecruitmentAgentUncheckedUpdateWithoutRecruitmentCostsInput>
+  create: Prisma.XOR<Prisma.RecruitmentAgentCreateWithoutRecruitmentCostsInput, Prisma.RecruitmentAgentUncheckedCreateWithoutRecruitmentCostsInput>
+  where?: Prisma.RecruitmentAgentWhereInput
+}
+
+export type RecruitmentAgentUpdateToOneWithWhereWithoutRecruitmentCostsInput = {
+  where?: Prisma.RecruitmentAgentWhereInput
+  data: Prisma.XOR<Prisma.RecruitmentAgentUpdateWithoutRecruitmentCostsInput, Prisma.RecruitmentAgentUncheckedUpdateWithoutRecruitmentCostsInput>
+}
+
+export type RecruitmentAgentUpdateWithoutRecruitmentCostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  agencyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recruitedStudents?: Prisma.StudentUpdateManyWithoutRecruitmentAgentNestedInput
+}
+
+export type RecruitmentAgentUncheckedUpdateWithoutRecruitmentCostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  agencyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recruitedStudents?: Prisma.StudentUncheckedUpdateManyWithoutRecruitmentAgentNestedInput
 }
 
 
@@ -444,10 +531,12 @@ export type RecruitmentAgentUncheckedUpdateWithoutRecruitedStudentsInput = {
 
 export type RecruitmentAgentCountOutputType = {
   recruitedStudents: number
+  recruitmentCosts: number
 }
 
 export type RecruitmentAgentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   recruitedStudents?: boolean | RecruitmentAgentCountOutputTypeCountRecruitedStudentsArgs
+  recruitmentCosts?: boolean | RecruitmentAgentCountOutputTypeCountRecruitmentCostsArgs
 }
 
 /**
@@ -467,6 +556,13 @@ export type RecruitmentAgentCountOutputTypeCountRecruitedStudentsArgs<ExtArgs ex
   where?: Prisma.StudentWhereInput
 }
 
+/**
+ * RecruitmentAgentCountOutputType without action
+ */
+export type RecruitmentAgentCountOutputTypeCountRecruitmentCostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RecruitmentCostWhereInput
+}
+
 
 export type RecruitmentAgentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -477,6 +573,7 @@ export type RecruitmentAgentSelect<ExtArgs extends runtime.Types.Extensions.Inte
   createdAt?: boolean
   updatedAt?: boolean
   recruitedStudents?: boolean | Prisma.RecruitmentAgent$recruitedStudentsArgs<ExtArgs>
+  recruitmentCosts?: boolean | Prisma.RecruitmentAgent$recruitmentCostsArgs<ExtArgs>
   _count?: boolean | Prisma.RecruitmentAgentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["recruitmentAgent"]>
 
@@ -513,6 +610,7 @@ export type RecruitmentAgentSelectScalar = {
 export type RecruitmentAgentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "agencyName" | "phone" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["recruitmentAgent"]>
 export type RecruitmentAgentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   recruitedStudents?: boolean | Prisma.RecruitmentAgent$recruitedStudentsArgs<ExtArgs>
+  recruitmentCosts?: boolean | Prisma.RecruitmentAgent$recruitmentCostsArgs<ExtArgs>
   _count?: boolean | Prisma.RecruitmentAgentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type RecruitmentAgentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -522,6 +620,7 @@ export type $RecruitmentAgentPayload<ExtArgs extends runtime.Types.Extensions.In
   name: "RecruitmentAgent"
   objects: {
     recruitedStudents: Prisma.$StudentPayload<ExtArgs>[]
+    recruitmentCosts: Prisma.$RecruitmentCostPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -926,6 +1025,7 @@ readonly fields: RecruitmentAgentFieldRefs;
 export interface Prisma__RecruitmentAgentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   recruitedStudents<T extends Prisma.RecruitmentAgent$recruitedStudentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RecruitmentAgent$recruitedStudentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  recruitmentCosts<T extends Prisma.RecruitmentAgent$recruitmentCostsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RecruitmentAgent$recruitmentCostsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecruitmentCostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1376,6 +1476,30 @@ export type RecruitmentAgent$recruitedStudentsArgs<ExtArgs extends runtime.Types
   take?: number
   skip?: number
   distinct?: Prisma.StudentScalarFieldEnum | Prisma.StudentScalarFieldEnum[]
+}
+
+/**
+ * RecruitmentAgent.recruitmentCosts
+ */
+export type RecruitmentAgent$recruitmentCostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecruitmentCost
+   */
+  select?: Prisma.RecruitmentCostSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecruitmentCost
+   */
+  omit?: Prisma.RecruitmentCostOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecruitmentCostInclude<ExtArgs> | null
+  where?: Prisma.RecruitmentCostWhereInput
+  orderBy?: Prisma.RecruitmentCostOrderByWithRelationInput | Prisma.RecruitmentCostOrderByWithRelationInput[]
+  cursor?: Prisma.RecruitmentCostWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RecruitmentCostScalarFieldEnum | Prisma.RecruitmentCostScalarFieldEnum[]
 }
 
 /**

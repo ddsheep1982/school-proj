@@ -314,6 +314,23 @@ export type EnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumUserRoleFilter<$PrismaModel>
 }
 
+export type EnumFeeRecurrenceFilter<$PrismaModel = never> = {
+  equals?: $Enums.FeeRecurrence | Prisma.EnumFeeRecurrenceFieldRefInput<$PrismaModel>
+  in?: $Enums.FeeRecurrence[] | Prisma.ListEnumFeeRecurrenceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FeeRecurrence[] | Prisma.ListEnumFeeRecurrenceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFeeRecurrenceFilter<$PrismaModel> | $Enums.FeeRecurrence
+}
+
+export type EnumFeeRecurrenceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FeeRecurrence | Prisma.EnumFeeRecurrenceFieldRefInput<$PrismaModel>
+  in?: $Enums.FeeRecurrence[] | Prisma.ListEnumFeeRecurrenceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FeeRecurrence[] | Prisma.ListEnumFeeRecurrenceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFeeRecurrenceWithAggregatesFilter<$PrismaModel> | $Enums.FeeRecurrence
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFeeRecurrenceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFeeRecurrenceFilter<$PrismaModel>
+}
+
 export type JsonNullableFilter<$PrismaModel = never> =
 | Prisma.PatchUndefined<
     Prisma.Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -363,6 +380,23 @@ export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedJsonNullableFilter<$PrismaModel>
   _max?: Prisma.NestedJsonNullableFilter<$PrismaModel>
+}
+
+export type EnumRecruitmentCostRecipientTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.RecruitmentCostRecipientType | Prisma.EnumRecruitmentCostRecipientTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.RecruitmentCostRecipientType[] | Prisma.ListEnumRecruitmentCostRecipientTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RecruitmentCostRecipientType[] | Prisma.ListEnumRecruitmentCostRecipientTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRecruitmentCostRecipientTypeFilter<$PrismaModel> | $Enums.RecruitmentCostRecipientType
+}
+
+export type EnumRecruitmentCostRecipientTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.RecruitmentCostRecipientType | Prisma.EnumRecruitmentCostRecipientTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.RecruitmentCostRecipientType[] | Prisma.ListEnumRecruitmentCostRecipientTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RecruitmentCostRecipientType[] | Prisma.ListEnumRecruitmentCostRecipientTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRecruitmentCostRecipientTypeWithAggregatesFilter<$PrismaModel> | $Enums.RecruitmentCostRecipientType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumRecruitmentCostRecipientTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumRecruitmentCostRecipientTypeFilter<$PrismaModel>
 }
 
 export type NestedStringFilter<$PrismaModel = never> = {
@@ -678,6 +712,23 @@ export type NestedEnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumUserRoleFilter<$PrismaModel>
 }
 
+export type NestedEnumFeeRecurrenceFilter<$PrismaModel = never> = {
+  equals?: $Enums.FeeRecurrence | Prisma.EnumFeeRecurrenceFieldRefInput<$PrismaModel>
+  in?: $Enums.FeeRecurrence[] | Prisma.ListEnumFeeRecurrenceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FeeRecurrence[] | Prisma.ListEnumFeeRecurrenceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFeeRecurrenceFilter<$PrismaModel> | $Enums.FeeRecurrence
+}
+
+export type NestedEnumFeeRecurrenceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FeeRecurrence | Prisma.EnumFeeRecurrenceFieldRefInput<$PrismaModel>
+  in?: $Enums.FeeRecurrence[] | Prisma.ListEnumFeeRecurrenceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FeeRecurrence[] | Prisma.ListEnumFeeRecurrenceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFeeRecurrenceWithAggregatesFilter<$PrismaModel> | $Enums.FeeRecurrence
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFeeRecurrenceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFeeRecurrenceFilter<$PrismaModel>
+}
+
 export type NestedJsonNullableFilter<$PrismaModel = never> =
 | Prisma.PatchUndefined<
     Prisma.Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -700,6 +751,23 @@ export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
   gt?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel>
   gte?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel>
   not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | Prisma.JsonNullValueFilter
+}
+
+export type NestedEnumRecruitmentCostRecipientTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.RecruitmentCostRecipientType | Prisma.EnumRecruitmentCostRecipientTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.RecruitmentCostRecipientType[] | Prisma.ListEnumRecruitmentCostRecipientTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RecruitmentCostRecipientType[] | Prisma.ListEnumRecruitmentCostRecipientTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRecruitmentCostRecipientTypeFilter<$PrismaModel> | $Enums.RecruitmentCostRecipientType
+}
+
+export type NestedEnumRecruitmentCostRecipientTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.RecruitmentCostRecipientType | Prisma.EnumRecruitmentCostRecipientTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.RecruitmentCostRecipientType[] | Prisma.ListEnumRecruitmentCostRecipientTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RecruitmentCostRecipientType[] | Prisma.ListEnumRecruitmentCostRecipientTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRecruitmentCostRecipientTypeWithAggregatesFilter<$PrismaModel> | $Enums.RecruitmentCostRecipientType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumRecruitmentCostRecipientTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumRecruitmentCostRecipientTypeFilter<$PrismaModel>
 }
 
 

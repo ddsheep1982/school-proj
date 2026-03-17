@@ -3,10 +3,16 @@ import Link from "next/link";
 import { getStudentById } from "@/actions/student.actions";
 import { getPaymentsByStudent } from "@/actions/payment.actions";
 import { getAttendanceByStudent } from "@/actions/attendance.actions";
+import { getStudentInvoices, getStudentOutstandingBalance } from "@/actions/invoice.actions";
+import { getRecruitmentCostsByStudent } from "@/actions/recruitment-cost.actions";
+import { getTeachers } from "@/actions/teacher.actions";
+import { getAgents } from "@/actions/agent.actions";
 import { EnrollmentStatusBadge, PaymentStatusBadge } from "@/components/shared/StatusBadge";
 import PaymentForm from "@/components/payments/PaymentForm";
 import PaymentHistory from "@/components/payments/PaymentHistory";
 import AttendanceForm from "@/components/attendance/AttendanceForm";
+import StudentInvoiceList from "@/components/fees/StudentInvoiceList";
+import StudentFinancialTab from "@/components/finance/StudentFinancialTab";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -20,15 +26,23 @@ export default async function StudentDetailPage({ params, searchParams }: Props)
   const student = await getStudentById(id);
   if (!student) notFound();
 
-  const [payments, attendance] = await Promise.all([
-    tab === "payments" ? getPaymentsByStudent(id) : Promise.resolve([]),
-    tab === "attendance" ? getAttendanceByStudent(id) : Promise.resolve([]),
-  ]);
+  const [payments, attendance, invoices, outstandingBalance, recruitmentCosts, teachers, agents] =
+    await Promise.all([
+      tab === "payments" || tab === "finance" ? getPaymentsByStudent(id) : Promise.resolve([]),
+      tab === "attendance" ? getAttendanceByStudent(id) : Promise.resolve([]),
+      tab === "invoices" ? getStudentInvoices(id) : Promise.resolve([]),
+      tab === "invoices" ? getStudentOutstandingBalance(id) : Promise.resolve(0),
+      tab === "finance" ? getRecruitmentCostsByStudent(id) : Promise.resolve([]),
+      tab === "finance" ? getTeachers() : Promise.resolve([]),
+      tab === "finance" ? getAgents() : Promise.resolve([]),
+    ]);
 
   const tabs = [
     { key: "info", label: "基本信息" },
     { key: "payments", label: "缴费记录" },
     { key: "attendance", label: "考勤记录" },
+    { key: "invoices", label: "费用发票" },
+    { key: "finance", label: "费用" },
   ];
 
   return (
@@ -144,6 +158,22 @@ export default async function StudentDetailPage({ params, searchParams }: Props)
           <PaymentForm studentId={id} />
           <PaymentHistory records={payments} />
         </div>
+      )}
+
+      {/* Invoices tab */}
+      {tab === "invoices" && (
+        <StudentInvoiceList invoices={invoices} outstandingBalance={outstandingBalance} />
+      )}
+
+      {/* Finance tab */}
+      {tab === "finance" && (
+        <StudentFinancialTab
+          studentId={id}
+          payments={payments}
+          recruitmentCosts={recruitmentCosts}
+          teachers={teachers.map((t) => ({ id: t.id, name: t.name }))}
+          agents={agents.map((a) => ({ id: a.id, name: a.name, agencyName: a.agencyName ?? null }))}
+        />
       )}
 
       {/* Attendance tab */}

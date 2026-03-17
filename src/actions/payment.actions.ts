@@ -35,6 +35,14 @@ export async function createPayment(
     const student = await prisma.student.findUnique({ where: { id: data.studentId } });
     if (!student) return { success: false, error: "学生不存在" };
 
+    if (data.invoiceId) {
+      const invoice = await prisma.invoice.findUnique({ where: { id: data.invoiceId } });
+      if (!invoice) return { success: false, error: "发票不存在" };
+      if (invoice.studentId !== data.studentId) {
+        return { success: false, error: "发票与学生不匹配" };
+      }
+    }
+
     const record = await prisma.paymentRecord.create({
       data: {
         studentId: data.studentId,
@@ -42,6 +50,7 @@ export async function createPayment(
         paymentDate: new Date(data.paymentDate),
         paymentType: data.paymentType,
         notes: data.notes ?? null,
+        invoiceId: data.invoiceId ?? null,
         createdById: user.id,
       },
     });

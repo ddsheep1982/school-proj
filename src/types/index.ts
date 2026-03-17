@@ -111,6 +111,7 @@ export const CreatePaymentSchema = z.object({
   paymentDate: z.string().datetime(),
   paymentType: PaymentTypeEnum,
   notes: z.string().optional(),
+  invoiceId: z.string().cuid().optional(),
 });
 
 export type CreatePaymentInput = z.infer<typeof CreatePaymentSchema>;
@@ -245,4 +246,116 @@ export interface KanbanData {
   ACTIVE: KanbanCard[];
   WITHDRAWN: KanbanCard[];
   GRADUATED: KanbanCard[];
+}
+
+// ---------------------------------------------------------------------------
+// Fee Management schemas
+// ---------------------------------------------------------------------------
+export const FeeRecurrenceEnum = z.enum(["ONE_TIME", "TERM", "ANNUAL"]);
+export type FeeRecurrence = z.infer<typeof FeeRecurrenceEnum>;
+
+export const CreateFeeStructureSchema = z.object({
+  name: z.string().min(1, "费用名称不能为空"),
+  description: z.string().optional(),
+  amount: z.number().positive("金额必须大于0"),
+  recurrence: FeeRecurrenceEnum,
+  academicYear: z.string().min(1, "学年不能为空"),
+});
+export type CreateFeeStructureInput = z.infer<typeof CreateFeeStructureSchema>;
+
+export const UpdateFeeStructureSchema = z.object({
+  name: z.string().min(1).optional(),
+  description: z.string().nullable().optional(),
+  amount: z.number().positive().optional(),
+  recurrence: FeeRecurrenceEnum.optional(),
+  academicYear: z.string().min(1).optional(),
+});
+export type UpdateFeeStructureInput = z.infer<typeof UpdateFeeStructureSchema>;
+
+export const CreateFeeAssignmentSchema = z.discriminatedUnion("targetType", [
+  z.object({
+    targetType: z.literal("student"),
+    feeStructureId: z.string().cuid(),
+    studentId: z.string().cuid(),
+    dueDate: z.string().datetime(),
+  }),
+  z.object({
+    targetType: z.literal("class"),
+    feeStructureId: z.string().cuid(),
+    classId: z.string().cuid(),
+    dueDate: z.string().datetime(),
+  }),
+]);
+export type CreateFeeAssignmentInput = z.infer<typeof CreateFeeAssignmentSchema>;
+
+export const InvoiceStatusEnum = z.enum(["OUTSTANDING", "PARTIAL", "PAID", "WAIVED"]);
+export type InvoiceStatus = z.infer<typeof InvoiceStatusEnum>;
+
+export const WaiveInvoiceSchema = z.object({
+  invoiceId: z.string().cuid(),
+  waivedReason: z.string().min(1, "请填写豁免原因"),
+});
+export type WaiveInvoiceInput = z.infer<typeof WaiveInvoiceSchema>;
+
+export const ListInvoicesSchema = z.object({
+  status: InvoiceStatusEnum.optional(),
+  academicYear: z.string().optional(),
+  page: z.coerce.number().int().positive().default(1),
+  pageSize: z.coerce.number().int().positive().max(100).default(20),
+});
+export type ListInvoicesInput = z.infer<typeof ListInvoicesSchema>;
+
+// ---------------------------------------------------------------------------
+// Financial / Recruitment Cost schemas
+// ---------------------------------------------------------------------------
+export const RecruitmentCostRecipientTypeEnum = z.enum(["TEACHER", "AGENT"]);
+export type RecruitmentCostRecipientType = z.infer<typeof RecruitmentCostRecipientTypeEnum>;
+
+export const CreateRecruitmentCostSchema = z.object({
+  studentId: z.string().cuid(),
+  amount: z.number().positive("金额必须大于0"),
+  paymentDate: z.string().datetime(),
+  recipientType: RecruitmentCostRecipientTypeEnum,
+  teacherId: z.string().cuid().optional(),
+  agentId: z.string().cuid().optional(),
+  notes: z.string().optional(),
+}).refine(
+  (d) => {
+    if (d.recipientType === "TEACHER") return !!d.teacherId;
+    if (d.recipientType === "AGENT") return !!d.agentId;
+    return true;
+  },
+  { message: "必须根据收款方类型填写对应的老师或代理", path: ["recipientType"] }
+);
+export type CreateRecruitmentCostInput = z.infer<typeof CreateRecruitmentCostSchema>;
+
+export const FinancialSummaryFiltersSchema = z.object({
+  startDate: z.string().datetime().optional(),
+  endDate: z.string().datetime().optional(),
+  classId: z.string().cuid().optional(),
+  year: z.coerce.number().int().optional(),
+});
+export type FinancialSummaryFilters = z.infer<typeof FinancialSummaryFiltersSchema>;
+
+export interface FinancialSummary {
+  totalIncome: number;
+  totalCosts: number;
+  netIncome: number;
+}
+
+export interface MonthlyFinancialEntry {
+  month: number;
+  label: string;
+  tuitionIncome: number;
+  recruitmentCost: number;
+  netIncome: number;
+}
+
+export interface StudentFinancialSummary {
+  studentId: string;
+  studentNo: string;
+  name: string;
+  totalTuition: number;
+  totalRecruitmentCost: number;
+  netContribution: number;
 }

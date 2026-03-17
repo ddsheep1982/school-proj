@@ -58,7 +58,11 @@ export const ModelName = {
   PaymentRecord: 'PaymentRecord',
   AttendanceRecord: 'AttendanceRecord',
   User: 'User',
-  AuditLog: 'AuditLog'
+  FeeStructure: 'FeeStructure',
+  FeeAssignment: 'FeeAssignment',
+  Invoice: 'Invoice',
+  AuditLog: 'AuditLog',
+  RecruitmentCost: 'RecruitmentCost'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -144,6 +148,7 @@ export const PaymentRecordScalarFieldEnum = {
   notes: 'notes',
   isAdjustment: 'isAdjustment',
   originalId: 'originalId',
+  invoiceId: 'invoiceId',
   createdById: 'createdById',
   createdAt: 'createdAt'
 } as const
@@ -179,6 +184,48 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const FeeStructureScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  amount: 'amount',
+  recurrence: 'recurrence',
+  academicYear: 'academicYear',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FeeStructureScalarFieldEnum = (typeof FeeStructureScalarFieldEnum)[keyof typeof FeeStructureScalarFieldEnum]
+
+
+export const FeeAssignmentScalarFieldEnum = {
+  id: 'id',
+  feeStructureId: 'feeStructureId',
+  studentId: 'studentId',
+  classId: 'classId',
+  dueDate: 'dueDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FeeAssignmentScalarFieldEnum = (typeof FeeAssignmentScalarFieldEnum)[keyof typeof FeeAssignmentScalarFieldEnum]
+
+
+export const InvoiceScalarFieldEnum = {
+  id: 'id',
+  feeAssignmentId: 'feeAssignmentId',
+  studentId: 'studentId',
+  amountDue: 'amountDue',
+  dueDate: 'dueDate',
+  waivedAt: 'waivedAt',
+  waivedReason: 'waivedReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
 export const AuditLogScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -190,6 +237,22 @@ export const AuditLogScalarFieldEnum = {
 } as const
 
 export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
+
+
+export const RecruitmentCostScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  amount: 'amount',
+  paymentDate: 'paymentDate',
+  recipientType: 'recipientType',
+  teacherId: 'teacherId',
+  agentId: 'agentId',
+  notes: 'notes',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type RecruitmentCostScalarFieldEnum = (typeof RecruitmentCostScalarFieldEnum)[keyof typeof RecruitmentCostScalarFieldEnum]
 
 
 export const SortOrder = {

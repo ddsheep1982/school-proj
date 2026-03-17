@@ -52,3 +52,20 @@ export const UserRole = {
 } as const
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+
+
+export const FeeRecurrence = {
+  ONE_TIME: 'ONE_TIME',
+  TERM: 'TERM',
+  ANNUAL: 'ANNUAL'
+} as const
+
+export type FeeRecurrence = (typeof FeeRecurrence)[keyof typeof FeeRecurrence]
+
+
+export const RecruitmentCostRecipientType = {
+  TEACHER: 'TEACHER',
+  AGENT: 'AGENT'
+} as const
+
+export type RecruitmentCostRecipientType = (typeof RecruitmentCostRecipientType)[keyof typeof RecruitmentCostRecipientType]

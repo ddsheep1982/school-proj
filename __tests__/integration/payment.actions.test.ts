@@ -123,6 +123,47 @@ describe("createPayment", () => {
     if (result.success) return;
     expect(result.error).toContain("学生不存在");
   });
+
+  it("creates a payment with invoiceId when invoice belongs to same student", async () => {
+    // Create a fee structure, assignment, and invoice for this student
+    const feeStructure = await prisma.feeStructure.create({
+      data: {
+        name: `Payment Test Fee ${TEST_TAG}`,
+        amount: 1000,
+        recurrence: "ONE_TIME",
+        academicYear: "2026",
+      },
+    });
+    const assignment = await prisma.feeAssignment.create({
+      data: {
+        feeStructureId: feeStructure.id,
+        studentId: testStudentId,
+        dueDate: new Date(),
+        invoices: {
+          create: { studentId: testStudentId, amountDue: 1000, dueDate: new Date() },
+        },
+      },
+      include: { invoices: true },
+    });
+    const invoiceId = assignment.invoices[0].id;
+
+    const result = await createPayment({
+      studentId: testStudentId,
+      amount: 500,
+      paymentDate: new Date().toISOString(),
+      paymentType: "CASH",
+      invoiceId,
+    });
+    expect(result.success).toBe(true);
+    if (!result.success) return;
+    expect(result.data.invoiceId).toBe(invoiceId);
+
+    // Cleanup
+    await prisma.paymentRecord.delete({ where: { id: result.data.id } });
+    await prisma.invoice.deleteMany({ where: { feeAssignmentId: assignment.id } });
+    await prisma.feeAssignment.delete({ where: { id: assignment.id } });
+    await prisma.feeStructure.delete({ where: { id: feeStructure.id } });
+  });
 });
 
 describe("createAdjustment", () => {

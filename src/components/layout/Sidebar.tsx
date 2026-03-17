@@ -10,6 +10,7 @@ const navItems = [
   { href: "/teachers", label: "招生老师", icon: "👨‍🏫" },
   { href: "/agents", label: "招生代理", icon: "🤝" },
   { href: "/attendance", label: "考勤管理", icon: "📋" },
+  { href: "/finance", label: "财务", icon: "💰" },
 ];
 
 const adminItems = [{ href: "/admin/users", label: "用户管理", icon: "⚙️" }];
