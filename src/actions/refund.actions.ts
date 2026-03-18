@@ -10,7 +10,8 @@ import {
 } from "@/types/index";
 import type { RefundRecord } from "@/generated/prisma/client";
 
-export type RefundRecordWithInvoice = RefundRecord & {
+export type RefundRecordWithInvoice = Omit<RefundRecord, "amount"> & {
+  amount: number;
   invoice: { id: string; amountDue: number } | null;
 };
 
@@ -67,8 +68,9 @@ export async function getRefundsByStudent(studentId: string): Promise<RefundReco
   });
   return records.map((r) => ({
     ...r,
+    amount: Number(r.amount),
     invoice: r.invoice ? { id: r.invoice.id, amountDue: Number(r.invoice.amountDue) } : null,
-  }));
+  })) as RefundRecordWithInvoice[];
 }
 
 export async function deleteRefundRecord(id: string): Promise<ActionResult<void>> {

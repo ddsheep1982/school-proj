@@ -10,7 +10,8 @@ import {
 } from "@/types/index";
 import type { RecruitmentCost } from "@/generated/prisma/client";
 
-export type RecruitmentCostWithRecipient = RecruitmentCost & {
+export type RecruitmentCostWithRecipient = Omit<RecruitmentCost, "amount"> & {
+  amount: number;
   teacher: { id: string; name: string } | null;
   agent: { id: string; name: string; agencyName: string | null } | null;
 };
@@ -73,7 +74,7 @@ export async function getRecruitmentCostsByStudent(
       agent: { select: { id: true, name: true, agencyName: true } },
     },
     orderBy: { paymentDate: "desc" },
-  }) as Promise<RecruitmentCostWithRecipient[]>;
+  }) as unknown as Promise<RecruitmentCostWithRecipient[]>;
 }
 
 export async function deleteRecruitmentCost(id: string): Promise<ActionResult<{ id: string }>> {
