@@ -8,10 +8,22 @@ interface Props {
   total: number;
   page: number;
   pageSize: number;
+  searchParams?: Record<string, string | undefined>;
 }
 
-export default function StudentTable({ students, total, page, pageSize }: Props) {
+export default function StudentTable({ students, total, page, pageSize, searchParams }: Props) {
   const totalPages = Math.ceil(total / pageSize);
+
+  function pageUrl(p: number) {
+    const params = new URLSearchParams();
+    if (searchParams) {
+      for (const [k, v] of Object.entries(searchParams)) {
+        if (v && k !== "page") params.set(k, v);
+      }
+    }
+    params.set("page", String(p));
+    return `?${params.toString()}`;
+  }
 
   return (
     <div>
@@ -69,7 +81,7 @@ export default function StudentTable({ students, total, page, pageSize }: Props)
                     </Link>
                     <StudentActions
                       studentId={s.id}
-                      hasRecords={false}
+                      hasRecords={s.hasRecords}
                       isWithdrawn={!!s.withdrawalDate}
                     />
                   </div>
@@ -86,7 +98,7 @@ export default function StudentTable({ students, total, page, pageSize }: Props)
           <div className="flex gap-2">
             {page > 1 && (
               <Link
-                href={`?page=${page - 1}`}
+                href={pageUrl(page - 1)}
                 className="px-3 py-1 border rounded hover:bg-gray-50"
               >
                 上一页
@@ -97,7 +109,7 @@ export default function StudentTable({ students, total, page, pageSize }: Props)
             </span>
             {page < totalPages && (
               <Link
-                href={`?page=${page + 1}`}
+                href={pageUrl(page + 1)}
                 className="px-3 py-1 border rounded hover:bg-gray-50"
               >
                 下一页

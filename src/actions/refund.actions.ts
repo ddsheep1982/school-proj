@@ -39,6 +39,23 @@ export async function createRefundRecord(
       if (invoice.studentId !== data.studentId) return { success: false, error: "发票不属于该学生" };
     }
 
+    const [paymentAgg, refundAgg] = await Promise.all([
+      prisma.paymentRecord.aggregate({
+        _sum: { amount: true },
+        where: { studentId: data.studentId, isAdjustment: false },
+      }),
+      prisma.refundRecord.aggregate({
+        _sum: { amount: true },
+        where: { studentId: data.studentId },
+      }),
+    ]);
+    const totalPaid = Number(paymentAgg._sum.amount ?? 0);
+    const totalRefunded = Number(refundAgg._sum.amount ?? 0);
+    if (data.amount + totalRefunded > totalPaid) {
+      const available = (totalPaid - totalRefunded).toFixed(2);
+      return { success: false, error: `退款金额超出已缴费用，可退金额：¥${available}` };
+    }
+
     const record = await prisma.refundRecord.create({
       data: {
         studentId: data.studentId,

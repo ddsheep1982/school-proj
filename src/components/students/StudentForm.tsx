@@ -144,7 +144,6 @@ export default function StudentForm({ classes, teachers, agents, student }: Prop
                 className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="ACTIVE">在读</option>
-                <option value="WITHDRAWN">退学</option>
                 <option value="GRADUATED">毕业</option>
               </select>
             </div>

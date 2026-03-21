@@ -28,6 +28,7 @@ export type StudentListItem = {
   withdrawalDate: Date | null;
   class: { id: string; name: string } | null;
   enrollmentTeacher: { id: string; name: string } | null;
+  hasRecords: boolean;
 };
 
 export type StudentDetail = Student & {
@@ -102,6 +103,10 @@ export async function updateStudent(
     if (!before) return { success: false, error: "学生不存在" };
 
     const data = parsed.data;
+
+    if (data.enrollmentStatus === "WITHDRAWN") {
+      return { success: false, error: "退学操作必须通过退学流程进行，不能直接修改在读状态" };
+    }
 
     // If channel type changes, clear the other channel's id
     const channelType = data.recruitmentChannelType;
@@ -189,12 +194,22 @@ export async function getStudents(
         withdrawalDate: true,
         class: { select: { id: true, name: true } },
         enrollmentTeacher: { select: { id: true, name: true } },
+        _count: { select: { paymentRecords: true, recruitmentCosts: true, refundRecords: true } },
       },
     }),
     prisma.student.count({ where }),
   ]);
 
-  return { students, total };
+  return {
+    students: students.map((s) => {
+      const { _count, ...rest } = s;
+      return {
+        ...rest,
+        hasRecords: _count.paymentRecords > 0 || _count.recruitmentCosts > 0 || _count.refundRecords > 0,
+      };
+    }),
+    total,
+  };
 }
 
 export async function getStudentById(id: string): Promise<StudentDetail | null> {
@@ -232,6 +247,25 @@ export async function withdrawStudent(
       const invoice = await prisma.invoice.findUnique({ where: { id: refundInvoiceId } });
       if (!invoice || invoice.studentId !== id) {
         return { success: false, error: "发票不属于该学生" };
+      }
+    }
+
+    if (refundAmount !== undefined) {
+      const [paymentAgg, refundAgg] = await Promise.all([
+        prisma.paymentRecord.aggregate({
+          _sum: { amount: true },
+          where: { studentId: id, isAdjustment: false },
+        }),
+        prisma.refundRecord.aggregate({
+          _sum: { amount: true },
+          where: { studentId: id },
+        }),
+      ]);
+      const totalPaid = Number(paymentAgg._sum.amount ?? 0);
+      const totalRefunded = Number(refundAgg._sum.amount ?? 0);
+      if (refundAmount + totalRefunded > totalPaid) {
+        const available = (totalPaid - totalRefunded).toFixed(2);
+        return { success: false, error: `退款金额超出已缴费用，可退金额：¥${available}` };
       }
     }
 

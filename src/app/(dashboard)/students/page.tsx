@@ -123,6 +123,7 @@ export default async function StudentsPage({ searchParams }: Props) {
         total={total}
         page={filters.page ?? 1}
         pageSize={20}
+        searchParams={sp}
       />
     </div>
   );
