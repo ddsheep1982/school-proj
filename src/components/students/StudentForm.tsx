@@ -57,7 +57,7 @@ export default function StudentForm({ classes, teachers, agents, student }: Prop
       enrollmentTeacherId: form.enrollmentTeacherId || undefined,
       receptionTeacherId: form.receptionTeacherId || undefined,
       recruitmentChannelType: channelType,
-      recruitmentTeacherId: channelType === "TEACHER" ? form.recruitmentTeacherId || undefined : undefined,
+      recruitmentTeacherId: channelType === "TEACHER" ? form.enrollmentTeacherId || undefined : undefined,
       recruitmentAgentId: channelType === "AGENT" ? form.recruitmentAgentId || undefined : undefined,
     };
 
@@ -183,21 +183,6 @@ export default function StudentForm({ classes, teachers, agents, student }: Prop
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">招生老师</label>
-            <select
-              value={form.enrollmentTeacherId}
-              onChange={(e) => set("enrollmentTeacherId", e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">— 未指定 —</option>
-              {teachers.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">接待老师</label>
             <select
               value={form.receptionTeacherId}
@@ -218,7 +203,16 @@ export default function StudentForm({ classes, teachers, agents, student }: Prop
           <label className="block text-sm font-medium text-gray-700 mb-1">招生渠道</label>
           <select
             value={form.recruitmentChannelType}
-            onChange={(e) => set("recruitmentChannelType", e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              setForm((prev) => ({
+                ...prev,
+                recruitmentChannelType: val,
+                enrollmentTeacherId: val === "TEACHER" ? prev.enrollmentTeacherId : "",
+                recruitmentTeacherId: "",
+                recruitmentAgentId: "",
+              }));
+            }}
             className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">— 未指定 —</option>
@@ -233,8 +227,8 @@ export default function StudentForm({ classes, teachers, agents, student }: Prop
               招生老师 <span className="text-red-500">*</span>
             </label>
             <select
-              value={form.recruitmentTeacherId}
-              onChange={(e) => set("recruitmentTeacherId", e.target.value)}
+              value={form.enrollmentTeacherId}
+              onChange={(e) => set("enrollmentTeacherId", e.target.value)}
               required
               className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
