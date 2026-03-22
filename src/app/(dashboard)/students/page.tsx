@@ -118,6 +118,34 @@ export default async function StudentsPage({ searchParams }: Props) {
         </Link>
       </form>
 
+      {/* Export buttons */}
+      {(() => {
+        const exportParams = new URLSearchParams();
+        if (sp.search) exportParams.set("search", sp.search);
+        if (sp.classId) exportParams.set("classId", sp.classId);
+        if (sp.enrollmentTeacherId) exportParams.set("enrollmentTeacherId", sp.enrollmentTeacherId);
+        if (sp.enrollmentStatus) exportParams.set("enrollmentStatus", sp.enrollmentStatus);
+        if (sp.paymentStatus) exportParams.set("paymentStatus", sp.paymentStatus);
+        if (sp.includeWithdrawn) exportParams.set("includeWithdrawn", sp.includeWithdrawn);
+        const base = `/api/export/students?${exportParams.toString()}`;
+        return (
+          <div className="flex gap-2 justify-end">
+            <a
+              href={`${base}&format=xlsx`}
+              className="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md"
+            >
+              导出 Excel
+            </a>
+            <a
+              href={`${base}&format=pdf`}
+              className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md"
+            >
+              导出 PDF
+            </a>
+          </div>
+        );
+      })()}
+
       <StudentTable
         students={students}
         total={total}

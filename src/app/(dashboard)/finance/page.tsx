@@ -104,6 +104,22 @@ export default async function FinancePage({ searchParams }: Props) {
         </div>
       </div>
 
+      {/* Export buttons */}
+      <div className="flex gap-2 justify-end">
+        <a
+          href={`/api/export/finance?format=xlsx&year=${year}`}
+          className="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md"
+        >
+          导出 Excel
+        </a>
+        <a
+          href={`/api/export/finance?format=pdf&year=${year}`}
+          className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md"
+        >
+          导出 PDF
+        </a>
+      </div>
+
       {/* Monthly breakdown */}
       <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
         <div className="p-4 border-b border-gray-100">
