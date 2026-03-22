@@ -6,6 +6,7 @@ import {
   AttendanceTimeSchema,
   CreateClassSchema,
   CreateTeacherSchema,
+  UpdateTeacherSchema,
   CreateAgentSchema,
   CreateUserSchema,
   WithdrawStudentSchema,
@@ -29,6 +30,40 @@ describe("CreateStudentSchema", () => {
 
   it("rejects empty phone", () => {
     expect(CreateStudentSchema.safeParse({ ...base, phone: "" }).success).toBe(false);
+  });
+
+  // phone format validation
+  it("accepts valid 11-digit Chinese mobile phone", () => {
+    expect(CreateStudentSchema.safeParse({ ...base, phone: "13812345678" }).success).toBe(true);
+  });
+
+  it("rejects phone with only 10 digits", () => {
+    expect(CreateStudentSchema.safeParse({ ...base, phone: "1381234567" }).success).toBe(false);
+  });
+
+  it("rejects phone with invalid prefix (120...)", () => {
+    expect(CreateStudentSchema.safeParse({ ...base, phone: "12012345678" }).success).toBe(false);
+  });
+
+  it("rejects phone with non-numeric characters", () => {
+    expect(CreateStudentSchema.safeParse({ ...base, phone: "138-1234-5678" }).success).toBe(false);
+  });
+
+  // guardianPhone format validation
+  it("accepts valid guardianPhone", () => {
+    expect(CreateStudentSchema.safeParse({ ...base, guardianPhone: "13912345678" }).success).toBe(true);
+  });
+
+  it("rejects guardianPhone with only 10 digits", () => {
+    expect(CreateStudentSchema.safeParse({ ...base, guardianPhone: "1391234567" }).success).toBe(false);
+  });
+
+  it("rejects guardianPhone with invalid prefix", () => {
+    expect(CreateStudentSchema.safeParse({ ...base, guardianPhone: "12012345678" }).success).toBe(false);
+  });
+
+  it("rejects guardianPhone with non-numeric characters", () => {
+    expect(CreateStudentSchema.safeParse({ ...base, guardianPhone: "139-1234-5678" }).success).toBe(false);
   });
 
   it("rejects TEACHER channel without recruitmentTeacherId", () => {
@@ -169,6 +204,56 @@ describe("CreateTeacherSchema", () => {
     expect(CreateTeacherSchema.safeParse({ name: "", phone: "13900000001" }).success).toBe(
       false
     );
+  });
+});
+
+describe("UpdateStudentSchema phone validation", () => {
+  it("accepts update without phone field", () => {
+    expect(UpdateStudentSchema.safeParse({ name: "张三" }).success).toBe(true);
+  });
+
+  it("accepts update with valid phone", () => {
+    expect(UpdateStudentSchema.safeParse({ phone: "13812345678" }).success).toBe(true);
+  });
+
+  it("rejects update with invalid phone format", () => {
+    expect(UpdateStudentSchema.safeParse({ phone: "1381234567" }).success).toBe(false);
+  });
+
+  it("accepts update without guardianPhone field", () => {
+    expect(UpdateStudentSchema.safeParse({ name: "张三" }).success).toBe(true);
+  });
+
+  it("rejects update with invalid guardianPhone format", () => {
+    expect(UpdateStudentSchema.safeParse({ guardianPhone: "12012345678" }).success).toBe(false);
+  });
+});
+
+describe("CreateTeacherSchema phone validation", () => {
+  it("rejects teacher with invalid phone format", () => {
+    expect(CreateTeacherSchema.safeParse({ name: "李老师", phone: "1391234567" }).success).toBe(false);
+  });
+
+  it("rejects teacher with non-numeric phone", () => {
+    expect(CreateTeacherSchema.safeParse({ name: "李老师", phone: "139-1234-5678" }).success).toBe(false);
+  });
+
+  it("accepts teacher with valid phone", () => {
+    expect(CreateTeacherSchema.safeParse({ name: "李老师", phone: "13912345678" }).success).toBe(true);
+  });
+});
+
+describe("UpdateTeacherSchema phone validation", () => {
+  it("accepts update without phone field", () => {
+    expect(UpdateTeacherSchema.safeParse({ name: "李老师" }).success).toBe(true);
+  });
+
+  it("accepts update with valid phone", () => {
+    expect(UpdateTeacherSchema.safeParse({ phone: "13812345678" }).success).toBe(true);
+  });
+
+  it("rejects update with invalid phone format", () => {
+    expect(UpdateTeacherSchema.safeParse({ phone: "12012345678" }).success).toBe(false);
   });
 });
 

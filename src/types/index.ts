@@ -32,13 +32,19 @@ export const UserRoleEnum = z.enum(["ADMIN", "STAFF"]);
 export type UserRole = z.infer<typeof UserRoleEnum>;
 
 // ---------------------------------------------------------------------------
+// Shared validators
+// ---------------------------------------------------------------------------
+const cnMobilePhone = /^1[3-9]\d{9}$/;
+const cnMobilePhoneMsg = "请输入有效的11位中国大陆手机号码";
+
+// ---------------------------------------------------------------------------
 // Student schemas
 // ---------------------------------------------------------------------------
 export const CreateStudentSchema = z
   .object({
     name: z.string().min(1, "姓名不能为空"),
-    phone: z.string().min(1, "联系电话不能为空"),
-    guardianPhone: z.string().min(1, "家长联系电话不能为空"),
+    phone: z.string().regex(cnMobilePhone, cnMobilePhoneMsg),
+    guardianPhone: z.string().regex(cnMobilePhone, cnMobilePhoneMsg),
     enrollmentDate: z.string().datetime(),
     classId: z.string().cuid().optional(),
     enrollmentTeacherId: z.string().cuid().optional(),
@@ -64,8 +70,8 @@ export type CreateStudentInput = z.infer<typeof CreateStudentSchema>;
 export const UpdateStudentSchema = z
   .object({
     name: z.string().min(1, "姓名不能为空").optional(),
-    phone: z.string().min(1, "联系电话不能为空").optional(),
-    guardianPhone: z.string().min(1, "家长联系电话不能为空").optional(),
+    phone: z.string().regex(cnMobilePhone, cnMobilePhoneMsg).optional(),
+    guardianPhone: z.string().regex(cnMobilePhone, cnMobilePhoneMsg).optional(),
     enrollmentDate: z.string().datetime().optional(),
     enrollmentStatus: EnrollmentStatusEnum.optional(),
     paymentStatus: PaymentStatusEnum.optional(),
@@ -162,14 +168,14 @@ export type UpdateClassInput = z.infer<typeof UpdateClassSchema>;
 // ---------------------------------------------------------------------------
 export const CreateTeacherSchema = z.object({
   name: z.string().min(1, "姓名不能为空"),
-  phone: z.string().min(1, "联系电话不能为空"),
+  phone: z.string().regex(cnMobilePhone, cnMobilePhoneMsg),
 });
 
 export type CreateTeacherInput = z.infer<typeof CreateTeacherSchema>;
 
 export const UpdateTeacherSchema = z.object({
   name: z.string().min(1).optional(),
-  phone: z.string().min(1).optional(),
+  phone: z.string().regex(cnMobilePhone, cnMobilePhoneMsg).optional(),
   active: z.boolean().optional(),
 });
 

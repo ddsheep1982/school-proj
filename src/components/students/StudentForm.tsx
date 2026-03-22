@@ -34,6 +34,7 @@ export default function StudentForm({ classes, teachers, agents, student }: Prop
   });
 
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [loading, setLoading] = useState(false);
 
   function set(field: string, value: string) {
@@ -44,6 +45,7 @@ export default function StudentForm({ classes, teachers, agents, student }: Prop
     e.preventDefault();
     setLoading(true);
     setError("");
+    setFieldErrors({});
 
     const enrollmentDate = new Date(form.enrollmentDate + "T00:00:00").toISOString();
     const channelType = form.recruitmentChannelType as "TEACHER" | "AGENT" | "" || undefined;
@@ -73,6 +75,7 @@ export default function StudentForm({ classes, teachers, agents, student }: Prop
 
     if (!result.success) {
       setError(result.error);
+      setFieldErrors(result.fieldErrors ?? {});
     } else {
       router.push(`/students/${result.data.id}`);
     }
@@ -109,8 +112,11 @@ export default function StudentForm({ classes, teachers, agents, student }: Prop
               required
               value={form.phone}
               onChange={(e) => set("phone", e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${fieldErrors.phone ? "border-red-400" : "border-gray-300"}`}
             />
+            {fieldErrors.phone && (
+              <p className="mt-1 text-xs text-red-600">{fieldErrors.phone[0]}</p>
+            )}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -120,8 +126,11 @@ export default function StudentForm({ classes, teachers, agents, student }: Prop
               required
               value={form.guardianPhone}
               onChange={(e) => set("guardianPhone", e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${fieldErrors.guardianPhone ? "border-red-400" : "border-gray-300"}`}
             />
+            {fieldErrors.guardianPhone && (
+              <p className="mt-1 text-xs text-red-600">{fieldErrors.guardianPhone[0]}</p>
+            )}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">入学日期</label>
