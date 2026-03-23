@@ -34,6 +34,8 @@ const prisma = new PrismaClient({ adapter });
 const TEST_TAG = `integration-class-${Date.now()}`;
 
 let testUserId: string;
+let testGradeId: string;
+let testCampusId: string;
 const createdClassIds: string[] = [];
 
 const mockAdminUser = {
@@ -44,7 +46,6 @@ const mockAdminUser = {
 };
 
 beforeAll(async () => {
-
   const user = await prisma.user.create({
     data: {
       name: mockAdminUser.name,
@@ -56,6 +57,12 @@ beforeAll(async () => {
   testUserId = user.id;
   mockAdminUser.id = user.id;
   _testUser = mockAdminUser;
+
+  // Create test campus and grade for class tests
+  const campus = await prisma.campus.create({ data: { name: `Test Campus ${TEST_TAG}` } });
+  testCampusId = campus.id;
+  const grade = await prisma.grade.create({ data: { name: `Test Grade ${TEST_TAG}`, campusId: campus.id } });
+  testGradeId = grade.id;
 });
 
 afterAll(async () => {
@@ -64,6 +71,8 @@ afterAll(async () => {
   for (const id of createdClassIds) {
     await prisma.class.delete({ where: { id } }).catch(() => {});
   }
+  await prisma.grade.delete({ where: { id: testGradeId } }).catch(() => {});
+  await prisma.campus.delete({ where: { id: testCampusId } }).catch(() => {});
   await prisma.user.delete({ where: { id: testUserId } }).catch(() => {});
   _testUser = null;
   await prisma.$disconnect();
@@ -74,6 +83,7 @@ describe("createClass", () => {
     const result = await createClass({
       name: `Test Class ${TEST_TAG}`,
       capacity: 25,
+      gradeId: testGradeId,
     });
 
     expect(result.success).toBe(true);
@@ -96,6 +106,7 @@ describe("deleteClass", () => {
     const createResult = await createClass({
       name: `Delete Me ${TEST_TAG}`,
       capacity: 10,
+      gradeId: testGradeId,
     });
     expect(createResult.success).toBe(true);
     if (!createResult.success) return;
@@ -110,6 +121,7 @@ describe("deleteClass", () => {
     const classResult = await createClass({
       name: `Occupied Class ${TEST_TAG}`,
       capacity: 20,
+      gradeId: testGradeId,
     });
     expect(classResult.success).toBe(true);
     if (!classResult.success) return;
@@ -160,6 +172,7 @@ describe("getClassById", () => {
     const createResult = await createClass({
       name: `Detail Class ${TEST_TAG}`,
       capacity: 15,
+      gradeId: testGradeId,
     });
     expect(createResult.success).toBe(true);
     if (!createResult.success) return;
@@ -186,6 +199,7 @@ describe("getClasses", () => {
     const createResult = await createClass({
       name: `Archived Class ${TEST_TAG}`,
       capacity: 5,
+      gradeId: testGradeId,
     });
     expect(createResult.success).toBe(true);
     if (!createResult.success) return;

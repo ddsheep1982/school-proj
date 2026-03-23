@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getClassById } from "@/actions/class.actions";
+import { getGrades } from "@/actions/grade.actions";
 import EditClassForm from "./EditClassForm";
 import Link from "next/link";
 
@@ -9,7 +10,7 @@ interface Props {
 
 export default async function EditClassPage({ params }: Props) {
   const { id } = await params;
-  const cls = await getClassById(id);
+  const [cls, grades] = await Promise.all([getClassById(id), getGrades()]);
   if (!cls) notFound();
 
   return (
@@ -20,7 +21,7 @@ export default async function EditClassPage({ params }: Props) {
         </Link>
         <h1 className="text-2xl font-bold">编辑班级</h1>
       </div>
-      <EditClassForm id={id} name={cls.name} capacity={cls.capacity} />
+      <EditClassForm id={id} name={cls.name} capacity={cls.capacity} gradeId={cls.gradeId ?? ""} grades={grades} />
     </div>
   );
 }

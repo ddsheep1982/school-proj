@@ -43,6 +43,11 @@ export default function ClassCard({ cls }: Props) {
             <span className="text-xs bg-red-100 text-red-700 px-1.5 py-0.5 rounded">已满</span>
           )}
         </div>
+        {cls.grade && (
+          <p className="text-xs text-gray-400 mt-1">
+            {cls.grade.campus.name} · {cls.grade.name}
+          </p>
+        )}
         <p className="text-sm text-gray-500 mt-2">
           {enrolled} / {cls.capacity} 人
         </p>

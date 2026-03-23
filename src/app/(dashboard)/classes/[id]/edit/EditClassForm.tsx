@@ -3,19 +3,25 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { updateClass } from "@/actions/class.actions";
+import type { GradeWithCount } from "@/actions/grade.actions";
 
 export default function EditClassForm({
   id,
   name: initialName,
   capacity: initialCapacity,
+  gradeId: initialGradeId,
+  grades,
 }: {
   id: string;
   name: string;
   capacity: number;
+  gradeId: string;
+  grades: GradeWithCount[];
 }) {
   const router = useRouter();
   const [name, setName] = useState(initialName);
   const [capacity, setCapacity] = useState(String(initialCapacity));
+  const [gradeId, setGradeId] = useState(initialGradeId);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -23,7 +29,7 @@ export default function EditClassForm({
     e.preventDefault();
     setLoading(true);
     setError("");
-    const result = await updateClass(id, { name, capacity: parseInt(capacity) });
+    const result = await updateClass(id, { name, capacity: parseInt(capacity), gradeId: gradeId || undefined });
     setLoading(false);
     if (!result.success) {
       setError(result.error);
@@ -36,6 +42,21 @@ export default function EditClassForm({
   return (
     <form onSubmit={handleSubmit} className="bg-white border border-gray-200 rounded-lg p-6 space-y-4">
       {error && <p className="text-sm text-red-600">{error}</p>}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">年级</label>
+        <select
+          value={gradeId}
+          onChange={(e) => setGradeId(e.target.value)}
+          className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">请选择年级</option>
+          {grades.map((g) => (
+            <option key={g.id} value={g.id}>
+              {g.campus.name} — {g.name}
+            </option>
+          ))}
+        </select>
+      </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">班级名称 *</label>
         <input

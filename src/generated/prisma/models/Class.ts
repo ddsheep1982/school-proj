@@ -38,6 +38,7 @@ export type ClassMinAggregateOutputType = {
   id: string | null
   name: string | null
   capacity: number | null
+  gradeId: string | null
   archived: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -47,6 +48,7 @@ export type ClassMaxAggregateOutputType = {
   id: string | null
   name: string | null
   capacity: number | null
+  gradeId: string | null
   archived: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -56,6 +58,7 @@ export type ClassCountAggregateOutputType = {
   id: number
   name: number
   capacity: number
+  gradeId: number
   archived: number
   createdAt: number
   updatedAt: number
@@ -75,6 +78,7 @@ export type ClassMinAggregateInputType = {
   id?: true
   name?: true
   capacity?: true
+  gradeId?: true
   archived?: true
   createdAt?: true
   updatedAt?: true
@@ -84,6 +88,7 @@ export type ClassMaxAggregateInputType = {
   id?: true
   name?: true
   capacity?: true
+  gradeId?: true
   archived?: true
   createdAt?: true
   updatedAt?: true
@@ -93,6 +98,7 @@ export type ClassCountAggregateInputType = {
   id?: true
   name?: true
   capacity?: true
+  gradeId?: true
   archived?: true
   createdAt?: true
   updatedAt?: true
@@ -189,6 +195,7 @@ export type ClassGroupByOutputType = {
   id: string
   name: string
   capacity: number
+  gradeId: string | null
   archived: boolean
   createdAt: Date
   updatedAt: Date
@@ -221,9 +228,11 @@ export type ClassWhereInput = {
   id?: Prisma.StringFilter<"Class"> | string
   name?: Prisma.StringFilter<"Class"> | string
   capacity?: Prisma.IntFilter<"Class"> | number
+  gradeId?: Prisma.StringNullableFilter<"Class"> | string | null
   archived?: Prisma.BoolFilter<"Class"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Class"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Class"> | Date | string
+  grade?: Prisma.XOR<Prisma.GradeNullableScalarRelationFilter, Prisma.GradeWhereInput> | null
   students?: Prisma.StudentListRelationFilter
   feeAssignments?: Prisma.FeeAssignmentListRelationFilter
 }
@@ -232,31 +241,37 @@ export type ClassOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   capacity?: Prisma.SortOrder
+  gradeId?: Prisma.SortOrderInput | Prisma.SortOrder
   archived?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  grade?: Prisma.GradeOrderByWithRelationInput
   students?: Prisma.StudentOrderByRelationAggregateInput
   feeAssignments?: Prisma.FeeAssignmentOrderByRelationAggregateInput
 }
 
 export type ClassWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  name?: string
+  name_gradeId?: Prisma.ClassNameGradeIdCompoundUniqueInput
   AND?: Prisma.ClassWhereInput | Prisma.ClassWhereInput[]
   OR?: Prisma.ClassWhereInput[]
   NOT?: Prisma.ClassWhereInput | Prisma.ClassWhereInput[]
+  name?: Prisma.StringFilter<"Class"> | string
   capacity?: Prisma.IntFilter<"Class"> | number
+  gradeId?: Prisma.StringNullableFilter<"Class"> | string | null
   archived?: Prisma.BoolFilter<"Class"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Class"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Class"> | Date | string
+  grade?: Prisma.XOR<Prisma.GradeNullableScalarRelationFilter, Prisma.GradeWhereInput> | null
   students?: Prisma.StudentListRelationFilter
   feeAssignments?: Prisma.FeeAssignmentListRelationFilter
-}, "id" | "name">
+}, "id" | "name_gradeId">
 
 export type ClassOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   capacity?: Prisma.SortOrder
+  gradeId?: Prisma.SortOrderInput | Prisma.SortOrder
   archived?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -274,6 +289,7 @@ export type ClassScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Class"> | string
   name?: Prisma.StringWithAggregatesFilter<"Class"> | string
   capacity?: Prisma.IntWithAggregatesFilter<"Class"> | number
+  gradeId?: Prisma.StringNullableWithAggregatesFilter<"Class"> | string | null
   archived?: Prisma.BoolWithAggregatesFilter<"Class"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Class"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Class"> | Date | string
@@ -286,6 +302,7 @@ export type ClassCreateInput = {
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  grade?: Prisma.GradeCreateNestedOneWithoutClassesInput
   students?: Prisma.StudentCreateNestedManyWithoutClassInput
   feeAssignments?: Prisma.FeeAssignmentCreateNestedManyWithoutClassInput
 }
@@ -294,6 +311,7 @@ export type ClassUncheckedCreateInput = {
   id?: string
   name: string
   capacity: number
+  gradeId?: string | null
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -308,6 +326,7 @@ export type ClassUpdateInput = {
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  grade?: Prisma.GradeUpdateOneWithoutClassesNestedInput
   students?: Prisma.StudentUpdateManyWithoutClassNestedInput
   feeAssignments?: Prisma.FeeAssignmentUpdateManyWithoutClassNestedInput
 }
@@ -316,6 +335,7 @@ export type ClassUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.IntFieldUpdateOperationsInput | number
+  gradeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -327,6 +347,7 @@ export type ClassCreateManyInput = {
   id?: string
   name: string
   capacity: number
+  gradeId?: string | null
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -345,15 +366,32 @@ export type ClassUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.IntFieldUpdateOperationsInput | number
+  gradeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ClassListRelationFilter = {
+  every?: Prisma.ClassWhereInput
+  some?: Prisma.ClassWhereInput
+  none?: Prisma.ClassWhereInput
+}
+
+export type ClassOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type ClassNameGradeIdCompoundUniqueInput = {
+  name: string
+  gradeId: string
 }
 
 export type ClassCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   capacity?: Prisma.SortOrder
+  gradeId?: Prisma.SortOrder
   archived?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -367,6 +405,7 @@ export type ClassMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   capacity?: Prisma.SortOrder
+  gradeId?: Prisma.SortOrder
   archived?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -376,6 +415,7 @@ export type ClassMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   capacity?: Prisma.SortOrder
+  gradeId?: Prisma.SortOrder
   archived?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -390,8 +430,46 @@ export type ClassNullableScalarRelationFilter = {
   isNot?: Prisma.ClassWhereInput | null
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
+export type ClassCreateNestedManyWithoutGradeInput = {
+  create?: Prisma.XOR<Prisma.ClassCreateWithoutGradeInput, Prisma.ClassUncheckedCreateWithoutGradeInput> | Prisma.ClassCreateWithoutGradeInput[] | Prisma.ClassUncheckedCreateWithoutGradeInput[]
+  connectOrCreate?: Prisma.ClassCreateOrConnectWithoutGradeInput | Prisma.ClassCreateOrConnectWithoutGradeInput[]
+  createMany?: Prisma.ClassCreateManyGradeInputEnvelope
+  connect?: Prisma.ClassWhereUniqueInput | Prisma.ClassWhereUniqueInput[]
+}
+
+export type ClassUncheckedCreateNestedManyWithoutGradeInput = {
+  create?: Prisma.XOR<Prisma.ClassCreateWithoutGradeInput, Prisma.ClassUncheckedCreateWithoutGradeInput> | Prisma.ClassCreateWithoutGradeInput[] | Prisma.ClassUncheckedCreateWithoutGradeInput[]
+  connectOrCreate?: Prisma.ClassCreateOrConnectWithoutGradeInput | Prisma.ClassCreateOrConnectWithoutGradeInput[]
+  createMany?: Prisma.ClassCreateManyGradeInputEnvelope
+  connect?: Prisma.ClassWhereUniqueInput | Prisma.ClassWhereUniqueInput[]
+}
+
+export type ClassUpdateManyWithoutGradeNestedInput = {
+  create?: Prisma.XOR<Prisma.ClassCreateWithoutGradeInput, Prisma.ClassUncheckedCreateWithoutGradeInput> | Prisma.ClassCreateWithoutGradeInput[] | Prisma.ClassUncheckedCreateWithoutGradeInput[]
+  connectOrCreate?: Prisma.ClassCreateOrConnectWithoutGradeInput | Prisma.ClassCreateOrConnectWithoutGradeInput[]
+  upsert?: Prisma.ClassUpsertWithWhereUniqueWithoutGradeInput | Prisma.ClassUpsertWithWhereUniqueWithoutGradeInput[]
+  createMany?: Prisma.ClassCreateManyGradeInputEnvelope
+  set?: Prisma.ClassWhereUniqueInput | Prisma.ClassWhereUniqueInput[]
+  disconnect?: Prisma.ClassWhereUniqueInput | Prisma.ClassWhereUniqueInput[]
+  delete?: Prisma.ClassWhereUniqueInput | Prisma.ClassWhereUniqueInput[]
+  connect?: Prisma.ClassWhereUniqueInput | Prisma.ClassWhereUniqueInput[]
+  update?: Prisma.ClassUpdateWithWhereUniqueWithoutGradeInput | Prisma.ClassUpdateWithWhereUniqueWithoutGradeInput[]
+  updateMany?: Prisma.ClassUpdateManyWithWhereWithoutGradeInput | Prisma.ClassUpdateManyWithWhereWithoutGradeInput[]
+  deleteMany?: Prisma.ClassScalarWhereInput | Prisma.ClassScalarWhereInput[]
+}
+
+export type ClassUncheckedUpdateManyWithoutGradeNestedInput = {
+  create?: Prisma.XOR<Prisma.ClassCreateWithoutGradeInput, Prisma.ClassUncheckedCreateWithoutGradeInput> | Prisma.ClassCreateWithoutGradeInput[] | Prisma.ClassUncheckedCreateWithoutGradeInput[]
+  connectOrCreate?: Prisma.ClassCreateOrConnectWithoutGradeInput | Prisma.ClassCreateOrConnectWithoutGradeInput[]
+  upsert?: Prisma.ClassUpsertWithWhereUniqueWithoutGradeInput | Prisma.ClassUpsertWithWhereUniqueWithoutGradeInput[]
+  createMany?: Prisma.ClassCreateManyGradeInputEnvelope
+  set?: Prisma.ClassWhereUniqueInput | Prisma.ClassWhereUniqueInput[]
+  disconnect?: Prisma.ClassWhereUniqueInput | Prisma.ClassWhereUniqueInput[]
+  delete?: Prisma.ClassWhereUniqueInput | Prisma.ClassWhereUniqueInput[]
+  connect?: Prisma.ClassWhereUniqueInput | Prisma.ClassWhereUniqueInput[]
+  update?: Prisma.ClassUpdateWithWhereUniqueWithoutGradeInput | Prisma.ClassUpdateWithWhereUniqueWithoutGradeInput[]
+  updateMany?: Prisma.ClassUpdateManyWithWhereWithoutGradeInput | Prisma.ClassUpdateManyWithWhereWithoutGradeInput[]
+  deleteMany?: Prisma.ClassScalarWhereInput | Prisma.ClassScalarWhereInput[]
 }
 
 export type IntFieldUpdateOperationsInput = {
@@ -400,14 +478,6 @@ export type IntFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
 }
 
 export type ClassCreateNestedOneWithoutStudentsInput = {
@@ -442,6 +512,67 @@ export type ClassUpdateOneWithoutFeeAssignmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ClassUpdateToOneWithWhereWithoutFeeAssignmentsInput, Prisma.ClassUpdateWithoutFeeAssignmentsInput>, Prisma.ClassUncheckedUpdateWithoutFeeAssignmentsInput>
 }
 
+export type ClassCreateWithoutGradeInput = {
+  id?: string
+  name: string
+  capacity: number
+  archived?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  students?: Prisma.StudentCreateNestedManyWithoutClassInput
+  feeAssignments?: Prisma.FeeAssignmentCreateNestedManyWithoutClassInput
+}
+
+export type ClassUncheckedCreateWithoutGradeInput = {
+  id?: string
+  name: string
+  capacity: number
+  archived?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  students?: Prisma.StudentUncheckedCreateNestedManyWithoutClassInput
+  feeAssignments?: Prisma.FeeAssignmentUncheckedCreateNestedManyWithoutClassInput
+}
+
+export type ClassCreateOrConnectWithoutGradeInput = {
+  where: Prisma.ClassWhereUniqueInput
+  create: Prisma.XOR<Prisma.ClassCreateWithoutGradeInput, Prisma.ClassUncheckedCreateWithoutGradeInput>
+}
+
+export type ClassCreateManyGradeInputEnvelope = {
+  data: Prisma.ClassCreateManyGradeInput | Prisma.ClassCreateManyGradeInput[]
+  skipDuplicates?: boolean
+}
+
+export type ClassUpsertWithWhereUniqueWithoutGradeInput = {
+  where: Prisma.ClassWhereUniqueInput
+  update: Prisma.XOR<Prisma.ClassUpdateWithoutGradeInput, Prisma.ClassUncheckedUpdateWithoutGradeInput>
+  create: Prisma.XOR<Prisma.ClassCreateWithoutGradeInput, Prisma.ClassUncheckedCreateWithoutGradeInput>
+}
+
+export type ClassUpdateWithWhereUniqueWithoutGradeInput = {
+  where: Prisma.ClassWhereUniqueInput
+  data: Prisma.XOR<Prisma.ClassUpdateWithoutGradeInput, Prisma.ClassUncheckedUpdateWithoutGradeInput>
+}
+
+export type ClassUpdateManyWithWhereWithoutGradeInput = {
+  where: Prisma.ClassScalarWhereInput
+  data: Prisma.XOR<Prisma.ClassUpdateManyMutationInput, Prisma.ClassUncheckedUpdateManyWithoutGradeInput>
+}
+
+export type ClassScalarWhereInput = {
+  AND?: Prisma.ClassScalarWhereInput | Prisma.ClassScalarWhereInput[]
+  OR?: Prisma.ClassScalarWhereInput[]
+  NOT?: Prisma.ClassScalarWhereInput | Prisma.ClassScalarWhereInput[]
+  id?: Prisma.StringFilter<"Class"> | string
+  name?: Prisma.StringFilter<"Class"> | string
+  capacity?: Prisma.IntFilter<"Class"> | number
+  gradeId?: Prisma.StringNullableFilter<"Class"> | string | null
+  archived?: Prisma.BoolFilter<"Class"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"Class"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Class"> | Date | string
+}
+
 export type ClassCreateWithoutStudentsInput = {
   id?: string
   name: string
@@ -449,6 +580,7 @@ export type ClassCreateWithoutStudentsInput = {
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  grade?: Prisma.GradeCreateNestedOneWithoutClassesInput
   feeAssignments?: Prisma.FeeAssignmentCreateNestedManyWithoutClassInput
 }
 
@@ -456,6 +588,7 @@ export type ClassUncheckedCreateWithoutStudentsInput = {
   id?: string
   name: string
   capacity: number
+  gradeId?: string | null
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -485,6 +618,7 @@ export type ClassUpdateWithoutStudentsInput = {
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  grade?: Prisma.GradeUpdateOneWithoutClassesNestedInput
   feeAssignments?: Prisma.FeeAssignmentUpdateManyWithoutClassNestedInput
 }
 
@@ -492,6 +626,7 @@ export type ClassUncheckedUpdateWithoutStudentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.IntFieldUpdateOperationsInput | number
+  gradeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -505,6 +640,7 @@ export type ClassCreateWithoutFeeAssignmentsInput = {
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  grade?: Prisma.GradeCreateNestedOneWithoutClassesInput
   students?: Prisma.StudentCreateNestedManyWithoutClassInput
 }
 
@@ -512,6 +648,7 @@ export type ClassUncheckedCreateWithoutFeeAssignmentsInput = {
   id?: string
   name: string
   capacity: number
+  gradeId?: string | null
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -541,6 +678,7 @@ export type ClassUpdateWithoutFeeAssignmentsInput = {
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  grade?: Prisma.GradeUpdateOneWithoutClassesNestedInput
   students?: Prisma.StudentUpdateManyWithoutClassNestedInput
 }
 
@@ -548,10 +686,51 @@ export type ClassUncheckedUpdateWithoutFeeAssignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.IntFieldUpdateOperationsInput | number
+  gradeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   students?: Prisma.StudentUncheckedUpdateManyWithoutClassNestedInput
+}
+
+export type ClassCreateManyGradeInput = {
+  id?: string
+  name: string
+  capacity: number
+  archived?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ClassUpdateWithoutGradeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  capacity?: Prisma.IntFieldUpdateOperationsInput | number
+  archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  students?: Prisma.StudentUpdateManyWithoutClassNestedInput
+  feeAssignments?: Prisma.FeeAssignmentUpdateManyWithoutClassNestedInput
+}
+
+export type ClassUncheckedUpdateWithoutGradeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  capacity?: Prisma.IntFieldUpdateOperationsInput | number
+  archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  students?: Prisma.StudentUncheckedUpdateManyWithoutClassNestedInput
+  feeAssignments?: Prisma.FeeAssignmentUncheckedUpdateManyWithoutClassNestedInput
+}
+
+export type ClassUncheckedUpdateManyWithoutGradeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  capacity?: Prisma.IntFieldUpdateOperationsInput | number
+  archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -598,9 +777,11 @@ export type ClassSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   id?: boolean
   name?: boolean
   capacity?: boolean
+  gradeId?: boolean
   archived?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  grade?: boolean | Prisma.Class$gradeArgs<ExtArgs>
   students?: boolean | Prisma.Class$studentsArgs<ExtArgs>
   feeAssignments?: boolean | Prisma.Class$feeAssignmentsArgs<ExtArgs>
   _count?: boolean | Prisma.ClassCountOutputTypeDefaultArgs<ExtArgs>
@@ -610,41 +791,52 @@ export type ClassSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   id?: boolean
   name?: boolean
   capacity?: boolean
+  gradeId?: boolean
   archived?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  grade?: boolean | Prisma.Class$gradeArgs<ExtArgs>
 }, ExtArgs["result"]["class"]>
 
 export type ClassSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   capacity?: boolean
+  gradeId?: boolean
   archived?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  grade?: boolean | Prisma.Class$gradeArgs<ExtArgs>
 }, ExtArgs["result"]["class"]>
 
 export type ClassSelectScalar = {
   id?: boolean
   name?: boolean
   capacity?: boolean
+  gradeId?: boolean
   archived?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ClassOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "capacity" | "archived" | "createdAt" | "updatedAt", ExtArgs["result"]["class"]>
+export type ClassOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "capacity" | "gradeId" | "archived" | "createdAt" | "updatedAt", ExtArgs["result"]["class"]>
 export type ClassInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  grade?: boolean | Prisma.Class$gradeArgs<ExtArgs>
   students?: boolean | Prisma.Class$studentsArgs<ExtArgs>
   feeAssignments?: boolean | Prisma.Class$feeAssignmentsArgs<ExtArgs>
   _count?: boolean | Prisma.ClassCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type ClassIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type ClassIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type ClassIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  grade?: boolean | Prisma.Class$gradeArgs<ExtArgs>
+}
+export type ClassIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  grade?: boolean | Prisma.Class$gradeArgs<ExtArgs>
+}
 
 export type $ClassPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Class"
   objects: {
+    grade: Prisma.$GradePayload<ExtArgs> | null
     students: Prisma.$StudentPayload<ExtArgs>[]
     feeAssignments: Prisma.$FeeAssignmentPayload<ExtArgs>[]
   }
@@ -652,6 +844,7 @@ export type $ClassPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     id: string
     name: string
     capacity: number
+    gradeId: string | null
     archived: boolean
     createdAt: Date
     updatedAt: Date
@@ -1049,6 +1242,7 @@ readonly fields: ClassFieldRefs;
  */
 export interface Prisma__ClassClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  grade<T extends Prisma.Class$gradeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Class$gradeArgs<ExtArgs>>): Prisma.Prisma__GradeClient<runtime.Types.Result.GetResult<Prisma.$GradePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   students<T extends Prisma.Class$studentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Class$studentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   feeAssignments<T extends Prisma.Class$feeAssignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Class$feeAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeeAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1083,6 +1277,7 @@ export interface ClassFieldRefs {
   readonly id: Prisma.FieldRef<"Class", 'String'>
   readonly name: Prisma.FieldRef<"Class", 'String'>
   readonly capacity: Prisma.FieldRef<"Class", 'Int'>
+  readonly gradeId: Prisma.FieldRef<"Class", 'String'>
   readonly archived: Prisma.FieldRef<"Class", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Class", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Class", 'DateTime'>
@@ -1340,6 +1535,10 @@ export type ClassCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
    */
   data: Prisma.ClassCreateManyInput | Prisma.ClassCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClassIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1410,6 +1609,10 @@ export type ClassUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many Classes to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClassIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1476,6 +1679,25 @@ export type ClassDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Classes to delete.
    */
   limit?: number
+}
+
+/**
+ * Class.grade
+ */
+export type Class$gradeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Grade
+   */
+  select?: Prisma.GradeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Grade
+   */
+  omit?: Prisma.GradeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GradeInclude<ExtArgs> | null
+  where?: Prisma.GradeWhereInput
 }
 
 /**

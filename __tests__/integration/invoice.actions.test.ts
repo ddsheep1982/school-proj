@@ -26,7 +26,7 @@ const TEST_TAG = `integration-invoice-${Date.now()}`;
 let testUserId: string;
 let testStudentId: string;
 let testFeeStructureId: string;
-let testAssignmentId: string;
+let testAssignmentIds: string[] = [];
 let invoiceIds: string[] = [];
 
 beforeAll(async () => {
@@ -64,25 +64,25 @@ beforeAll(async () => {
   });
   testStudentId = student.id;
 
-  // Create 4 invoices for the 4 status scenarios
-  const assignment = await prisma.feeAssignment.create({
-    data: {
-      feeStructureId: testFeeStructureId,
-      studentId: testStudentId,
-      dueDate: new Date("2026-12-31"),
-      invoices: {
-        create: [
-          { studentId: testStudentId, amountDue: 3000, dueDate: new Date("2026-12-31") },
-          { studentId: testStudentId, amountDue: 3000, dueDate: new Date("2026-12-31") },
-          { studentId: testStudentId, amountDue: 3000, dueDate: new Date("2026-12-31") },
-          { studentId: testStudentId, amountDue: 3000, dueDate: new Date("2026-12-31") },
-        ],
-      },
-    },
-    include: { invoices: true },
-  });
-  testAssignmentId = assignment.id;
-  invoiceIds = assignment.invoices.map((i) => i.id);
+  // Create 4 separate feeAssignments each with 1 invoice for the 4 status scenarios.
+  // (@@unique([feeAssignmentId, studentId]) prevents multiple invoices per assignment+student)
+  const assignments = await Promise.all(
+    [0, 1, 2, 3].map(() =>
+      prisma.feeAssignment.create({
+        data: {
+          feeStructureId: testFeeStructureId,
+          studentId: testStudentId,
+          dueDate: new Date("2026-12-31"),
+          invoices: {
+            create: [{ studentId: testStudentId, amountDue: 3000, dueDate: new Date("2026-12-31") }],
+          },
+        },
+        include: { invoices: true },
+      })
+    )
+  );
+  testAssignmentIds = assignments.map((a) => a.id);
+  invoiceIds = assignments.map((a) => a.invoices[0].id);
 
   // Invoice[0] → OUTSTANDING (no payments)
   // Invoice[1] → PARTIAL (1500 of 3000)
@@ -114,7 +114,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await prisma.paymentRecord.deleteMany({ where: { studentId: testStudentId } });
-  await prisma.invoice.deleteMany({ where: { feeAssignmentId: testAssignmentId } });
+  await prisma.invoice.deleteMany({ where: { feeAssignmentId: { in: testAssignmentIds } } });
   await prisma.feeAssignment.deleteMany({ where: { feeStructureId: testFeeStructureId } });
   await prisma.student.delete({ where: { id: testStudentId } }).catch(() => {});
   await prisma.feeStructure.delete({ where: { id: testFeeStructureId } }).catch(() => {});

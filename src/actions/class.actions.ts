@@ -14,6 +14,7 @@ import type { Class } from "@/generated/prisma/client";
 
 export type ClassWithCount = Class & {
   _count: { students: number };
+  grade: { id: string; name: string; campus: { id: string; name: string } } | null;
 };
 
 export async function createClass(
@@ -84,11 +85,18 @@ export async function deleteClass(id: string): Promise<ActionResult<void>> {
   }
 }
 
-export async function getClasses(): Promise<ClassWithCount[]> {
+export async function getClasses(filters?: { gradeId?: string; campusId?: string }): Promise<ClassWithCount[]> {
   await requireAuth();
   return prisma.class.findMany({
-    where: { archived: false },
-    include: { _count: { select: { students: true } } },
+    where: {
+      archived: false,
+      ...(filters?.gradeId ? { gradeId: filters.gradeId } : {}),
+      ...(filters?.campusId ? { grade: { campusId: filters.campusId } } : {}),
+    },
+    include: {
+      _count: { select: { students: true } },
+      grade: { select: { id: true, name: true, campus: { select: { id: true, name: true } } } },
+    },
     orderBy: { name: "asc" },
   });
 }

@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 const navItems = [
   { href: "/", label: "仪表盘", icon: "📊" },
   { href: "/students", label: "学生管理", icon: "👥" },
+  { href: "/campuses", label: "校区管理", icon: "🏛️" },
+  { href: "/grades", label: "年级管理", icon: "📚" },
   { href: "/classes", label: "班级管理", icon: "🏫" },
   { href: "/teachers", label: "招生老师", icon: "👨‍🏫" },
   { href: "/agents", label: "招生代理", icon: "🤝" },

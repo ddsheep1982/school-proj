@@ -1,6 +1,8 @@
 import { getStudents } from "@/actions/student.actions";
 import { getClasses } from "@/actions/class.actions";
 import { getTeachers } from "@/actions/teacher.actions";
+import { getCampuses } from "@/actions/campus.actions";
+import { getGrades } from "@/actions/grade.actions";
 import StudentTable from "@/components/students/StudentTable";
 import Link from "next/link";
 import type { StudentFilters } from "@/types/index";
@@ -13,10 +15,14 @@ export default async function StudentsPage({ searchParams }: Props) {
   const sp = await searchParams;
 
   const includeWithdrawn = sp.includeWithdrawn === "1";
+  const campusId = sp.campusId || undefined;
+  const gradeId = sp.gradeId || undefined;
 
   const filters: Partial<StudentFilters> & { includeWithdrawn?: boolean } = {
     search: sp.search || undefined,
     classId: sp.classId || undefined,
+    campusId,
+    gradeId,
     enrollmentTeacherId: sp.enrollmentTeacherId || undefined,
     enrollmentStatus: (sp.enrollmentStatus || undefined) as StudentFilters["enrollmentStatus"],
     paymentStatus: (sp.paymentStatus || undefined) as StudentFilters["paymentStatus"],
@@ -25,10 +31,12 @@ export default async function StudentsPage({ searchParams }: Props) {
     includeWithdrawn,
   };
 
-  const [{ students, total }, classes, teachers] = await Promise.all([
+  const [{ students, total }, classes, teachers, campuses, grades] = await Promise.all([
     getStudents(filters),
-    getClasses(),
+    getClasses({ campusId, gradeId }),
     getTeachers(),
+    getCampuses(),
+    getGrades(campusId),
   ]);
 
   return (
@@ -51,6 +59,30 @@ export default async function StudentsPage({ searchParams }: Props) {
           placeholder="搜索姓名/学号/电话..."
           className="border border-gray-300 rounded px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+        <select
+          name="campusId"
+          defaultValue={campusId ?? ""}
+          className="border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">所有校区</option>
+          {campuses.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+        <select
+          name="gradeId"
+          defaultValue={gradeId ?? ""}
+          className="border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">所有年级</option>
+          {grades.map((g) => (
+            <option key={g.id} value={g.id}>
+              {g.name}
+            </option>
+          ))}
+        </select>
         <select
           name="classId"
           defaultValue={sp.classId ?? ""}
@@ -122,6 +154,8 @@ export default async function StudentsPage({ searchParams }: Props) {
       {(() => {
         const exportParams = new URLSearchParams();
         if (sp.search) exportParams.set("search", sp.search);
+        if (sp.campusId) exportParams.set("campusId", sp.campusId);
+        if (sp.gradeId) exportParams.set("gradeId", sp.gradeId);
         if (sp.classId) exportParams.set("classId", sp.classId);
         if (sp.enrollmentTeacherId) exportParams.set("enrollmentTeacherId", sp.enrollmentTeacherId);
         if (sp.enrollmentStatus) exportParams.set("enrollmentStatus", sp.enrollmentStatus);

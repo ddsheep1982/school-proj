@@ -43,6 +43,11 @@ export async function createFeeAssignment(
       const student = await prisma.student.findUnique({ where: { id: data.studentId } });
       if (!student) return { success: false, error: "学生不存在" };
 
+      const existing = await prisma.feeAssignment.findFirst({
+        where: { feeStructureId: data.feeStructureId, studentId: data.studentId },
+      });
+      if (existing) return { success: false, error: "该学生已分配此费用项目" };
+
       const assignment = await prisma.feeAssignment.create({
         data: {
           feeStructureId: data.feeStructureId,

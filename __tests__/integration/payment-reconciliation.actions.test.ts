@@ -93,7 +93,7 @@ afterAll(async () => {
   await prisma.invoice.deleteMany({
     where: { studentId: { in: [testStudentId, otherStudentId] } },
   });
-  await prisma.feeAssignment.deleteMany({ where: { invoices: { some: { studentId: testStudentId } } } });
+  await prisma.feeAssignment.deleteMany({ where: { studentId: { in: [testStudentId, otherStudentId] } } });
   await prisma.feeStructure.deleteMany({ where: { name: { contains: TEST_TAG } } });
   await prisma.student.deleteMany({ where: { id: { in: [testStudentId, otherStudentId] } } }).catch(() => {});
   await prisma.auditLog.deleteMany({ where: { userId: testUserId } });

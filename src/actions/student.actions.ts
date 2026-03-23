@@ -168,6 +168,12 @@ export async function getStudents(
       ],
     }),
     ...(filters.classId && { classId: filters.classId }),
+    ...((filters.gradeId || filters.campusId) && {
+      class: {
+        ...(filters.gradeId && { gradeId: filters.gradeId }),
+        ...(filters.campusId && { grade: { campusId: filters.campusId } }),
+      },
+    }),
     ...(filters.enrollmentTeacherId && { enrollmentTeacherId: filters.enrollmentTeacherId }),
     ...(filters.recruitmentAgentId && { recruitmentAgentId: filters.recruitmentAgentId }),
     ...(filters.recruitmentChannelType && {

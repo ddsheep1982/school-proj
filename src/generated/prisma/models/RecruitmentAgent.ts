@@ -368,10 +368,6 @@ export type RecruitmentAgentNullableScalarRelationFilter = {
   isNot?: Prisma.RecruitmentAgentWhereInput | null
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type RecruitmentAgentCreateNestedOneWithoutRecruitedStudentsInput = {
   create?: Prisma.XOR<Prisma.RecruitmentAgentCreateWithoutRecruitedStudentsInput, Prisma.RecruitmentAgentUncheckedCreateWithoutRecruitedStudentsInput>
   connectOrCreate?: Prisma.RecruitmentAgentCreateOrConnectWithoutRecruitedStudentsInput

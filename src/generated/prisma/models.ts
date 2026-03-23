@@ -8,6 +8,8 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/Campus'
+export type * from './models/Grade'
 export type * from './models/Class'
 export type * from './models/EnrollmentTeacher'
 export type * from './models/RecruitmentAgent'

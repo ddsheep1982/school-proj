@@ -99,6 +99,8 @@ export type UpdateStudentInput = z.infer<typeof UpdateStudentSchema>;
 export const StudentFiltersSchema = z.object({
   search: z.string().optional(),
   classId: z.string().optional(),
+  gradeId: z.string().optional(),
+  campusId: z.string().optional(),
   enrollmentTeacherId: z.string().optional(),
   recruitmentAgentId: z.string().optional(),
   recruitmentChannelType: RecruitmentChannelTypeEnum.optional(),
@@ -146,11 +148,43 @@ export const AttendanceTimeSchema = z.object({
 export type AttendanceTimeInput = z.infer<typeof AttendanceTimeSchema>;
 
 // ---------------------------------------------------------------------------
+// Campus schemas
+// ---------------------------------------------------------------------------
+export const CreateCampusSchema = z.object({
+  name: z.string().min(1, "校区名称不能为空"),
+  description: z.string().optional(),
+});
+export type CreateCampusInput = z.infer<typeof CreateCampusSchema>;
+
+export const UpdateCampusSchema = z.object({
+  name: z.string().min(1).optional(),
+  description: z.string().nullable().optional(),
+  archived: z.boolean().optional(),
+});
+export type UpdateCampusInput = z.infer<typeof UpdateCampusSchema>;
+
+// ---------------------------------------------------------------------------
+// Grade schemas
+// ---------------------------------------------------------------------------
+export const CreateGradeSchema = z.object({
+  name: z.string().min(1, "年级名称不能为空"),
+  campusId: z.string().cuid("请选择校区"),
+});
+export type CreateGradeInput = z.infer<typeof CreateGradeSchema>;
+
+export const UpdateGradeSchema = z.object({
+  name: z.string().min(1).optional(),
+  archived: z.boolean().optional(),
+});
+export type UpdateGradeInput = z.infer<typeof UpdateGradeSchema>;
+
+// ---------------------------------------------------------------------------
 // Class schemas
 // ---------------------------------------------------------------------------
 export const CreateClassSchema = z.object({
   name: z.string().min(1, "班级名称不能为空"),
   capacity: z.number().int().positive("容量必须为正整数"),
+  gradeId: z.string().cuid("请选择年级"),
 });
 
 export type CreateClassInput = z.infer<typeof CreateClassSchema>;
@@ -158,6 +192,7 @@ export type CreateClassInput = z.infer<typeof CreateClassSchema>;
 export const UpdateClassSchema = z.object({
   name: z.string().min(1).optional(),
   capacity: z.number().int().positive().optional(),
+  gradeId: z.string().cuid().optional(),
   archived: z.boolean().optional(),
 });
 

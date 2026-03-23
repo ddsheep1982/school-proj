@@ -49,15 +49,42 @@ enum RecruitmentCostRecipientType {
   RECEPTION_TEACHER
 }
 
+model Campus {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  archived    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  grades      Grade[]
+}
+
+model Grade {
+  id        String   @id @default(cuid())
+  name      String
+  campusId  String
+  campus    Campus   @relation(fields: [campusId], references: [id])
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  classes   Class[]
+
+  @@unique([name, campusId])
+}
+
 model Class {
   id        String    @id @default(cuid())
-  name      String    @unique
+  name      String
   capacity  Int
+  gradeId   String?
+  grade     Grade?    @relation(fields: [gradeId], references: [id])
   archived  Boolean   @default(false)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   students       Student[]
   feeAssignments FeeAssignment[]
+
+  @@unique([name, gradeId])
 }
 
 model EnrollmentTeacher {

@@ -35,21 +35,39 @@ async function main() {
     },
   });
 
-  // 2. Classes
-  const class1 = await prisma.class.upsert({
-    where: { name: "初级班" },
+  // 2. Default Campus & Grade (migration backfill)
+  const defaultCampus = await prisma.campus.upsert({
+    where: { name: "默认校区" },
     update: {},
-    create: { name: "初级班", capacity: 20 },
+    create: { name: "默认校区", description: "系统默认校区" },
+  });
+  const defaultGrade = await prisma.grade.upsert({
+    where: { name_campusId: { name: "默认年级", campusId: defaultCampus.id } },
+    update: {},
+    create: { name: "默认年级", campusId: defaultCampus.id },
+  });
+
+  // Backfill existing classes that have no gradeId
+  await prisma.class.updateMany({
+    where: { gradeId: null },
+    data: { gradeId: defaultGrade.id },
+  });
+
+  // 3. Classes (upsert by composite key name+gradeId)
+  const class1 = await prisma.class.upsert({
+    where: { name_gradeId: { name: "初级班", gradeId: defaultGrade.id } },
+    update: {},
+    create: { name: "初级班", capacity: 20, gradeId: defaultGrade.id },
   });
   const class2 = await prisma.class.upsert({
-    where: { name: "中级班" },
+    where: { name_gradeId: { name: "中级班", gradeId: defaultGrade.id } },
     update: {},
-    create: { name: "中级班", capacity: 25 },
+    create: { name: "中级班", capacity: 25, gradeId: defaultGrade.id },
   });
   const class3 = await prisma.class.upsert({
-    where: { name: "高级班" },
+    where: { name_gradeId: { name: "高级班", gradeId: defaultGrade.id } },
     update: {},
-    create: { name: "高级班", capacity: 15 },
+    create: { name: "高级班", capacity: 15, gradeId: defaultGrade.id },
   });
 
   // 3. Enrollment Teachers

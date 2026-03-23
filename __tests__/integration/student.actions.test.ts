@@ -201,3 +201,69 @@ describe("getStudentById", () => {
     expect(student).toBeNull();
   });
 });
+
+describe("getStudents — campus/grade filter combinations", () => {
+  let campusId: string;
+  let gradeId: string;
+  let classInGradeId: string;
+  let studentInGradeId: string;
+
+  beforeAll(async () => {
+    const campus = await prisma.campus.create({ data: { name: `Campus ${TEST_TAG}` } });
+    campusId = campus.id;
+    const grade = await prisma.grade.create({ data: { name: `Grade ${TEST_TAG}`, campusId } });
+    gradeId = grade.id;
+    const cls = await prisma.class.create({ data: { name: `GradeClass ${TEST_TAG}`, capacity: 10, gradeId } });
+    classInGradeId = cls.id;
+
+    const result = await createStudent({
+      name: `GradeStudent ${TEST_TAG}`,
+      phone: "13811110001",
+      guardianPhone: "13911110001",
+      enrollmentDate: new Date().toISOString(),
+      classId: classInGradeId,
+    });
+    if (result.success) studentInGradeId = result.data.id;
+  });
+
+  afterAll(async () => {
+    await prisma.auditLog.deleteMany({ where: { userId: testUserId } });
+    if (studentInGradeId) await prisma.student.delete({ where: { id: studentInGradeId } }).catch(() => {});
+    await prisma.class.delete({ where: { id: classInGradeId } }).catch(() => {});
+    await prisma.grade.delete({ where: { id: gradeId } }).catch(() => {});
+    await prisma.campus.delete({ where: { id: campusId } }).catch(() => {});
+  });
+
+  it("filters by gradeId returns only students in that grade", async () => {
+    const { students } = await getStudents({ gradeId });
+    expect(students.length).toBeGreaterThanOrEqual(1);
+    const found = students.find((s) => s.id === studentInGradeId);
+    expect(found).toBeDefined();
+  });
+
+  it("filters by campusId returns only students in that campus", async () => {
+    const { students } = await getStudents({ campusId });
+    expect(students.length).toBeGreaterThanOrEqual(1);
+    const found = students.find((s) => s.id === studentInGradeId);
+    expect(found).toBeDefined();
+  });
+
+  it("gradeId + campusId both apply without overwriting each other", async () => {
+    // Both filters should work together (AND condition — student is in both)
+    const { students: both } = await getStudents({ gradeId, campusId });
+    const foundInBoth = both.find((s) => s.id === studentInGradeId);
+    expect(foundInBoth).toBeDefined();
+
+    // A non-existent gradeId paired with a real campusId should return nothing for our student
+    const { students: none } = await getStudents({ gradeId: "clxxxxxxxxxxxxxxxxxxxxxxxxx", campusId });
+    const foundInNone = none.find((s) => s.id === studentInGradeId);
+    expect(foundInNone).toBeUndefined();
+  });
+
+  it("classId filter is not overwritten by gradeId when both are set", async () => {
+    // classId alone must still work when gradeId is also present
+    const { students } = await getStudents({ classId: classInGradeId, gradeId });
+    const found = students.find((s) => s.id === studentInGradeId);
+    expect(found).toBeDefined();
+  });
+});

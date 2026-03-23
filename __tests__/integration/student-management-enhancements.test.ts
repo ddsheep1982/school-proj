@@ -96,6 +96,27 @@ beforeAll(async () => {
       createdById: testUserId,
     },
   });
+
+  // Add payment so refund tests can pass (refund validation checks totalPaid)
+  await prisma.paymentRecord.create({
+    data: {
+      studentId: testStudentId,
+      amount: 600,
+      paymentDate: new Date(),
+      paymentType: "CASH",
+      createdById: testUserId,
+    },
+  });
+
+  await prisma.paymentRecord.create({
+    data: {
+      studentId: testStudentForRefundWithdrawId,
+      amount: 2000,
+      paymentDate: new Date(),
+      paymentType: "CASH",
+      createdById: testUserId,
+    },
+  });
 });
 
 afterAll(async () => {
